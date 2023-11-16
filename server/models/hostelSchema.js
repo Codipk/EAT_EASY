@@ -22,13 +22,12 @@ const hostelSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  students: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  noOfStudent: {
-    type: Number,
-  }
+  students: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
 }, { timestamps: true }, { strictPopulate: false });
 
 

@@ -1,5 +1,6 @@
 const additionDetails = require('../models/additionalDetailSchema');
 const User = require('../models/userSchema');
+const Hostel = require('../models/hostelSchema');
 const BlockedUser = require('../models/blockedUserSchema');
 const { uploadImageToCloudinary } = require('../utils/imageUploader');
 
@@ -120,19 +121,21 @@ exports.getAllUserDetails = async (req, res) => {
   }
 
 }
-//not tested yet
+
 exports.blockUser = async (req, res) => {
   try {
     //1. fetch userDetails
     //check is already blocked -> otherwise multiple entry will be created
     //2. block userBy its emailId
     // console.log(req.body);
-    const userId = req.body;
+    console.log("here@!")
+    const { userId } = req.body;
     const userDetails = await BlockedUser.find({ email: userId.email });
-    if (userDetails) {
+    if (!userDetails) {
       return res.status(403).json({
-
-      })
+        sucess: false,
+        message: 'User Is already Blocked',
+      });
     }
     const blockedUserDetails = await BlockedUser.create(userId.email);
     return res.status(200).json({
@@ -151,13 +154,64 @@ exports.blockUser = async (req, res) => {
 }
 
 exports.unblockUser = async (req, res) => {
-  const userId = req.body;
-  const blockedUserDetails = await BlockedUser.findByIdAndDelete(
-    { email: userId.email }
-  );
+  try {
+    const { userId } = req.body;
+    const userDetails = await User.findById(userId);
+    console.log(userDetails);
+    await BlockedUser.findOneAndDelete(
+      { email: userDetails.email }
+    );
+    return res.status(200).json({
+      success: true,
+      message: 'User Unblocked Successfully',
+    });
+  } catch (error) {
+    console.log('Error in unblocking user: ', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
 }
 //delete account
-// updatedisplay picture
+exports.deleteAccount = async (req, res) => {
+  try {
+    //fetch userid
+    //delete entry of additional details
+    //delete entry from hostel
+
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId);
+    // console.log(userDetails);
+    if (!userDetails) {
+      return res.status(403).json({
+        success: true,
+        message: 'User Does not Exist',
+      });
+    }
+    await additionDetails.findByIdAndDelete(userDetails.additionalDetails);
+    const hostelDetails = await Hostel.findByIdAndUpdate(
+      userDetails.hostel,
+      {
+        $pull: { students: userId },
+      }
+    )
+    const userInfo = await User.findByIdAndDelete(userId);
+    return res.status(200).json({
+      success: true,
+      message: 'User Deleted Successfully',
+      userInfo,
+    });
+
+  } catch (error) {
+    console.log('Error in Deleting User: ', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    })
+  }
+};
 //send otp
 //forget password
 //

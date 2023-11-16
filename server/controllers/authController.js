@@ -75,6 +75,7 @@ exports.signup = async (req, res) => {
     6. Validate OTP
     7. hash the password
     8. create user and additionalDetails entry in db
+    //insertUserId to hostel.students
     9. return response
 
   */
@@ -155,14 +156,7 @@ exports.signup = async (req, res) => {
         message: 'Hostel does not exist',
       });
     }
-    let increasedStu = hostel.noOfStudent + 1;
-    console.log(hostel);
-    // hostel = await Hostel.updateOne(
-    //   { hostelName: hostelName },
-    //   { $set: { noOfStudent: increasedStu } }
-    // );
-    hostel.noOfStudent = increasedStu;
-    await hostel.save();
+
     //creating addtionalDetails with null
     const additionalDetails = await AdditionalDetails.create({
       gender: null,
@@ -170,7 +164,6 @@ exports.signup = async (req, res) => {
       about: null,
       AccountNo: null,
       IFSC: null,
-      isMessFeePaid: null,
       roomNo: null,
       contactNo: null,
       branch: null
@@ -186,7 +179,8 @@ exports.signup = async (req, res) => {
       additionalDetails: additionalDetails._id,
       img: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
     });
-
+    hostel.students.push(user._id);
+    await hostel.save();
     // 9. return response
     return res.status(200).json({
       success: true,
