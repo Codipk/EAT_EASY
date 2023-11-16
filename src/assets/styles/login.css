@@ -1,0 +1,17 @@
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #360631;
+}
+.h-custom {
+  height: calc(100% - 73px);
+  background-color: rgb(239, 229, 237);
+  /* background-image: url(../images/pngtree-original-design-business-office-management-system-background-banner-image_346107.jpg); */
+}
+@media (max-width: 450px) {
+  .h-custom {
+    height: 90%;
+  }
+}
