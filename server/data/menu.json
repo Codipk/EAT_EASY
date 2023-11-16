@@ -1,0 +1,45 @@
+{
+  "hostel": "654616e98ff176a58bd8a0b1",
+  "monday": {
+    "breakFast": "IDLI-Edited, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  },
+  "tuesday": {
+    "breakFast": "IDLI, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  },
+  "wednesday": {
+    "breakFast": "IDLI, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  },
+  "thursday": {
+    "breakFast": "IDLI, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  },
+  "friday": {
+    "breakFast": "IDLI, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  },
+  "saturday": {
+    "breakFast": "IDLI, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  },
+  "sunday": {
+    "breakFast": "IDLI, SAMBHAR, & MILK BOURNVITA",
+    "lunch": "PANEER & RAYTA (KHEERA) & RICE & ROTI",
+    "snacks": "SAMOSA, CHAI & GREEN CHATNEY",
+    "dinner": "ALOO BHUJIYA, RAJMA, GULABIAMUN, ROTI & RICE"
+  }
+}
