@@ -4,12 +4,14 @@ import { setUser } from "../../slices/profileSlice";
 import { apiConnector } from "../apiconnector";
 import { settingsEndpoints } from "../apis";
 import { logout } from "./authAPI";
-
+import { setLoading, setHostel } from "../../slices/hostelSlice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 const {
   UPDATE_DISPLAY_PICTURE_API,
   UPDATE_PROFILE_API,
   CHANGE_PASSWORD_API,
   DELETE_PROFILE_API,
+  GET_USER_DETAILS_API,
 } = settingsEndpoints;
 
 export function updateDisplayPicture(token, formData) {
@@ -107,3 +109,51 @@ export function deleteProfile(token, navigate) {
     toast.dismiss(toastId);
   };
 }
+
+// getting all userDetails
+// export function getAlluserDetails(token, navigate) {
+//   return async (dispatch) => {
+//     const toastId = toast.loading("Loading...");
+//     dispatch(setLoading(true));
+//     try {
+//       const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
+//         Authorization: `Bearer ${token}`,
+//       });
+//       console.log("GET_USER_DETAILS API RESPONSE............", response);
+
+//       if (!response.data.success) {
+//         throw new Error(response.data.message);
+//       }
+//       const userImage = response.data.data.image
+//         ? response.data.data.image
+//         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`;
+//       dispatch(setHostel({ ...response.data.hostel }));
+//     } catch (error) {
+//       dispatch(logout(navigate));
+//       console.log("GET_USER_DETAILS API ERROR............", error);
+//       toast.error("Could Not Get User Details");
+//     }
+//     toast.dismiss(toastId);
+//     dispatch(setLoading(false));
+//   };
+// }
+export const fetchUserDetails = createAsyncThunk(
+  "user/fetchUserDetails",
+  async (token) => {
+    try {
+      const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+      console.log("fetching user details api", response);
+      return response.data.userDetails;
+    } catch (error) {
+      console.log("fetching user details api", error);
+
+      throw error.response ? error.response.data : error.message;
+    }
+  }
+);

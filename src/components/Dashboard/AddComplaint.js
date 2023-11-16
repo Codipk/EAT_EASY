@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setTitle,
@@ -7,6 +7,7 @@ import {
   setError,
   addComplaint,
 } from "../../slices/complaintSlice";
+import { FiUpload } from "react-icons/fi";
 import Upload from "./Upload";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,10 @@ export default function AddComplaint() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const fileInputRef = useRef(null);
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
   const {
     register,
     setValue,
@@ -95,6 +99,8 @@ export default function AddComplaint() {
                 name="complaintImage"
                 id="complaintImage"
                 className="form-style"
+                onChange={handleFileChange}
+                accept="image/png, image/gif, image/jpeg"
                 {...register("complaintImage", {
                   // required: {
                   //   value: true,
@@ -102,20 +108,19 @@ export default function AddComplaint() {
                   // },
                 })}
               />
-              {/* <Upload
+              <Upload
                 name="complaintImage"
                 label="Complaint Image"
                 register={register}
                 setValue={setValue}
                 errors={errors}
-                // editData={editCourse ? course?.thumbnail : null}
-              /> */}
+              />
 
-              {/* {errors.complaintImage && (
+              {errors.complaintImage && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
                   {errors.complaintImage.message}
                 </span>
-              )} */}
+              )}
             </div>
           </div>
         </div>

@@ -1,32 +1,29 @@
 import { RiEditBoxLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { formattedDate } from "../../utils/dateFormatter";
 import IconBtn from "../common/IconBtn";
-
+import { setHostel, setLoading, setError } from "../../slices/hostelSlice";
+import { setUser } from "../../slices/profileSlice";
+import { useEffect } from "react";
+import { fetchUserDetails } from "../../services/operations/SettingsAPI";
 export default function MyProfile() {
-  const { user } = useSelector((state) => state.profile);
-  console.log("inside myprofile", user.additionalDetails);
-
-  // const user = {
-  //   image: null,
-  //   firstName: "dipti",
-  //   lastName: "kumari",
-  //   email: "diptiku2002@gmail.com",
-
-  //   additionalDetails: {
-  //     IFSC_code: "SBI0098",
-  //     Account_no: "323049123",
-  //     contactNo: 94284204281,
-  //     gender: "Female",
-  //     isMessFeePaid: "YES",
-  //     DOB: "04-10-2002",
-  //     roomNo: 19,
-  //   },
-  // };
-
+  const { user, userDetails, loading, error } = useSelector((state) => ({
+    user: state.profile.user,
+    userDetails: state.profile.userDetails,
+    loading: state.profile.loading,
+    error: state.profile.error,
+  }));
+  console.log("user", user);
+  console.log("userDetails", userDetails);
+  const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserDetails(token));
+  }, [dispatch]);
 
   return (
     <div className="">
@@ -103,7 +100,7 @@ export default function MyProfile() {
             <div>
               <p className="mb-2 text-sm text-green-100">Hostel Name</p>
               <p className="text-sm font-medium text-white">
-                {user?.hostel ?? "Hostel Name"}
+                {userDetails?.hostel.hostelName ?? "Hostel Name"}
               </p>
             </div>
           </div>
@@ -175,7 +172,7 @@ export default function MyProfile() {
           Mess Fee Status:{" "}
           {user?.additionalDetails?.isMessFeePaid
             ? user?.additionalDetails?.isMessFeePaid
-            : "Not Paid"}
+            : "Paid/Not"}
         </p>
       </div>
     </div>
