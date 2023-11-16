@@ -17,6 +17,6 @@ router.get('/getResolvedComplaints', auth, getResolvedComplaints);
 router.get('/getUnresolvedComplaints', auth, getUnresolvedComplaints);
 router.get('/myComplaints', auth, myComplaints);
 router.delete('/deleteComplaint', auth, deleteComplaints);
-router.put("/updateUpvote/:id", auth, likeComplaints);
-router.put("/updateDownvote/:id", auth, dislikeComplaints);
+router.put("/updateUpvote", auth,isStudent, likeComplaints);
+router.put("/updateDownvote", auth,isStudent, dislikeComplaints);
 module.exports = router;

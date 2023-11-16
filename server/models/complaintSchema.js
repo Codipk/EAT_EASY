@@ -23,14 +23,13 @@ const complaints = new mongoose.Schema({
   },
   upVotedBy: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+      
     }
   ],
   downVotedBy: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
     }
   ],
   isResolved: {

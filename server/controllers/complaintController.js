@@ -284,17 +284,18 @@ exports.likeComplaints = async (req, res) => {
 
   try {
     console.log("Inside like controller")
-    const complaintId = req.params.id;
+    const complaintId = req.body.id
     // console.log(req);
-    const userId = req.user.id;
-    console.log(complaintId, userId);
+
+    const userEmail = req.user.email;
+    console.log(complaintId, userEmail);
     const updatedComplaint = await Complaint.findByIdAndUpdate(
 
       complaintId,
 
       {
-        $addToSet: { upVotedBy: userId },
-        $pull: { downVotedBy: userId }
+        $addToSet: { upVotedBy: userEmail },
+        $pull: { downVotedBy: userEmail }
       },
       { new: true }
     );
@@ -317,8 +318,8 @@ exports.likeComplaints = async (req, res) => {
 
 
 exports.dislikeComplaints = async (req, res) => {
-  const complaintId = req.params.id;
-  const userId = req.user.id;
+  const complaintId = req.body.id;
+  const userEmail = req.user.email;
 
   try {
 
@@ -327,8 +328,8 @@ exports.dislikeComplaints = async (req, res) => {
       complaintId,
 
       {
-        $addToSet: { downVotedBy: userId },
-        $pull: { upVotedBy: userId }
+        $addToSet: { downVotedBy: userEmail },
+        $pull: { upVotedBy: userEmail }
       },
       { new: true }
     );
