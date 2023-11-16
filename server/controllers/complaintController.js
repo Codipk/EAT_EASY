@@ -247,7 +247,8 @@ exports.deleteComplaints = async (req, res) => {
     //return response
 
 
-    const complaintId = req.params.id;
+    // const complaintId = req.params.id;
+    const { complaintId } = req.body;
     const userId = req.user.id;
     //delete complaints from user's complaint
     const userDetails = await User.findByIdAndUpdate(

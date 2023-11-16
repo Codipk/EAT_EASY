@@ -6,6 +6,7 @@ import {
   fetchAllMyComplaints,
   deleteComplaint,
 } from "../../services/operations/ComplaintAPI";
+
 import { formattedDate } from "../../utils/dateFormatter";
 import { FaCheck } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -78,9 +79,9 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     <p className="text-xs text-richblack-300">
                       {complaint.body.split(" ").length > TRUNCATE_LENGTH
                         ? complaint.body
-                            .split(" ")
-                            .slice(0, TRUNCATE_LENGTH)
-                            .join(" ") + "..."
+                          .split(" ")
+                          .slice(0, TRUNCATE_LENGTH)
+                          .join(" ") + "..."
                         : complaint.body}
                     </p>
                     <p className="text-[12px] text-white">
@@ -120,10 +121,10 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                         btn2Text: "Cancel",
                         btn1Handler: !loading
                           ? () => handleComplaintDelete(complaint._id)
-                          : () => {},
+                          : () => { },
                         btn2Handler: !loading
                           ? () => setConfirmationModal(null)
-                          : () => {},
+                          : () => { },
                       });
                     }}
                     title="Delete"

@@ -94,6 +94,7 @@ export const fetchAllMyComplaints = async (token) => {
 export const deleteComplaint = async (complaintId, token) => {
   const toastId = toast.loading("Deleting Complaint...");
   try {
+    console.log(typeof complaintId);
     const response = await apiConnector(
       "DELETE",
       `${DELETE_COMPLAINT_API}/${complaintId}`,

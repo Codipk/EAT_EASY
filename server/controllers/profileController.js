@@ -156,3 +156,8 @@ exports.unblockUser = async (req, res) => {
     { email: userId.email }
   );
 }
+//delete account
+// updatedisplay picture
+//send otp
+//forget password
+//
