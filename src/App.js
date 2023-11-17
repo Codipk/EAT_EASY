@@ -50,7 +50,7 @@ function App() {
             <Route path="/dashboard/my-profile" element={<MyProfile />}></Route>
             <Route path="dashboard/Settings" element={<Settings />}></Route>
             {(accountType === ACCOUNT_TYPE.STUDENT ||
-              accountType === ACCOUNT_TYPE.Committee_Member ||
+              accountType === ACCOUNT_TYPE.MESS_COMMITEE ||
               accountType === ACCOUNT_TYPE.WARDEN) && (
               <>
                 {accountType !== ACCOUNT_TYPE.WARDEN && (
@@ -73,12 +73,12 @@ function App() {
                 <Route path="dashboard/mess-menu" element={<Menu />} />
               </>
             )}
-            {accountType === ACCOUNT_TYPE.Committee_Member && (
-              <Route
-                path="dashboard/mess-menu/edit-mess-menu"
-                element={<EditMessMenu />}
-              />
-            )}
+            {/* {accountType === ACCOUNT_TYPE.MESS_COMMITEE && ( */}
+            <Route
+              path="dashboard/mess-menu/edit-mess-menu"
+              element={<EditMessMenu />}
+            />
+            {/* )} */}
           </Route>
 
           {/* <Route path="dashboard/Settings" element={<Settings />} /> */}

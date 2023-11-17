@@ -54,6 +54,9 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
             <Th className="text-left text-sm font-medium uppercase text-slate-200">
               DownVote
             </Th>
+            <Th className="text-left text-sm font-medium uppercase text-slate-200">
+              Delete
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -88,9 +91,7 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                             .join(" ") + "..."
                         : complaint.body}
                     </p>
-                    <p className="text-[12px] text-white">
-                      Created: {formattedDate(complaint.createdAt)}
-                    </p>
+
                     {complaint.isResolved ? (
                       <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
                         <HiClock size={14} />
@@ -106,14 +107,19 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     )}
                   </div>
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
+                <Td className="text-sm font-medium text-white">
+                  <p className="text-[12px] text-white">
+                    Created: {formattedDate(complaint.createdAt)}
+                  </p>
+                </Td>
+                <Td className="text-sm font-medium text-white">
                   {/* it will chnage after */}
                   Upvote Icon
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
+                <Td className="text-sm font-medium text-white">
                   DownVote Icon
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100 ">
+                <Td className="text-sm font-medium text-white">
                   <button
                     disabled={loading}
                     onClick={() => {

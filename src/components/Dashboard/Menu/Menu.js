@@ -123,14 +123,16 @@ const Menu = () => {
             <p>Loading...</p>
           )}
         </div>
-        {user?.accountType === ACCOUNT_TYPE?.MESS_COMMITEE && (
+        <div className="mb-3 h-3">
+          {/* {user?.accountType === ACCOUNT_TYPE.MESS_COMMITEE && ( */}
           <Link
-            className="bg-slate-500 p-2  text-black mb-2"
+            className="bg-slate-500 p-2  font-semibold text-white mb-2"
             to="edit-mess-menu"
           >
             Edit Mess Menu
           </Link>
-        )}
+          {/* )} */}
+        </div>
       </div>
     </>
   );

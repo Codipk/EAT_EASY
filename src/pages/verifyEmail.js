@@ -92,7 +92,7 @@ function VerifyEmail() {
           </form>
           <div className="mt-6 flex items-center justify-between">
             <Link to="/signup">
-              <p className="text-richblack-5 flex items-center gap-x-2">
+              <p className="text-white flex items-center gap-x-2">
                 <BiArrowBack /> Back To Signup
               </p>
             </Link>
