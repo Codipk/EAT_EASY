@@ -6,6 +6,7 @@ const {
   blockUser,
   unblockUser,
   deleteAccount,
+  findUserByRegistrationNumber,
 } = require("../controllers/profileController");
 const router = express.Router();
 
@@ -15,4 +16,5 @@ router.put("/updateDisplayPicture", auth, updateProfile);
 router.post("/blockuser", auth, isChiefWarden, blockUser);
 router.delete("/unblockuser", auth, isChiefWarden, unblockUser);
 router.delete("/deleteAccount", auth, deleteAccount);
+router.get("/getuserbyregistration", auth, findUserByRegistrationNumber)
 module.exports = router;

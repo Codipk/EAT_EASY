@@ -79,6 +79,7 @@ exports.updateProfilePicture = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Profile Pic Uploaded Successfully',
+      updatedProfile,
     });
   } catch (error) {
 
@@ -212,4 +213,30 @@ exports.deleteAccount = async (req, res) => {
     })
   }
 };
+
+exports.findUserByRegistrationNumber = async (req, res) => {
+  try {
+    const { registrationNumber } = req.body;
+    if (!registrationNumber) {
+      return res.status(403).json({
+        sucess: true,
+        message: 'Enter Registration Number',
+      });
+    }
+    const userDetails = await User.find({
+      registrationNumber: registrationNumber
+    }).populate({
+      path: 'hostel additionalDetails',
+      select: '-menu -messCommittee -students',
+    });
+    return res.status(200).json({
+      success: true,
+      message: 'User Details fetched Successfully',
+      userDetails,
+    });
+  } catch (error) {
+
+  }
+}
+
 
