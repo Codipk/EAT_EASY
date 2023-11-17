@@ -300,7 +300,8 @@ exports.likeComplaints = async (req, res) => {
       error,
     });
   }
-};
+}
+
 
 exports.dislikeComplaints = async (req, res) => {
   const complaintId = req.body.id;
