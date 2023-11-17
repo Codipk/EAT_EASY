@@ -21,11 +21,14 @@ import MyComplaint from "./components/Dashboard/MyComplaint";
 import AllComplaints from "./components/Dashboard/AllComplaints";
 import Menu from "./components/Dashboard/Menu/Menu";
 import EditMessMenu from "./components/Dashboard/Menu/EditMessMenu";
+import PrivateRoute from "./components/AuthRoute/PrivateRoute";
+import { ACCOUNT_TYPE } from "./utils/constants";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const { user } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.profile);
+  const accountType = user?.accountType || null;
   return (
     <>
       <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -37,20 +40,45 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />}></Route>
           <Route path="/aboutUs" element={<AboutUS />}></Route>
           <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-          <Route element={<Dashboard />}>
+          <Route
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          >
             <Route path="/dashboard/my-profile" element={<MyProfile />}></Route>
             <Route path="dashboard/Settings" element={<Settings />}></Route>
-            <Route path="dashboard/add-complaint" element={<AddComplaint />} />
-            <Route path="dashboard/my-complaint" element={<MyComplaint />} />
-            <Route
-              path="dashboard/all-complaints"
-              element={<AllComplaints />}
-            />
-            <Route path="dashboard/mess-menu" element={<Menu />} />
-            <Route
-              path="dashboard/mess-menu/edit-mess-menu"
-              element={<EditMessMenu />}
-            />
+            {(accountType === ACCOUNT_TYPE.STUDENT ||
+              accountType === ACCOUNT_TYPE.Committee_Member ||
+              accountType === ACCOUNT_TYPE.WARDEN) && (
+              <>
+                {accountType !== ACCOUNT_TYPE.WARDEN && (
+                  <>
+                    <Route
+                      path="dashboard/add-complaint"
+                      element={<AddComplaint />}
+                    />
+                    <Route
+                      path="dashboard/my-complaint"
+                      element={<MyComplaint />}
+                    />
+                  </>
+                )}
+                <Route
+                  path="dashboard/all-complaints"
+                  element={<AllComplaints />}
+                />
+
+                <Route path="dashboard/mess-menu" element={<Menu />} />
+              </>
+            )}
+            {accountType === ACCOUNT_TYPE.Committee_Member && (
+              <Route
+                path="dashboard/mess-menu/edit-mess-menu"
+                element={<EditMessMenu />}
+              />
+            )}
           </Route>
 
           {/* <Route path="dashboard/Settings" element={<Settings />} /> */}

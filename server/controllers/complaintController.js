@@ -1,11 +1,11 @@
-const Complaint = require('../models/complaintSchema');
-const User = require('../models/userSchema');
-const Hostel = require('../models/hostelSchema');
-const BlockedUser = require('../models/blockedUserSchema');
-require('dotenv').config();
+const Complaint = require("../models/complaintSchema");
+const User = require("../models/userSchema");
+const Hostel = require("../models/hostelSchema");
+const BlockedUser = require("../models/blockedUserSchema");
+require("dotenv").config();
 
-const { uploadImageToCloudinary } = require('../utils/imageUploader');
-const { find, findByIdAndUpdate } = require('../models/additionalDetailSchema');
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { find, findByIdAndUpdate } = require("../models/additionalDetailSchema");
 
 //function to create new complaint
 exports.createComplaint = async (req, res) => {
@@ -36,8 +36,8 @@ exports.createComplaint = async (req, res) => {
       console.log("body: ", body);
       return res.status(400).json({
         success: false,
-        message: "Please enter All the fields"
-      })
+        message: "Please enter All the fields",
+      });
     }
     const isBlocked = await BlockedUser.find({ email: userInfo.email });
     console.log("blockedUser: ", isBlocked);
@@ -45,7 +45,7 @@ exports.createComplaint = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: "User is Blocked, Cannot Create Complaint",
-      })
+      });
     }
     // fetch complaint image from request files.
     let complaintImage;
@@ -59,11 +59,13 @@ exports.createComplaint = async (req, res) => {
     let complaintImgCloudinary;
     let imgUrl;
     if (complaintImage) {
-      complaintImgCloudinary = await uploadImageToCloudinary(complaintImage, process.env.FOLDER_NAME);
+      complaintImgCloudinary = await uploadImageToCloudinary(
+        complaintImage,
+        process.env.FOLDER_NAME
+      );
       console.log(complaintImgCloudinary);
       imgUrl = complaintImgCloudinary.secure_url;
-    }
-    else {
+    } else {
       imgUrl = "";
     }
 
@@ -81,7 +83,7 @@ exports.createComplaint = async (req, res) => {
       {
         $push: {
           complaints: complaint._id,
-        }
+        },
       },
       { new: true }
     );
@@ -93,8 +95,6 @@ exports.createComplaint = async (req, res) => {
       complaint,
       userDetails,
     });
-
-
   } catch (error) {
     console.log("Error in creating complaint: ", error);
     return res.status(500).json({
@@ -103,7 +103,7 @@ exports.createComplaint = async (req, res) => {
       error,
     });
   }
-}
+};
 //get all complaint -> hostelWise
 exports.getAllComplaints = async (req, res) => {
   try {
@@ -115,10 +115,10 @@ exports.getAllComplaints = async (req, res) => {
     console.log(hostelName);
     const allComplaint = await Complaint.find({ hostelName: hostelName })
       .populate({
-        path: 'author',
+        path: "author",
         populate: {
-          path: 'additionalDetails hostel'
-        }
+          path: "additionalDetails hostel",
+        },
       })
       .exec();
     return res.status(200).json({
@@ -126,16 +126,14 @@ exports.getAllComplaints = async (req, res) => {
       message: "Complaints Fetched Successfully",
       allComplaint,
     });
-
   } catch (error) {
     console.log("error in getting all complaints: ", error);
     return res.status(500).json({
       sucess: false,
       message: "Internal Server Error",
       error,
-    })
+    });
   }
-
 };
 //get unresolved complaint
 exports.getUnresolvedComplaints = async (req, res) => {
@@ -145,17 +143,15 @@ exports.getUnresolvedComplaints = async (req, res) => {
     const userDetails = await User.findById(userId);
     const hostelDetails = await Hostel.findById(userDetails.hostel);
     const hostelName = hostelDetails.hostelName;
-    const allComplaint = await Complaint.find(
-      {
-        isResolved: false,
-        hostelName: hostelName,
-      }
-    )
+    const allComplaint = await Complaint.find({
+      isResolved: false,
+      hostelName: hostelName,
+    })
       .populate({
-        path: 'author',
+        path: "author",
         populate: {
-          path: 'additionalDetails hostel'
-        }
+          path: "additionalDetails hostel",
+        },
       })
       .exec();
     return res.status(200).json({
@@ -163,14 +159,13 @@ exports.getUnresolvedComplaints = async (req, res) => {
       message: "Complaints Fetched Successfully",
       allComplaint,
     });
-
   } catch (error) {
     console.log("error in getting unresolved complaints: ", error);
     return res.status(500).json({
       sucess: false,
       message: "Internal Server Error",
       error,
-    })
+    });
   }
 };
 //get resolved complaint
@@ -180,16 +175,17 @@ exports.getResolvedComplaints = async (req, res) => {
     const userId = req.user.id;
     const userDetails = await User.findById(userId);
     const hostelDetails = await Hostel.findById(userDetails.hostel);
-    const allComplaint = await Complaint.find(
-      { isResolved: true, hostelName: hostelDetails.hostelName }
-    )
+    const allComplaint = await Complaint.find({
+      isResolved: true,
+      hostelName: hostelDetails.hostelName,
+    })
       .populate({
-        path: 'author',
-        select: '-complaints',
+        path: "author",
+        select: "-complaints",
         populate: {
-          path: 'additionalDetails hostel',
-          select: '-menu -messCommittee'
-        }
+          path: "additionalDetails hostel",
+          select: "-menu -messCommittee",
+        },
       })
       .exec();
     return res.status(200).json({
@@ -197,14 +193,13 @@ exports.getResolvedComplaints = async (req, res) => {
       message: "Complaints Fetched Successfully",
       allComplaint,
     });
-
   } catch (error) {
     console.log("error in getting resolved complaints: ", error);
     return res.status(500).json({
       sucess: false,
       message: "Internal Server Error",
       error,
-    })
+    });
   }
 };
 
@@ -212,21 +207,19 @@ exports.getResolvedComplaints = async (req, res) => {
 exports.myComplaints = async (req, res) => {
   try {
     const userId = req.user.id;
-    const complaints = await Complaint.find(
-      { author: userId },
-    ).populate({
-      path: 'author',
-      populate: {
-        path: 'additionalDetails hostel'
-      }
-    })
+    const complaints = await Complaint.find({ author: userId })
+      .populate({
+        path: "author",
+        populate: {
+          path: "additionalDetails hostel",
+        },
+      })
       .exec();
     return res.status(200).json({
       success: true,
       message: "Complaints Fetched Successfully",
       complaints,
     });
-
   } catch (error) {
     console.log("error in getting my complaints: ", error);
     return res.status(500).json({
@@ -246,14 +239,13 @@ exports.deleteComplaints = async (req, res) => {
     //delete entry from db
     //return response
 
-
     // const complaintId = req.params.id;
     const { complaintId } = req.body;
     const userId = req.user.id;
     //delete complaints from user's complaint
     const userDetails = await User.findByIdAndUpdate(
       userId,
-      { $pull: { complaints: complaintId }, },
+      { $pull: { complaints: complaintId } },
       { new: true }
     );
     //delete entry from db
@@ -262,40 +254,35 @@ exports.deleteComplaints = async (req, res) => {
     //return response
     return res.status(200).json({
       success: true,
-      message: 'complaint is successfully deleted',
+      message: "complaint is successfully deleted",
       deletedComplaint,
     });
   } catch (error) {
     console.log("error in deleting complaints");
     return res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
-    })
+    });
   }
-
 };
-
 
 // like complaint
 
 exports.likeComplaints = async (req, res) => {
-
-
   try {
-    console.log("Inside like controller")
-    const complaintId = req.body.id
+    console.log("Inside like controller");
+    const complaintId = req.body.id;
     // console.log(req);
 
     const userEmail = req.user.email;
     console.log(complaintId, userEmail);
     const updatedComplaint = await Complaint.findByIdAndUpdate(
-
       complaintId,
 
       {
         $addToSet: { upVotedBy: userEmail },
-        $pull: { downVotedBy: userEmail }
+        $pull: { downVotedBy: userEmail },
       },
       { new: true }
     );
@@ -305,7 +292,6 @@ exports.likeComplaints = async (req, res) => {
       message: "Complaint has been liked!",
       updatedComplaint,
     });
-
   } catch (error) {
     console.log("error in like complaints: ", error);
     return res.status(500).json({
@@ -316,19 +302,18 @@ exports.likeComplaints = async (req, res) => {
   }
 }
 
+
 exports.dislikeComplaints = async (req, res) => {
   const complaintId = req.body.id;
   const userEmail = req.user.email;
 
   try {
-
     const updatedComplaint = await Complaint.findByIdAndUpdate(
-
       complaintId,
 
       {
         $addToSet: { downVotedBy: userEmail },
-        $pull: { upVotedBy: userEmail }
+        $pull: { upVotedBy: userEmail },
       },
       { new: true }
     );
@@ -338,7 +323,6 @@ exports.dislikeComplaints = async (req, res) => {
       message: "Complaint has been disliked!",
       updatedComplaint,
     });
-
   } catch (error) {
     console.log("error in  unlike complaints: ", error);
     return res.status(500).json({
@@ -347,5 +331,4 @@ exports.dislikeComplaints = async (req, res) => {
       error,
     });
   }
-}
-
+};

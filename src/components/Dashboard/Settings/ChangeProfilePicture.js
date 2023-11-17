@@ -9,22 +9,6 @@ export default function ChangeProfilePicture() {
   const { token } = useSelector((state) => state.auth);
 
   const { user } = useSelector((state) => state.profile);
-  // const user = {
-  //   image: null,
-  //   firstName: "dipti",
-  //   lastName: "kumari",
-  //   email: "diptiku2002@gmail.com",
-
-  //   additionalDetails: {
-  //     IFSC_code: "SBI0098",
-  //     Account_no: "323049123",
-  //     contactNumber: 94284204281,
-  //     gender: "Female",
-  //     isMessFeePaid: "YES",
-  //     DOB: "04-10-2002",
-  //     roomNo: 19,
-  //   },
-  // };
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -79,7 +63,7 @@ export default function ChangeProfilePicture() {
       <div className="flex items-center justify-between rounded-md border-[1px] border-yellow-100  p-8 px-12 text-white">
         <div className="flex items-center gap-x-4">
           <img
-            src={previewSource || user?.image}
+            src={previewSource || user?.img}
             alt={`profile-${user?.firstName}`}
             className="aspect-square w-[78px] rounded-full object-cover"
           />

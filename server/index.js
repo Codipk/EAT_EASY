@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-require('dotenv').config();
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 app.use(cors());
@@ -17,18 +17,19 @@ app.use(
 );
 
 //config
-const db = require('./config/db');
+const db = require("./config/db");
 db.connect();
-const { cloudinaryConnect } = require('./config/cloudinary');
+const { cloudinaryConnect } = require("./config/cloudinary");
 cloudinaryConnect();
 
-//routes import
+
 const userRoutes = require('./routes/user');
 const complaintRoutes = require('./routes/complaint');
 const profileRoutes = require('./routes/profile');
 const menuRoutes = require('./routes/menu');
 const committeeRoutes = require('./routes/commitee');
 const dailyExpense= require('./routes/expense');
+
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/complaint", complaintRoutes);
 app.use("/api/v1/profile", profileRoutes);
@@ -44,8 +45,7 @@ app.get("/", (req, res) => {
   });
 });
 
-
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  console.log(`App is running on port ${port}`)
-})
+  console.log(`App is running on port ${port}`);
+});
