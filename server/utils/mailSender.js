@@ -16,7 +16,7 @@ exports.mailSender = async (email, title, body) => {
   try {
     console.log('Before fetching accesstokens')
     const accessToken = await oAuth2Client.getAccessToken();
-    console.log(accessToken)
+    // console.log(accessToken)
     const transport = nodemailer.createTransport({
       service: 'gmail',
       port: 465,

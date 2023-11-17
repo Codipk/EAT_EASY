@@ -212,6 +212,4 @@ exports.deleteAccount = async (req, res) => {
     })
   }
 };
-//send otp
-//forget password
-//
+

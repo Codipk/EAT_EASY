@@ -331,4 +331,39 @@ exports.dislikeComplaints = async (req, res) => {
       error,
     });
   }
-};
+}
+
+
+exports.resolveComplaint = async (req, res) => {
+  //get user who is resolving the complaint
+  //get complaint id from req.body
+  //make changes in complaint and save in db
+  //return response
+
+  try {
+    const userId = req.user.id;
+    const { complaintId } = req.body;
+
+    const complaint = await Complaint.findByIdAndUpdate(
+      complaintId,
+      {
+        isResolved: true,
+        resolvedBy: userId,
+      }, { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Complaint Resolved Successfully',
+      complaint,
+    });
+  } catch (error) {
+    console.log('Error in Resolving Complaint: ', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+}
+

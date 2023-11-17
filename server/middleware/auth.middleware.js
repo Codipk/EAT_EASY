@@ -104,7 +104,7 @@ exports.isAccountant = async (req, res, next) => {
     });
   }
 };
-exports.isAbleToEditMenu = async (req, res, next) => {
+exports.notStudent = async (req, res, next) => {
   try {
     if (req.user.accountType === "Student") {
       return res.status(401).json({

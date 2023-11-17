@@ -4,10 +4,10 @@ const router = express.Router();
 
 //import middleware -> 
 
-const { auth, isStudent, isChiefWarden, isCommitteeMember, isAccountant } = require('../middleware/auth.middleware');
+const { auth, isStudent, isChiefWarden, isCommitteeMember, isAccountant, notStudent } = require('../middleware/auth.middleware');
 
 //import controllers
-const { createComplaint, getAllComplaints, getResolvedComplaints, getUnresolvedComplaints, myComplaints, likeComplaints, dislikeComplaints, deleteComplaints } = require('../controllers/complaintController');
+const { createComplaint, getAllComplaints, getResolvedComplaints, getUnresolvedComplaints, myComplaints, likeComplaints, dislikeComplaints, deleteComplaints, resolveComplaint } = require('../controllers/complaintController');
 
 
 
@@ -17,6 +17,8 @@ router.get('/getResolvedComplaints', auth, getResolvedComplaints);
 router.get('/getUnresolvedComplaints', auth, getUnresolvedComplaints);
 router.get('/myComplaints', auth, myComplaints);
 router.delete('/deleteComplaint', auth, deleteComplaints);
-router.put("/updateUpvote", auth,isStudent, likeComplaints);
-router.put("/updateDownvote", auth,isStudent, dislikeComplaints);
+router.put("/updateUpvote", auth, isStudent, likeComplaints);
+router.put("/updateDownvote", auth, isStudent, dislikeComplaints);
+router.put("/resolvecomplaint", auth, notStudent, resolveComplaint);
+
 module.exports = router;
