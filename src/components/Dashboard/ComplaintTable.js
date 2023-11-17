@@ -42,16 +42,16 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
       <Table className="rounded-xl border border-richblack-800 ">
         <Thead>
           <Tr className="flex gap-x-10 rounded-t-md border-b border-b-yellow-100 px-6 py-2">
-            <Th className="flex-1 text-left text-sm font-medium uppercase text-slate-200">
+            <Th className="flex-1 text-left text-sm font-medium uppercase text-orange-50">
               Complaints
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-slate-200">
+            <Th className="text-left text-sm font-medium uppercase text-orange-50">
               Date
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-slate-200">
+            <Th className="text-left text-sm font-medium uppercase text-orange-50">
               UpVote
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-slate-200">
+            <Th className="text-left text-sm font-medium uppercase text-orange-50">
               DownVote
             </Th>
             <Th className="text-left text-sm font-medium uppercase text-slate-200">
@@ -62,7 +62,7 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
         <Tbody>
           {complaints?.length === 0 ? (
             <Tr>
-              <Td className="py-10 text-center text-2xl font-medium text-richblack-100">
+              <Td className="py-10 text-center text-2xl font-medium text-yellow-200">
                 No Complaint found
                 {/* TODO: Need to change this state */}
               </Td>
@@ -71,19 +71,19 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
             complaints?.map((complaint) => (
               <Tr
                 key={complaint._id}
-                className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
+                className="flex gap-x-10 border-b border-richblack-800 text-green-200 px-6 py-8"
               >
                 <Td className="flex flex-1 gap-x-4">
                   <img
                     src={complaint?.img}
                     alt={complaint?.title}
-                    className="h-[148px] w-[220px] rounded-lg object-cover"
+                    className="h-[148px] w-[220px] rounded-lg object-cover "
                   />
                   <div className="flex flex-col justify-between">
-                    <p className="text-lg font-semibold text-richblack-5">
+                    <p className="text-lg font-semibold text-green-200">
                       {complaint.title}
                     </p>
-                    <p className="text-xs text-richblack-300">
+                    <p className="text-xs text-yellow-200">
                       {complaint.body.split(" ").length > TRUNCATE_LENGTH
                         ? complaint.body
                             .split(" ")
@@ -91,7 +91,13 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                             .join(" ") + "..."
                         : complaint.body}
                     </p>
+<<<<<<< Updated upstream
 
+=======
+                    <p className="text-[12px] text-green-200">
+                      Created: {formattedDate(complaint.createdAt)}
+                    </p>
+>>>>>>> Stashed changes
                     {complaint.isResolved ? (
                       <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
                         <HiClock size={14} />
@@ -107,6 +113,7 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     )}
                   </div>
                 </Td>
+<<<<<<< Updated upstream
                 <Td className="text-sm font-medium text-white">
                   <p className="text-[12px] text-white">
                     Created: {formattedDate(complaint.createdAt)}
@@ -120,6 +127,16 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                   DownVote Icon
                 </Td>
                 <Td className="text-sm font-medium text-white">
+=======
+                <Td className="text-sm font-medium text-red-100">
+                  {/* it will chnage after */}
+                  Upvote Icon
+                </Td>
+                <Td className="text-sm font-medium text-red-100">
+                  DownVote Icon
+                </Td>
+                <Td className="text-sm font-medium text-red-100 ">
+>>>>>>> Stashed changes
                   <button
                     disabled={loading}
                     onClick={() => {

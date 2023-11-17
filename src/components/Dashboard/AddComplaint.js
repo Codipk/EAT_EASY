@@ -125,7 +125,7 @@ export default function AddComplaint() {
                 type="file"
                 name="complaintImage"
                 id="complaintImage"
-                className="form-style"
+                className="form-style text-green-200"
                 {...register("complaintImage", {
                   // required: {
                   //   value: true,
