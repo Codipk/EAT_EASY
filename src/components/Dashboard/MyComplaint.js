@@ -28,13 +28,13 @@ export default function MyComplaint() {
   return (
     <div>
       <div className="mb-14 flex items-center justify-between">
-        <h1 className="text-3xl font-medium text-richblack-5">My Complaints</h1>
+        <h1 className="text-3xl font-medium text-orange-100	">My Complaints</h1>
       </div>
       {/* if courses exist then show the table */}
       {complaint && (
         <ComplaintTable complaints={complaint} setComplaint={setComplaint} />
       )}
-      {"No complaints till now !!!"}
+      {<p className="text-2xl font-medium text-orange-100">No complaints till now !!!</p>}
     </div>
   );
 }
