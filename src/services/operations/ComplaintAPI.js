@@ -91,25 +91,20 @@ export const fetchAllMyComplaints = async (token) => {
 };
 
 // delete a complaint
-export const deleteComplaint = async (complaintId, token) => {
-  const toastId = toast.loading("Deleting Complaint...");
+export const deleteComplaint = async (data, token) => {
+  const toastId = toast.loading("Loading...");
+  console.log("INSIDE DELETE COMPLAINT API");
   try {
-    console.log(typeof complaintId);
-    const response = await apiConnector(
-      "DELETE",
-      `${DELETE_COMPLAINT_API}/${complaintId}`,
-      null,
-      {
-        Authorization: `Bearer ${token}`,
-      }
-    );
-    console.log("DELETE COMPLAINT API RESPONSE............", response);
-    if (!response?.complaints?.success) {
+    const response = await apiConnector("DELETE", DELETE_COMPLAINT_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+    console.log("DELETE Complaint API RESPONSE............", response);
+    if (!response?.data?.success) {
       throw new Error("Could Not Delete Complaint");
     }
     toast.success("Complaint Deleted");
   } catch (error) {
-    console.log("DELETE COMPLAINT API ERROR............", error);
+    console.log("DELETE Complaint API ERROR............", error);
     toast.error(error.message);
   }
   toast.dismiss(toastId);
@@ -122,7 +117,7 @@ export const fetchResolvedComplaintsAPI = async () => {
 
   try {
     const response = await apiConnector("GET", GET_ALL_RESOLVED_COMPLAINTS_API);
-
+    console.log("Getting fetchResolvedComplaintAPI", response);
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch RESOLVED Complaints");
     }
@@ -150,6 +145,7 @@ export const fetchUnresolvedComplaintsAPI = async () => {
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch UNRESOLVED Complaints");
     }
+    console.log("Getting unresolvedComplaintAPI", response);
 
     result = response?.data?.complaints;
   } catch (error) {

@@ -9,22 +9,6 @@ const genders = ["Male", "Female", "Non-Binary", "Prefer not to say", "Other"];
 
 export default function EditProfile() {
   const { user } = useSelector((state) => state.profile);
-  // const user = {
-  //   image: null,
-  //   firstName: "dipti",
-  //   lastName: "kumari",
-  //   email: "diptiku2002@gmail.com",
-
-  //   additionalDetails: {
-  //     IFSC_code: "SBI0098",
-  //     Account_no: "323049123",
-  //     contactNo: 94284204281,
-  //     gender: "Female",
-  //     isMessFeePaid: "YES",
-  //     DOB: "04-10-2002",
-  //     roomNo: 19,
-  //   },
-  // };
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -311,24 +295,34 @@ export default function EditProfile() {
                 defaultValue={user?.additionalDetails?.isMessFeePaid}
               />{" "}
               */}
-              <input
-                type="radio"
-                id="isMessFeePaid"
-                name="isMessFeePaid"
-                value="Paid"
-                className="form-style"
-                {...register("isMessFeePaid", {})}
-                defaultValue={user?.additionalDetails?.isMessFeePaid}
-              />
-              <input
-                type="radio"
-                id="isMessFeePaid"
-                name="isMessFeePaid"
-                value="Not Paid"
-                className="form-style"
-                {...register("isMessFeePaid", {})}
-                defaultValue={user?.additionalDetails?.isMessFeePaid}
-              />
+              <label htmlFor="paid" className="text-white">
+                <input
+                  type="radio"
+                  id="paid"
+                  name="isMessFeePaid"
+                  value="Paid"
+                  // checked={this.state.selectedOption === "Paid"}
+                  // onChange={this.onValueChange}
+                  className="p-2 text-white bg-white"
+                  {...register("isMessFeePaid", {})}
+                  defaultValue={user?.additionalDetails?.isMessFeePaid}
+                />
+                Paid
+              </label>
+              <label htmlFor="not-paid" className="text-white">
+                <input
+                  type="radio"
+                  id="not-paid"
+                  name="isMessFeePaid"
+                  value="Not Paid"
+                  className="p-2 text-white"
+                  // checked={this.state.selectedOption === "Not Paid"}
+                  // onChange={this.onValueChange}
+                  {...register("isMessFeePaid", {})}
+                  defaultValue={user?.additionalDetails?.isMessFeePaid}
+                />
+                Not Paid
+              </label>
               {errors.isMessFeePaid && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
                   {errors.isMessFeePaid.message}

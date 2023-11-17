@@ -12,6 +12,7 @@ import { FaCheck } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiClock } from "react-icons/hi";
 import ConfirmationModal from "../common/ConfirmationModal";
+import toast from "react-hot-toast";
 const ComplaintTable = ({ complaints, setComplaints }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,12 +23,15 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
 
   const handleComplaintDelete = async (complaintId) => {
     setLoading(true);
-
-    const result = await deleteComplaint({ complaintId: complaintId }, token);
+    const complaint_Id = complaintId.toString();
+    const result = await fetchAllMyComplaints(token);
+    console.log("complint id", typeof complaint_Id, complaint_Id);
+    await deleteComplaint({ complaintId: complaint_Id }, token);
     console.log("Deleted Complaint", result);
     if (result) {
       console.log("deleting complaint");
-      setComplaints(result);
+      // setComplaints(result);
+      // toast.success("Complaint Deleted Succesfully");
     }
     setConfirmationModal(null);
     setLoading(false);
@@ -79,9 +83,9 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     <p className="text-xs text-richblack-300">
                       {complaint.body.split(" ").length > TRUNCATE_LENGTH
                         ? complaint.body
-                          .split(" ")
-                          .slice(0, TRUNCATE_LENGTH)
-                          .join(" ") + "..."
+                            .split(" ")
+                            .slice(0, TRUNCATE_LENGTH)
+                            .join(" ") + "..."
                         : complaint.body}
                     </p>
                     <p className="text-[12px] text-white">
@@ -121,10 +125,10 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                         btn2Text: "Cancel",
                         btn1Handler: !loading
                           ? () => handleComplaintDelete(complaint._id)
-                          : () => { },
+                          : () => {},
                         btn2Handler: !loading
                           ? () => setConfirmationModal(null)
-                          : () => { },
+                          : () => {},
                       });
                     }}
                     title="Delete"
