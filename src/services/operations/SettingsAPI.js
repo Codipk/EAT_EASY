@@ -36,7 +36,7 @@ export function updateDisplayPicture(token, formData) {
         throw new Error(response.data.message);
       }
       toast.success("Display Picture Updated Successfully");
-      dispatch(setUser(response.data.data));
+      dispatch(setUser(response.data.profile));
     } catch (error) {
       console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error);
       toast.error("Could Not Update Display Picture");
@@ -88,7 +88,7 @@ export async function changePassword(token, formData) {
   toast.dismiss(toastId);
 }
 
-export function deleteProfile(token, navigate) {
+export function deleteAccount(token, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
     try {
@@ -111,32 +111,6 @@ export function deleteProfile(token, navigate) {
 }
 
 // getting all userDetails
-// export function getAlluserDetails(token, navigate) {
-//   return async (dispatch) => {
-//     const toastId = toast.loading("Loading...");
-//     dispatch(setLoading(true));
-//     try {
-//       const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
-//         Authorization: `Bearer ${token}`,
-//       });
-//       console.log("GET_USER_DETAILS API RESPONSE............", response);
-
-//       if (!response.data.success) {
-//         throw new Error(response.data.message);
-//       }
-//       const userImage = response.data.data.image
-//         ? response.data.data.image
-//         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`;
-//       dispatch(setHostel({ ...response.data.hostel }));
-//     } catch (error) {
-//       dispatch(logout(navigate));
-//       console.log("GET_USER_DETAILS API ERROR............", error);
-//       toast.error("Could Not Get User Details");
-//     }
-//     toast.dismiss(toastId);
-//     dispatch(setLoading(false));
-//   };
-// }
 export const fetchUserDetails = createAsyncThunk(
   "user/fetchUserDetails",
   async (token) => {

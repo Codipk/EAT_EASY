@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setTitle,
@@ -7,21 +7,20 @@ import {
   setError,
   addComplaint,
 } from "../../slices/complaintSlice";
-import { FiUpload } from "react-icons/fi";
+
 import Upload from "./Upload";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ComplaintCreation } from "../../services/operations/ComplaintAPI";
 import IconBtn from "../common/IconBtn";
+import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
+const cloudinaryCloudName = "dr3xvcsao";
 export default function AddComplaint() {
   const { complaint } = useSelector((state) => state.complaint);
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const fileInputRef = useRef(null);
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
+
   const {
     register,
     setValue,
@@ -29,14 +28,42 @@ export default function AddComplaint() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  // function to upload
+  const uploadImageToCloudinary = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary upload preset
 
+      // Upload image to Cloudinary using the fetch API
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+      if (result.secure_url) {
+        return result.secure_url;
+      } else {
+        throw new Error("Image upload to Cloudinary failed");
+      }
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      throw new Error("Image upload to Cloudinary failed");
+    }
+  };
   const submitComplaintForm = async (data) => {
     console.log("FormData Image", data.complaintImage);
     console.log("Form Data - ", data);
+    dispatch(ComplaintCreation(data, token));
     try {
-      dispatch(ComplaintCreation(data, token));
+      const imageUrl = await uploadImageToCloudinary(data.complaintImage[0]);
+      data.complaintImage = imageUrl;
     } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message);
+      console.error("Error uploading complaint image:", error);
     }
   };
   return (
@@ -99,8 +126,6 @@ export default function AddComplaint() {
                 name="complaintImage"
                 id="complaintImage"
                 className="form-style"
-                onChange={handleFileChange}
-                accept="image/png, image/gif, image/jpeg"
                 {...register("complaintImage", {
                   // required: {
                   //   value: true,
@@ -108,14 +133,25 @@ export default function AddComplaint() {
                   // },
                 })}
               />
-              <Upload
+              {/* <Upload
                 name="complaintImage"
                 label="Complaint Image"
                 register={register}
                 setValue={setValue}
                 errors={errors}
-              />
-
+              /> */}
+              {/* Display the uploaded image using Cloudinary */}
+              {getValues("complaintImage") && (
+                <CloudinaryContext cloudName={cloudinaryCloudName}>
+                  <Image
+                    publicId={getValues("complaintImage")[0].preview}
+                    width="300"
+                    height="200"
+                  >
+                    <Transformation crop="fill" />
+                  </Image>
+                </CloudinaryContext>
+              )}
               {errors.complaintImage && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
                   {errors.complaintImage.message}

@@ -10,11 +10,12 @@ import { useEffect } from "react";
 import { fetchUserDetails } from "../../services/operations/SettingsAPI";
 export default function MyProfile() {
   const { user, userDetails, loading, error } = useSelector((state) => ({
-    user: state.profile.user,
+    user: state.profile,
     userDetails: state.profile.userDetails,
     loading: state.profile.loading,
     error: state.profile.error,
   }));
+  // const { user } = useSelector((state) => state.profile);
   console.log("user", user);
   console.log("userDetails", userDetails);
   const { token } = useSelector((state) => state.auth);
@@ -22,8 +23,14 @@ export default function MyProfile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUserDetails(token));
-  }, [dispatch]);
+    setLoading(true);
+    try {
+      dispatch(fetchUserDetails(token));
+      setLoading(false);
+    } catch (error) {
+      console.log("error in fetching user details");
+    }
+  }, [dispatch, token]);
 
   return (
     <div className="">
@@ -33,15 +40,15 @@ export default function MyProfile() {
       <div className="flex items-center justify-between rounded-md border-[1px] border-yellow-100 p-8 px-12">
         <div className="flex items-center gap-x-4">
           <img
-            src={user?.image}
-            alt={`profile-${user?.firstName}`}
+            src={userDetails?.img}
+            alt={`profile-${userDetails?.firstName}`}
             className="aspect-square w-[78px] rounded-full object-cover"
           />
           <div className="space-y-1">
             <p className="text-lg font-semibold text-white">
-              {user?.firstName + " " + user?.lastName}
+              {userDetails?.firstName + " " + userDetails?.lastName}
             </p>
-            <p className="text-sm text-white">{user?.email}</p>
+            <p className="text-sm text-white">{userDetails?.email}</p>
           </div>
         </div>
         <IconBtn
@@ -68,17 +75,20 @@ export default function MyProfile() {
         </div>
         <p
           className={`${
-            user?.additionalDetails?.about ? "text-white" : "text-slate-300"
+            userDetails?.additionalDetails?.about
+              ? "text-white"
+              : "text-slate-300"
           } text-sm font-medium`}
         >
-          {user?.additionalDetails?.about ?? "Write Something About Yourself"}
+          {userDetails?.additionalDetails?.about ??
+            "Write Something About Yourself"}
         </p>
         <div className="flex max-w-[500px] justify-between">
           <div className="flex flex-col gap-y-5">
             <div>
               <p className="mb-2 text-sm text-green-100">First Name</p>
               <p className="text-sm font-medium text-white">
-                {user?.firstName}
+                {userDetails?.firstName}
               </p>
             </div>
             <div>
@@ -88,37 +98,40 @@ export default function MyProfile() {
             <div>
               <p className="mb-2 text-sm text-green-100">Gender</p>
               <p className="text-sm font-medium text-white">
-                {user?.additionalDetails?.gender ?? "Add Gender"}
+                {userDetails?.additionalDetails?.gender ?? "Add Gender"}
               </p>
             </div>
             <div>
               <p className="mb-2 text-sm text-green-100">RoomNo</p>
               <p className="text-sm font-medium text-white">
-                {user?.additionalDetails?.roomNo ?? "Your Room No."}
+                {userDetails?.additionalDetails?.roomNo ?? "Your Room No."}
               </p>
             </div>
             <div>
               <p className="mb-2 text-sm text-green-100">Hostel Name</p>
               <p className="text-sm font-medium text-white">
-                {userDetails?.hostel.hostelName ?? "Hostel Name"}
+                {userDetails?.hostel?.hostelName ?? "Hostel Name"}
               </p>
             </div>
           </div>
           <div className="flex flex-col gap-y-5">
             <div>
               <p className="mb-2 text-sm text-green-100">Last Name</p>
-              <p className="text-sm font-medium text-white">{user?.lastName}</p>
+              <p className="text-sm font-medium text-white">
+                {userDetails?.lastName}
+              </p>
             </div>
             <div>
               <p className="mb-2 text-sm text-green-100">Phone Number</p>
               <p className="text-sm font-medium text-white">
-                {user?.additionalDetails?.contactNo ?? "Add Contact Number"}
+                {userDetails?.additionalDetails?.contactNo ??
+                  "Add Contact Number"}
               </p>
             </div>
             <div>
               <p className="mb-2 text-sm text-green-100">Branch</p>
               <p className="text-sm font-medium text-white">
-                {user?.additionalDetails?.branch ?? "Add Your Branch"}
+                {userDetails?.additionalDetails?.branch ?? "Add Your Branch"}
               </p>
             </div>
 
@@ -127,7 +140,7 @@ export default function MyProfile() {
                 Date Of Birth
               </p>
               <p className="text-sm font-medium text-white">
-                {formattedDate(user?.additionalDetails?.DOB) ??
+                {formattedDate(userDetails?.additionalDetails?.DOB) ??
                   "Add Date Of Birth"}
               </p>
             </div>
@@ -149,30 +162,35 @@ export default function MyProfile() {
         </div>
         <p
           className={`${
-            user?.additionalDetails?.IFSC ? "text-white" : "text-slate-300"
+            userDetails?.additionalDetails?.IFSC
+              ? "text-white"
+              : "text-slate-300"
           } text-sm font-medium`}
         >
-          IFSC : {user.additionalDetails.IFSC ?? "write your IFSC code"}
+          IFSC :{" "}
+          {userDetails?.additionalDetails?.IFSC ?? "write your IFSC code"}
         </p>
         <p
           className={`${
-            user?.additionalDetails?.AccountNo ? "text-white" : "text-white"
+            userDetails?.additionalDetails?.AccountNo
+              ? "text-white"
+              : "text-white"
           } text-sm font-medium`}
         >
           AccountNo:{" "}
-          {user?.additionalDetails?.AccountNo
-            ? user?.additionalDetails?.AccountNo
+          {userDetails?.additionalDetails?.AccountNo
+            ? userDetails?.additionalDetails?.AccountNo
             : "Write your accno"}
         </p>
         <p
           className={`${
-            user?.additionalDetails?.isMessFeePaid ? "text-white" : "text-white"
+            userDetails?.additionalDetails?.isMessFeePaid
+              ? "text-white"
+              : "text-white"
           } text-sm font-medium`}
         >
           Mess Fee Status:{" "}
-          {user?.additionalDetails?.isMessFeePaid
-            ? user?.additionalDetails?.isMessFeePaid
-            : "Paid/Not"}
+          {userDetails?.additionalDetails?.isMessFeePaid ? "Paid" : "Not Paid"}
         </p>
       </div>
     </div>
