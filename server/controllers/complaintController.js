@@ -316,7 +316,6 @@ exports.likeComplaints = async (req, res) => {
   }
 }
 
-
 exports.dislikeComplaints = async (req, res) => {
   const complaintId = req.body.id;
   const userEmail = req.user.email;
