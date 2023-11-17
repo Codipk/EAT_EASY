@@ -1,7 +1,7 @@
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+const REDIRECT_URI = "https://developers.google.com/oauthplayground";
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -11,19 +11,19 @@ const oAuth2Client = new google.auth.OAuth2(
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN.toString();
 // console.log(REFRESH_TOKEN);
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-console.log('oAuth2Client credentials set');
+console.log("oAuth2Client credentials set");
 exports.mailSender = async (email, title, body) => {
   try {
-    console.log('Before fetching accesstokens')
+    console.log("Before fetching accesstokens");
     const accessToken = await oAuth2Client.getAccessToken();
     // console.log(accessToken)
     const transport = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       port: 465,
       secure: true,
       auth: {
-        type: 'OAuth2',
-        user: 'sundram.smn@gmail.com',
+        type: "OAuth2",
+        user: "sundram.smn@gmail.com",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.REFRESH_TOKEN,
@@ -33,7 +33,7 @@ exports.mailSender = async (email, title, body) => {
     });
 
     const mailOptions = {
-      from: 'sundram.smn@gmail.com',
+      from: "sundram.smn@gmail.com",
       to: email,
       subject: title,
       // text: `${body}`,
@@ -45,5 +45,4 @@ exports.mailSender = async (email, title, body) => {
   } catch (error) {
     return error;
   }
-}
-
+};

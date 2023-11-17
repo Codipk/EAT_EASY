@@ -31,15 +31,34 @@ export default function AllComplaints() {
       let result;
       switch (filterType) {
         case "resolved":
-          result = await fetchResolvedComplaintsAPI();
+          result = await fetchResolvedComplaintsAPI(token);
+          if (result) {
+            console.log("Fetching complaints in MyComplaint", result);
+            setComplaint(result);
+          } else {
+            console.log("dO NOT GETTING RESOLVED COMPLAINT");
+          }
           dispatch(setResolvedComplaints(result));
           break;
         case "unresolved":
-          result = await fetchUnresolvedComplaintsAPI();
+          result = await fetchUnresolvedComplaintsAPI(token);
+          if (result) {
+            console.log("Fetching UNcomplaints in MyComplaint", result);
+            setComplaint(result);
+          } else {
+            console.log("dO NOT GETTING UNRESOLVED COMPLAINT");
+          }
           dispatch(setUnresolvedComplaints(result));
           break;
         default:
           result = await fetchAllComplaints(token);
+          console.log("printing result", result);
+          if (result) {
+            console.log("Fetching complaints in MyComplaint", result);
+            setComplaint(result);
+          } else {
+            console.log("Not getting any complaint");
+          }
           dispatch(setComplaints(result));
           break;
       }
@@ -50,20 +69,7 @@ export default function AllComplaints() {
     fetchComplaints();
   }, [filterType, token, dispatch]);
 
-  useEffect(() => {
-    const fetchComplaint = async () => {
-      const result = await fetchAllComplaints(token);
-      console.log("printing result", result);
-      if (result) {
-        console.log("Fetching complaints in MyComplaint", result);
-        setComplaint(result);
-      } else {
-        console.log("Not getting any complaint");
-      }
-    };
-    fetchComplaint();
-  }, []);
-
+  console.log("complainttttttttttttttt", complaint);
   return (
     <div>
       <div className="mb-14 flex items-center justify-between">

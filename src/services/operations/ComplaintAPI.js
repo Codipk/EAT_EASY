@@ -111,18 +111,25 @@ export const deleteComplaint = async (data, token) => {
 };
 
 // getting allComplaints from all user
-export const fetchResolvedComplaintsAPI = async () => {
+export const fetchResolvedComplaintsAPI = async (token) => {
   const toastId = toast.loading("Loading...");
   let result = [];
 
   try {
-    const response = await apiConnector("GET", GET_ALL_RESOLVED_COMPLAINTS_API);
+    const response = await apiConnector(
+      "GET",
+      GET_ALL_RESOLVED_COMPLAINTS_API,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
     console.log("Getting fetchResolvedComplaintAPI", response);
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch RESOLVED Complaints");
     }
 
-    result = response?.data?.complaints;
+    result = response?.data?.allComplaint;
   } catch (error) {
     console.log("GET_ALL_RESOLVED_COMPLAINTS_API API ERROR............", error);
     toast.error(error.message);
@@ -132,22 +139,26 @@ export const fetchResolvedComplaintsAPI = async () => {
   return result;
 };
 //getting all unresolved Complaint
-export const fetchUnresolvedComplaintsAPI = async () => {
+export const fetchUnresolvedComplaintsAPI = async (token) => {
   const toastId = toast.loading("Loading...");
   let result = [];
 
   try {
     const response = await apiConnector(
       "GET",
-      GET_ALL_UNRESOLVED_COMPLAINTS_API
+      GET_ALL_UNRESOLVED_COMPLAINTS_API,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
     );
-
+    console.log("response in fetching unresolved complaint", response);
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch UNRESOLVED Complaints");
     }
     console.log("Getting unresolvedComplaintAPI", response);
 
-    result = response?.data?.complaints;
+    result = response?.data?.allComplaint;
   } catch (error) {
     console.log(
       "GET_ALL_UNRSOLVED_COMPLAINTS_API API ERROR............",
