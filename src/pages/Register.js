@@ -86,10 +86,10 @@ function Register() {
     <div>
       <section
         className="vh-100 bg-image "
-        // style={{
-        //   backgroundImage:
-        //     'url("https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp")',
-        // }}
+      // style={{
+      //   backgroundImage:
+      //     'url("https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp")',
+      // }}
       >
         <div className="mask d-flex align-items-center h-100 gradient-custom-3  overflow-x-hidden">
           <div className="container h-100">
@@ -193,7 +193,7 @@ function Register() {
                               required
                               type="text"
                               name="hostelName"
-                              value={hostelName.toUpperCase()}
+                              value={hostelName}
                               onChange={handleOnChange}
                               placeholder="Enter your hostel"
                               style={{

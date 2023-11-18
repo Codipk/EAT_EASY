@@ -235,7 +235,12 @@ exports.findUserByRegistrationNumber = async (req, res) => {
       userDetails,
     });
   } catch (error) {
-
+    console.log("error in finding user: ", error);
+    return res.status(500).json({
+      success: true,
+      message: 'Internal Server Error',
+      error,
+    })
   }
 }
 

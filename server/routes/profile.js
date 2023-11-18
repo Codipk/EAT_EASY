@@ -1,4 +1,5 @@
 const express = require("express");
+
 const { auth, isChiefWarden } = require("../middleware/auth.middleware");
 const {
   getAllUserDetails,
@@ -7,12 +8,13 @@ const {
   unblockUser,
   deleteAccount,
   findUserByRegistrationNumber,
+  updateProfilePicture
 } = require("../controllers/profileController");
 const router = express.Router();
 
 router.get("/getAllUserDetails", auth, getAllUserDetails);
 router.put("/updateProfile", auth, updateProfile);
-router.put("/updateDisplayPicture", auth, updateProfile);
+router.put("/updateDisplayPicture", auth, updateProfilePicture);
 router.post("/blockuser", auth, isChiefWarden, blockUser);
 router.delete("/unblockuser", auth, isChiefWarden, unblockUser);
 router.delete("/deleteAccount", auth, deleteAccount);

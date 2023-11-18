@@ -2,6 +2,7 @@ import { React, useState, useEffect } from "react";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import {
   fetchAllMyComplaints,
   deleteComplaint,
@@ -86,18 +87,11 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     <p className="text-xs text-yellow-200">
                       {complaint.body.split(" ").length > TRUNCATE_LENGTH
                         ? complaint.body
-                            .split(" ")
-                            .slice(0, TRUNCATE_LENGTH)
-                            .join(" ") + "..."
+                          .split(" ")
+                          .slice(0, TRUNCATE_LENGTH)
+                          .join(" ") + "..."
                         : complaint.body}
                     </p>
-<<<<<<< Updated upstream
-
-=======
-                    <p className="text-[12px] text-green-200">
-                      Created: {formattedDate(complaint.createdAt)}
-                    </p>
->>>>>>> Stashed changes
                     {complaint.isResolved ? (
                       <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
                         <HiClock size={14} />
@@ -113,7 +107,6 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     )}
                   </div>
                 </Td>
-<<<<<<< Updated upstream
                 <Td className="text-sm font-medium text-white">
                   <p className="text-[12px] text-white">
                     Created: {formattedDate(complaint.createdAt)}
@@ -127,16 +120,6 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                   DownVote Icon
                 </Td>
                 <Td className="text-sm font-medium text-white">
-=======
-                <Td className="text-sm font-medium text-red-100">
-                  {/* it will chnage after */}
-                  Upvote Icon
-                </Td>
-                <Td className="text-sm font-medium text-red-100">
-                  DownVote Icon
-                </Td>
-                <Td className="text-sm font-medium text-red-100 ">
->>>>>>> Stashed changes
                   <button
                     disabled={loading}
                     onClick={() => {
@@ -148,10 +131,10 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                         btn2Text: "Cancel",
                         btn1Handler: !loading
                           ? () => handleComplaintDelete(complaint._id)
-                          : () => {},
+                          : () => { },
                         btn2Handler: !loading
                           ? () => setConfirmationModal(null)
-                          : () => {},
+                          : () => { },
                       });
                     }}
                     title="Delete"
