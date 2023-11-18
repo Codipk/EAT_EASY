@@ -340,7 +340,7 @@ exports.resolveComplaint = async (req, res) => {
 
   try {
     const userId = req.user.id;
-    const { complaintId } = req.body.id;
+    const { complaintId } = req.body;
 
     const complaint = await Complaint.findByIdAndUpdate(
       complaintId,
@@ -349,7 +349,7 @@ exports.resolveComplaint = async (req, res) => {
         resolvedBy: userId,
       },
       { new: true }
-    );
+    ).populate("resolvedBy");
 
     return res.status(200).json({
       success: true,

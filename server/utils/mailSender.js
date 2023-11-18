@@ -28,7 +28,6 @@ exports.mailSender = async (email, title, body) => {
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.REFRESH_TOKEN,
         accessToken: accessToken,
-        // accessToken: 'ya29.a0AfB_byAQaFrmzrFRIng-GCBqrggguXcMn6cC-CP4yyGOXw7IGFW50obAR3iTsKsfWxNDYDMhsyHqSXLGmDHOeCLjSkjFn_9vE9upIbGGXVBxarMs5T2Xrw41v8yKIB_lZ5mPxmPhl3HN1Cybqj27zCVVwahNzUBQdU8IaCgYKAXISARESFQHGX2MiS6xSG3Ve2EO_ecPUOnq0vQ0171',
       },
     });
 
