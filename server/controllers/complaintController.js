@@ -272,7 +272,7 @@ exports.deleteComplaints = async (req, res) => {
 exports.likeComplaints = async (req, res) => {
   try {
     console.log("Inside like controller");
-    const complaintId = req.body.id;
+    const { complaintId } = req.body;
     // console.log(req);
 
     const userEmail = req.user.email;
@@ -304,7 +304,7 @@ exports.likeComplaints = async (req, res) => {
 
 
 exports.dislikeComplaints = async (req, res) => {
-  const complaintId = req.body.id;
+  const { complaintId } = req.body;
   const userEmail = req.user.email;
 
   try {
