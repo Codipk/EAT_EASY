@@ -116,8 +116,6 @@ exports.getAllDetailsOfExpenseHostelWise = async(req,res) => {
 }
 
 
-
-
 //delete
 exports.deleteExpense =async(req,res) => {
   try {
@@ -180,3 +178,66 @@ exports.getTotaltExpense = async(req,res) => {
     });
   }
 }
+
+//getExpenseInRangeAndTotal of hostel till now 
+
+exports.getExpenseInRangeAndTotal = async(req,res) => {
+  try {  
+  // fetch hostel Id 
+  const userId = req.user.id;
+  const userDetails = await User.findById(userId);
+  const hostelId = userDetails.hostel;
+ // console.log(hostelId)
+  const {
+    startDate,endDate
+  } = req.body;
+  
+  console.log(startDate)
+
+   const totalExpense= await DailyExpense.aggregate([
+    {
+      $match: {
+        "hostel": hostelId,
+        $expr: {
+          $and: [
+            { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, startDate] },
+            { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, endDate] }
+          ]
+        }
+      }
+    },
+    
+      {$group : {
+                 _id : null,
+                 total : {$sum : '$productPrice'}
+                }   
+      }]);
+
+      const ExpenseInRange = await DailyExpense.find({
+        hostel: hostelId,
+        $expr: {
+          $and: [
+            { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, startDate] },
+            { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, endDate] }
+          ]
+        }
+      });
+    console.log(totalExpense)
+    let total= totalExpense.length>0 ? totalExpense[0].total : 0;
+    return res.status(200).json({
+      success: true,
+      message: 'Total Expense Fetched Successfully',
+      total,
+      ExpenseInRange,
+    });
+  } catch (error) {
+    console.log("error in fetching totals expense: ",error);
+    return res.status(500).json({
+      sucess: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+}
+
+
