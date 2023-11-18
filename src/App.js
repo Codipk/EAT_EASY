@@ -23,6 +23,8 @@ import Menu from "./components/Dashboard/Menu/Menu";
 import EditMessMenu from "./components/Dashboard/Menu/EditMessMenu";
 import PrivateRoute from "./components/AuthRoute/PrivateRoute";
 import { ACCOUNT_TYPE } from "./utils/constants";
+import AllExpenses from "./components/Dashboard/Accountant/AllExpenses";
+import CreateExpense from "./components/Dashboard/Accountant/CreateExpense";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,7 +53,8 @@ function App() {
             <Route path="dashboard/Settings" element={<Settings />}></Route>
             {(accountType === ACCOUNT_TYPE.STUDENT ||
               accountType === ACCOUNT_TYPE.MESS_COMMITEE ||
-              accountType === ACCOUNT_TYPE.WARDEN) && (
+              accountType === ACCOUNT_TYPE.WARDEN ||
+              accountType === ACCOUNT_TYPE.ACCOUNTANT) && (
               <>
                 {accountType !== ACCOUNT_TYPE.WARDEN && (
                   <>
@@ -79,6 +82,8 @@ function App() {
               element={<EditMessMenu />}
             />
             {/* )} */}
+            <Route path="/dashboard/all-expenses" element={<AllExpenses />} />
+            <Route path="/dashboard/add-expenses" element={<CreateExpense />} />
           </Route>
 
           {/* <Route path="dashboard/Settings" element={<Settings />} /> */}

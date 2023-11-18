@@ -3,13 +3,15 @@ import hostelReducer from "../slices/hostelSlice";
 import authReducer from "../slices/authSlice";
 import profileReducer from "../slices/profileSlice";
 import complaintReducer from "../slices/complaintSlice";
-import menuSliceReducer from "../slices/messMenuSlice";
+import menuReducer from "../slices/messMenuSlice";
+import expenseReducer from "../slices/expenseSlice";
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
   complaint: complaintReducer,
   hostel: hostelReducer,
-  menu: menuSliceReducer,
+  menu: menuReducer,
+  expense: expenseReducer,
 });
 
 export default rootReducer;

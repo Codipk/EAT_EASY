@@ -14,7 +14,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiClock } from "react-icons/hi";
 import ConfirmationModal from "../common/ConfirmationModal";
 
-const ComplaintTable = () => {
+const ComplaintTable = ({ onUpvote, onDownvote }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
@@ -108,13 +108,37 @@ const ComplaintTable = () => {
                     )}
                   </div>
                 </Td>
-                <Td className="text-sm font-medium text-richblack-100">
-                  {/* it will chnage after */}
+                {/* <Td className="text-sm font-medium text-white">
+                  <button
+                    className="bg-slate-500 p-5 text-yellow-200"
+                    onClick={() => onUpvote(complaint._id)}
+                  >
+                    Upvote
+                  </button>
                   Upvote Icon
                 </Td>
                 <Td className="text-sm font-medium text-richblack-100">
+                  <button onClick={() => onDownvote(complaint._id)}>
+                    Downvote
+                  </button>
                   DownVote Icon
+                </Td> */}
+                <Td className="text-sm font-medium text-white">
+                  <button
+                    disabled={loading}
+                    className="bg-slate-500 p-5 text-yellow-200"
+                    onClick={() => onUpvote(complaint._id)}
+                  >
+                    Upvoting
+                  </button>
                 </Td>
+                <Td className="text-sm font-medium text-richblack-100">
+                  <button onClick={() => onDownvote(complaint._id)}>
+                    Downvoting
+                  </button>
+                </Td>
+                {/* *************************************** */}
+
                 <Td className="text-sm font-medium text-richblack-100 ">
                   {/* <button
                     disabled={loading}

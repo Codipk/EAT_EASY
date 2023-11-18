@@ -25,9 +25,19 @@ export const complaintEndpoints = {
   GET_ALL_UNRESOLVED_COMPLAINTS_API:
     BASE_URL + "/complaint/getUnresolvedComplaints",
   GET_ALL_COMPLAINTS_API: BASE_URL + "/complaint/getAllComplaints",
+  DISLIKE_COMPLAINT_API: BASE_URL + "/complaint/updateDownvote",
+  LIKE_COMPLAINT_API: BASE_URL + "/complaint/updateUpvote",
 };
 // mess menu related api
 export const menuEndpoints = {
   GET_MESS_MENU_API: BASE_URL + "/menu/viewMenu",
   EDIT_MESS_MENU_API: BASE_URL + "/menu/editMenu",
+};
+
+// expense related apis
+export const expenseEndpoints = {
+  GET_All_EXPENSES_API: BASE_URL + "/expense/getAllDetailsOfExpenseHostelWise",
+  DELETE_EXPENSE_API: BASE_URL + "/expense/deleteExpense",
+  ADD_EXPENSE_API: BASE_URL + "/expense/addDailyExpense",
+  TOTAL_EXPENSE_API: BASE_URL + "/expense/getTotalExpense",
 };

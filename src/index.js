@@ -1,14 +1,17 @@
 import React from "react";
+import thunk from "redux-thunk";
+
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import rootReducer from "./reducers";
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import { Toaster } from "react-hot-toast";
 const store = configureStore({
   reducer: rootReducer,
+  // applyMiddleware: [thunk],
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

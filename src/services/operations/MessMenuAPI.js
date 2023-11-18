@@ -35,7 +35,7 @@ export const fetchMessMenu = async (token, dispatch) => {
 };
 
 // edit mess menu api
-export const editMessMenuDetails = async (data, token) => {
+export const editMessMenuDetails = async (data, menuId, token) => {
   let result = null;
   const toastId = toast.loading("Loading...");
   console.log("data fetching in edit mess ", data, typeof data);

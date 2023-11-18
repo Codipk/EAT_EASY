@@ -2,6 +2,8 @@ import {
   fetchAllComplaints,
   fetchResolvedComplaintsAPI,
   fetchUnresolvedComplaintsAPI,
+  likeComplaint,
+  dislikeComplaint,
 } from "../../services/operations/ComplaintAPI";
 
 import { useEffect, useState } from "react";
@@ -12,7 +14,10 @@ import ComplaintTable2 from "./ComplaintTable";
 import complaintSlice, {
   setResolvedComplaints,
   setUnresolvedComplaints,
+  upvoteComplaint,
+  downvoteComplaint,
 } from "../../slices/complaintSlice";
+import { downvote } from "../../slices/voteSlice";
 
 export default function AllComplaints() {
   const filter = "all";
@@ -25,6 +30,7 @@ export default function AllComplaints() {
   const [loading, setLoading] = useState(false);
   console.log("print token", token);
   // handle the resolved and unresolved complaints
+
   useEffect(() => {
     const fetchComplaints = async () => {
       setLoading(true);
@@ -35,20 +41,22 @@ export default function AllComplaints() {
           if (result) {
             console.log("Fetching complaints in MyComplaint", result);
             setComplaint(result);
+            dispatch(setResolvedComplaints(result));
           } else {
             console.log("dO NOT GETTING RESOLVED COMPLAINT");
           }
-          dispatch(setResolvedComplaints(result));
+
           break;
         case "unresolved":
           result = await fetchUnresolvedComplaintsAPI(token);
           if (result) {
             console.log("Fetching UNcomplaints in MyComplaint", result);
             setComplaint(result);
+            dispatch(setUnresolvedComplaints(result));
           } else {
             console.log("dO NOT GETTING UNRESOLVED COMPLAINT");
           }
-          dispatch(setUnresolvedComplaints(result));
+
           break;
         default:
           result = await fetchAllComplaints(token);
@@ -56,10 +64,11 @@ export default function AllComplaints() {
           if (result) {
             console.log("Fetching complaints in MyComplaint", result);
             setComplaint(result);
+            dispatch(setComplaints(result));
           } else {
             console.log("Not getting any complaint");
           }
-          dispatch(setComplaints(result));
+
           break;
       }
 
@@ -68,8 +77,10 @@ export default function AllComplaints() {
 
     fetchComplaints();
   }, [filterType, token, dispatch]);
+  // ***************************************************************
+  // HANDLE UPVOTE
 
-  console.log("complainttttttttttttttt", complaint);
+  console.log("complaint", complaint);
   return (
     <div>
       <div className="mb-14 flex items-center justify-between">
@@ -94,10 +105,11 @@ export default function AllComplaints() {
         <ComplaintTable2
           complaints={complaint}
           filter={filter}
+          // onUpvote={handleUpvote}
+          // onDownvote={handleDownvote}
           setComplaint={setComplaint}
         />
       )}
-      {"No complaints till now !!!"}
     </div>
   );
 }

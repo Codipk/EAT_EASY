@@ -300,8 +300,7 @@ exports.likeComplaints = async (req, res) => {
       error,
     });
   }
-}
-
+};
 
 exports.dislikeComplaints = async (req, res) => {
   const { complaintId } = req.body;
@@ -331,8 +330,7 @@ exports.dislikeComplaints = async (req, res) => {
       error,
     });
   }
-}
-
+};
 
 exports.resolveComplaint = async (req, res) => {
   //get user who is resolving the complaint
@@ -342,28 +340,28 @@ exports.resolveComplaint = async (req, res) => {
 
   try {
     const userId = req.user.id;
-    const { complaintId } = req.body;
+    const { complaintId } = req.body.id;
 
     const complaint = await Complaint.findByIdAndUpdate(
       complaintId,
       {
         isResolved: true,
         resolvedBy: userId,
-      }, { new: true }
+      },
+      { new: true }
     );
 
     return res.status(200).json({
       success: true,
-      message: 'Complaint Resolved Successfully',
+      message: "Complaint Resolved Successfully",
       complaint,
     });
   } catch (error) {
-    console.log('Error in Resolving Complaint: ', error);
+    console.log("Error in Resolving Complaint: ", error);
     return res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
     });
   }
-}
-
+};

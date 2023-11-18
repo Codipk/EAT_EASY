@@ -6,21 +6,80 @@ import { useNavigate } from "react-router-dom";
 import {
   fetchAllMyComplaints,
   deleteComplaint,
+  likeComplaint,
+  dislikeComplaint,
 } from "../../services/operations/ComplaintAPI";
-
+import {
+  upvoteComplaint,
+  downvoteComplaint,
+} from "../../slices/complaintSlice";
 import { formattedDate } from "../../utils/dateFormatter";
 import { FaCheck } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiClock } from "react-icons/hi";
 import ConfirmationModal from "../common/ConfirmationModal";
 import toast from "react-hot-toast";
-const ComplaintTable = ({ complaints, setComplaints }) => {
+const ComplaintTable = ({ complaints, setComplaint }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(null);
   const TRUNCATE_LENGTH = 30;
+
+  const onUpvote = async (complaintId) => {
+    console.log("complaint ID in UP", complaintId);
+    try {
+      const response = await likeComplaint(complaintId, token);
+      console.log("Response", response);
+      if (response?.success) {
+        // Successfully upvoted
+        const updatedComplaint = response?.updatedComplaint;
+        console.log("Updated Complaint after upvote:", updatedComplaint);
+        setComplaint((prevComplaints) =>
+          prevComplaints.map((complaint) =>
+            complaint._id === updatedComplaint._id
+              ? updatedComplaint
+              : complaint
+          )
+        );
+
+        // toast.success("Complaint Liked");
+      } else {
+        console.log("NOT LIKE");
+      }
+    } catch (error) {
+      console.error("Error while liking complaint:", error.message);
+    }
+  };
+
+  //  ******
+  // HANDLE DOWNVOTE *************************************
+  const onDownvote = async (complaintId) => {
+    console.log("complaint ID in DV", complaintId);
+    try {
+      const response = await dislikeComplaint(complaintId, token);
+      console.log("response", response);
+      if (response?.success) {
+        console.log("fetching response in downvote", response);
+        const updatedComplaint = response?.updatedComplaint;
+        if (updatedComplaint == null) {
+          console.log("NO Complaint is there");
+        } else {
+          // dispatch(downvoteComplaint(response?.updatedComplaint));
+          setComplaint((prevComplaints) =>
+            prevComplaints.map((complaint) =>
+              complaint._id === updatedComplaint._id
+                ? updatedComplaint
+                : complaint
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error while liking complaint:", error.message);
+    }
+  };
 
   const handleComplaintDelete = async (complaintId) => {
     setLoading(true);
@@ -87,10 +146,13 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                     <p className="text-xs text-yellow-200">
                       {complaint.body.split(" ").length > TRUNCATE_LENGTH
                         ? complaint.body
-                          .split(" ")
-                          .slice(0, TRUNCATE_LENGTH)
-                          .join(" ") + "..."
+                            .split(" ")
+                            .slice(0, TRUNCATE_LENGTH)
+                            .join(" ") + "..."
                         : complaint.body}
+                    </p>
+                    <p className="text-[12px] text-green-200">
+                      Created: {formattedDate(complaint.createdAt)}
                     </p>
                     {complaint.isResolved ? (
                       <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
@@ -108,18 +170,24 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                   </div>
                 </Td>
                 <Td className="text-sm font-medium text-white">
-                  <p className="text-[12px] text-white">
-                    Created: {formattedDate(complaint.createdAt)}
-                  </p>
+                  <button
+                    disabled={loading}
+                    className="bg-slate-500  text-yellow-200"
+                    onClick={() => onUpvote(complaint._id)}
+                  >
+                    Upvote ({complaint?.upVotedBy?.length})
+                  </button>
                 </Td>
-                <Td className="text-sm font-medium text-white">
-                  {/* it will chnage after */}
-                  Upvote Icon
+                <Td className="text-sm font-medium text-richblack-100">
+                  <button
+                    disabled={loading}
+                    className="bg-slate-500  text-yellow-200"
+                    onClick={() => onDownvote(complaint._id)}
+                  >
+                    DownVote ({complaint?.downVotedBy?.length})
+                  </button>
                 </Td>
-                <Td className="text-sm font-medium text-white">
-                  DownVote Icon
-                </Td>
-                <Td className="text-sm font-medium text-white">
+                <Td className="text-sm font-medium text-red-100 ">
                   <button
                     disabled={loading}
                     onClick={() => {
@@ -131,10 +199,10 @@ const ComplaintTable = ({ complaints, setComplaints }) => {
                         btn2Text: "Cancel",
                         btn1Handler: !loading
                           ? () => handleComplaintDelete(complaint._id)
-                          : () => { },
+                          : () => {},
                         btn2Handler: !loading
                           ? () => setConfirmationModal(null)
-                          : () => { },
+                          : () => {},
                       });
                     }}
                     title="Delete"

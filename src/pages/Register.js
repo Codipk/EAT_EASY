@@ -4,7 +4,7 @@ import Navbar from "../components/common/Navbar";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ACCOUNT_TYPE } from "../utils/constants";
 import { Select, Option } from "@material-tailwind/react";
 import { sendOtp } from "../services/operations/authAPI";
@@ -14,7 +14,7 @@ import { setSignupData } from "../slices/authSlice";
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  // const { user } = useSelector((state) => state.profile);
   // student or instructor
   // const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
 
@@ -30,7 +30,11 @@ function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [selectedHostel, setSelectedHostel] = useState("");
 
+  // const handleSelectChange = (event) => {
+
+  // };
   const {
     firstName,
     lastName,
@@ -40,7 +44,7 @@ function Register() {
     password,
     confirmPassword,
   } = formData;
-
+  // const hostelNames = hostelName.toUpperCase();
   // Handle input fields, when some value changes
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
@@ -66,6 +70,7 @@ function Register() {
     // Setting signup data to state
     //  // To be used after otp verification
     dispatch(setSignupData(signupData));
+    console.log("After signup data", signupData);
     //  // Send OTP to user for verification
     dispatch(sendOtp(formData.email, navigate));
 
@@ -142,7 +147,9 @@ function Register() {
                           />
                         </label>
                       </div>
-
+                      {/* 
+                      {(user.accountType === ACCOUNT_TYPE.STUDENT ||
+                        user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && ( */}
                       <div className="flex gap-x-4">
                         <label className="">
                           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
@@ -164,6 +171,7 @@ function Register() {
                           />
                         </label>
                       </div>
+
                       <div className="flex gap-x-4">
                         <label className="">
                           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
@@ -202,6 +210,24 @@ function Register() {
                               }}
                               className="w-full rounded-[0.5rem] bg-richblack-500 p-[12px] text-richblack-5"
                             />
+                            {/* <select
+                              name="hostelName"
+                              value={selectedHostel}
+                              onChange={handleSelectChange}
+                              style={{
+                                boxShadow:
+                                  "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
+                              }}
+                              className="w-full rounded-[0.5rem] bg-richblack-500 p-[12px] text-richblack-5"
+                            >
+                              <option value="" disabled>
+                                Select your hostel
+                              </option>
+                              <option value="hostel1">MALVIYA</option>
+                              <option value="hostel2">KNGH</option>
+                              <option value="hostel3">SVBH</option>
+                              
+                            </select> */}
                           </label>
                         </div>
                       </div>

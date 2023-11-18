@@ -14,10 +14,56 @@ const {
   GET_USER_DETAILS_API,
 } = settingsEndpoints;
 
+// export function updateDisplayPicture(token, formData) {
+//   return async (dispatch) => {
+//     const toastId = toast.loading("Loading...");
+//     const response = await apiConnector(
+//       "PUT",
+//       UPDATE_DISPLAY_PICTURE_API,
+//       formData,
+//       {
+//         "Content-Type": "multipart/form-data",
+//         Authorization: `Bearer ${token}`,
+//       }
+//     );
+//     console.log("Displaying response", response);
+//     try {
+//       const response = await apiConnector(
+//         "PUT",
+//         UPDATE_DISPLAY_PICTURE_API,
+//         formData,
+//         {
+//           "Content-Type": "multipart/form-data",
+//           Authorization: `Bearer ${token}`,
+//         }
+//       );
+//       console.log(
+//         "UPDATE_DISPLAY_PICTURE_API API RESPONSE............",
+//         response
+//       );
+
+//       if (!response.data.success) {
+//         throw new Error(response.data.message);
+//       }
+//       toast.success("Display Picture Updated Successfully");
+
+//       dispatch(setUser(response.data.profile));
+//     } catch (error) {
+//       console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error);
+//       toast.error("Could Not Update Display Picture");
+//     }
+//     toast.dismiss(toastId);
+//   };
+// }
 export function updateDisplayPicture(token, formData) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
+
     try {
+      // if (!formData.get("profilePicture")) {
+      //   throw new Error("Profile picture is required.");
+      // }
+
       const response = await apiConnector(
         "PUT",
         UPDATE_DISPLAY_PICTURE_API,
@@ -27,20 +73,20 @@ export function updateDisplayPicture(token, formData) {
           Authorization: `Bearer ${token}`,
         }
       );
-      console.log(
-        "UPDATE_DISPLAY_PICTURE_API API RESPONSE............",
-        response
-      );
+
+      console.log("UPDATE_DISPLAY_PICTURE_API API RESPONSE:", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
+
       toast.success("Display Picture Updated Successfully");
-      dispatch(setUser(response.data.profile));
+      dispatch(setUser(response.data.updatedProfile));
     } catch (error) {
-      console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error);
-      toast.error("Could Not Update Display Picture");
+      console.log("UPDATE_DISPLAY_PICTURE_API API ERROR:", error.message);
+      toast.error(error.message || "Could Not Update Display Picture");
     }
+
     toast.dismiss(toastId);
   };
 }
