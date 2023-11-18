@@ -59,10 +59,10 @@ const complaintSlice = createSlice({
       // by params
       state.complaint = null;
     },
-    UpVote(state, action) {
+    upvoteComplaint(state, action) {
       state.complaint = action.payload;
     },
-    DownUpVote(state, action) {
+    downvoteComplaint(state, action) {
       state.complaint = action.payload;
     },
     setResolvedComplaints(state, action) {
@@ -80,8 +80,8 @@ export const {
   editComplaint,
   deleteComplaint,
   setComplaints,
-  UpVote,
-  DownUpVote,
+  upvoteComplaint,
+  downvoteComplaint,
   setTitle,
   setBody,
   setImage,

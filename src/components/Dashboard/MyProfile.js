@@ -8,6 +8,7 @@ import { setHostel, setLoading, setError } from "../../slices/hostelSlice";
 import { setUser } from "../../slices/profileSlice";
 import { useEffect } from "react";
 import { fetchUserDetails } from "../../services/operations/SettingsAPI";
+import { ACCOUNT_TYPE } from "../../utils/constants";
 export default function MyProfile() {
   const { user, userDetails, loading, error } = useSelector((state) => ({
     user: state.profile,
@@ -93,7 +94,9 @@ export default function MyProfile() {
             </div>
             <div>
               <p className="mb-2 text-sm text-green-100">Email</p>
-              <p className="text-sm font-medium text-white">{user?.email}</p>
+              <p className="text-sm font-medium text-white">
+                {userDetails?.email}
+              </p>
             </div>
             <div>
               <p className="mb-2 text-sm text-green-100">Gender</p>
@@ -128,12 +131,15 @@ export default function MyProfile() {
                   "Add Contact Number"}
               </p>
             </div>
-            <div>
-              <p className="mb-2 text-sm text-green-100">Branch</p>
-              <p className="text-sm font-medium text-white">
-                {userDetails?.additionalDetails?.branch ?? "Add Your Branch"}
-              </p>
-            </div>
+            {(user.accountType === ACCOUNT_TYPE.STUDENT ||
+              user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && (
+              <div>
+                <p className="mb-2 text-sm text-green-100">Branch</p>
+                <p className="text-sm font-medium text-white">
+                  {userDetails?.additionalDetails?.branch ?? "Add Your Branch"}
+                </p>
+              </div>
+            )}
 
             <div>
               <p className="mb-2 text-sm font-semibold text-green-100">

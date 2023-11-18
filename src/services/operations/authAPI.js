@@ -66,7 +66,7 @@ export function signUp(
     console.log("inside auth api signup");
 
     try {
-      console.log(firstName, hostelName);
+      console.log("HOSTEL NAME", hostelName);
       const response = await apiConnector("POST", SIGNUP_API, {
         // accountType,
         firstName,

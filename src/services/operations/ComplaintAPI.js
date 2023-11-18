@@ -10,6 +10,8 @@ const {
   GET_ALL_RESOLVED_COMPLAINTS_API,
   GET_ALL_UNRESOLVED_COMPLAINTS_API,
   GET_ALL_COMPLAINTS_API,
+  LIKE_COMPLAINT_API,
+  DISLIKE_COMPLAINT_API,
 } = complaintEndpoints;
 
 // cration of complains
@@ -189,6 +191,73 @@ export const fetchAllComplaints = async (token) => {
     console.log("ALL COMPLAINTS API ERROR............", error);
     toast.error(error.message);
   }
+  toast.dismiss(toastId);
+  return result;
+};
+
+export const likeComplaint = async (complaintId, token) => {
+  const toastId = toast.loading("Loading...");
+  let success = false;
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "PUT",
+      LIKE_COMPLAINT_API,
+      { complaintId },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Like Complaint API RESPONSE............", response);
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Like Complaint");
+    }
+
+    toast.success("Complaint Liked");
+    success = true;
+    result = response?.data;
+  } catch (error) {
+    success = false;
+    console.log("Like Complaint API ERROR............", error);
+    toast.error(error.message);
+    return success;
+  }
+  toast.dismiss(toastId);
+  return result;
+};
+
+export const dislikeComplaint = async (complaintId, token) => {
+  const toastId = toast.loading("Loading...");
+  let success = false;
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "PUT",
+      DISLIKE_COMPLAINT_API,
+      { complaintId },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Dislike Complaint API RESPONSE............", response);
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Dislike Complaint");
+    }
+
+    toast.success("Complaint Disliked");
+    success = true;
+    result = response?.data;
+  } catch (error) {
+    success = false;
+    console.log("Dislike Complaint API ERROR............", error);
+    toast.error(error.message);
+    return success;
+  }
+
   toast.dismiss(toastId);
   return result;
 };

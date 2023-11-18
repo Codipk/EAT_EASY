@@ -1,4 +1,4 @@
-// import { ACCOUNT_TYPE } from "../utils/constants";
+import { ACCOUNT_TYPE } from "../../utils/constants";
 export const sidebarLinks = [
   {
     id: 1,
@@ -6,26 +6,27 @@ export const sidebarLinks = [
     path: "/dashboard/my-profile",
     icon: "VscAccount",
   },
-  // {
-  //   id: 2,
-  //   name: "Dashboard",
-  //   path: "/dashboard/instructor",
-  //   // type: ACCOUNT_TYPE.INSTRUCTOR,
-  //   icon: "VscDashboard",
-  // },
   {
     id: 3,
     name: "My Complaints",
     path: "/dashboard/my-complaint",
-    // type: ACCOUNT_TYPE.INSTRUCTOR,
-    //this is for student
+    type: ACCOUNT_TYPE.STUDENT,
+    //this is for student a and mess commitee
+    icon: "VscVm",
+  },
+  {
+    id: 3,
+    name: "My Complaints",
+    path: "/dashboard/my-complaint",
+    type: ACCOUNT_TYPE.MESS_COMMITEE,
+    //this is for student a and mess commitee
     icon: "VscVm",
   },
   {
     id: 4,
     name: "Add Complaint",
     path: "/dashboard/add-complaint",
-    // type: ACCOUNT_TYPE.INSTRUCTOR,
+    type: ACCOUNT_TYPE.STUDENT || ACCOUNT_TYPE.MESS_COMMITEE,
     // for student
     icon: "VscAdd",
   },
@@ -33,7 +34,11 @@ export const sidebarLinks = [
     id: 5,
     name: "All Complaints",
     path: "/dashboard/all-complaints",
-    // type: ACCOUNT_TYPE.STUDENT,
+    // type:
+    //   ACCOUNT_TYPE.STUDENT ||
+    //   ACCOUNT_TYPE.MESS_COMMITEE ||
+    //   ACCOUNT_TYPE.WARDEN ||
+    //   ACCOUNT_TYPE.ACCOUNTANT,
     icon: "VscMortarBoard",
   },
   {
@@ -41,6 +46,34 @@ export const sidebarLinks = [
     name: "Mess Menu",
     path: "/dashboard/mess-menu",
     // type: ACCOUNT_TYPE.STUDENT,
+    // type:
+    //   ACCOUNT_TYPE.STUDENT ||
+    //   ACCOUNT_TYPE.MESS_COMMITEE ||
+    //   ACCOUNT_TYPE.ACCOUNTANT,
     icon: "VscHistory",
+  },
+  // {
+  //   id: 7,
+  //   name: "Edit Mess Menu",
+  //   path: "/dashboard/mess-menu/mess-edit-menu",
+  //   // type:
+  //   //   ACCOUNT_TYPE.MESS_COMMITEE ||
+  //   //   ACCOUNT_TYPE.WARDEN ||
+  //   //   ACCOUNT_TYPE.ACCOUNTANT,
+  //   icon: "VscHistory",
+  // },
+  {
+    id: 8,
+    name: "All Expenses",
+    path: "/dashboard/all-expenses",
+    type: ACCOUNT_TYPE.ACCOUNTANT,
+    icon: "VscHistory",
+  },
+  {
+    id: 9,
+    name: "Add Expenses",
+    path: "/dashboard/add-expenses",
+    type: ACCOUNT_TYPE.ACCOUNTANT,
+    icon: "VscAdd",
   },
 ];
