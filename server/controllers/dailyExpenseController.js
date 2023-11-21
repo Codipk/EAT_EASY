@@ -4,6 +4,7 @@ const DailyExpense = require('../models/dailyExpensechema');
 
 
 //add
+
 exports.addExpense = async (req, res) => {
   try {
     // Get hostel id
@@ -14,8 +15,8 @@ exports.addExpense = async (req, res) => {
 
     const userDetails = await User.findById(req.user.id);
     const hostelId = userDetails.hostel;
-    const {
-      productName, productDescription, productQuantity, productPrice
+    let {
+      productName, productDescription, productQuantity, productPrice, dateOfExpense,productCategory
     } = req.body;
     if (!productName || !productPrice) {
       return res.status(403).json({
@@ -23,12 +24,15 @@ exports.addExpense = async (req, res) => {
         message: 'Product Name and Price are Required',
       });
     }
-    const expense = await DailyExpense.create({
+    productName = productName.toLowerCase();
+    let expense = await DailyExpense.create({
       hostel: hostelId,
       productName,
       productDescription,
       productQuantity,
-      productPrice
+      productPrice,
+      dateOfExpense,
+      productCategory
     });
     return res.status(200).json({
       sucess: true,
@@ -46,7 +50,12 @@ exports.addExpense = async (req, res) => {
     });
   }
 }
+
+
+
+
 //edit
+
 exports.editExpense = async (req, res) => {
   try {
     //find expense id
@@ -54,7 +63,7 @@ exports.editExpense = async (req, res) => {
     //findbyid and update expense 
     //return response
 
-    const { expenseId, productName, productDescription, productQuantity, productPrice } = req.body;
+    const { expenseId, productName, productDescription, productQuantity, productPrice,dateOfExpense,productCategory } = req.body;
     if (!productName || !productPrice) {
       return res.status(403).json({
         success: false,
@@ -67,7 +76,9 @@ exports.editExpense = async (req, res) => {
         productName,
         productDescription,
         productQuantity,
-        productPrice
+        productPrice,
+        dateOfExpense,
+        productCategory
       }, { new: true }
     );
     return res.status(200).json({
@@ -88,8 +99,8 @@ exports.editExpense = async (req, res) => {
 
 
 
-
 //getAllExpense
+
 exports.getAllDetailsOfExpenseHostelWise = async (req, res) => {
   try {
     // fetch hostelId
@@ -116,7 +127,10 @@ exports.getAllDetailsOfExpenseHostelWise = async (req, res) => {
 }
 
 
+
+
 //delete
+
 exports.deleteExpense = async (req, res) => {
   try {
     // fetch expenseId req.body
@@ -146,6 +160,7 @@ exports.deleteExpense = async (req, res) => {
 
 
 //getTotalExpense of hostel till now 
+
 exports.getTotaltExpense = async (req, res) => {
   try {
     // fetch hostel Id 
@@ -179,6 +194,66 @@ exports.getTotaltExpense = async (req, res) => {
     });
   }
 }
+
+
+
+
+//getAllExpenseProductWiseAndTotal of hostel till now
+
+exports.getAllExpenseProductWiseAndTotal = async (req, res) => {
+  try {
+    // fetch hostel Id 
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId);
+    const hostelId = userDetails.hostel;
+    // console.log(hostelId)
+    const {
+      productName, 
+    } = req.body;
+
+    
+
+    const totalExpense = await DailyExpense.aggregate([
+      {
+        $match: {
+          "hostel": hostelId,
+          "productName" : productName,
+          
+        }
+      },
+
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$productPrice' }
+        }
+      }]);
+
+    const productNameWiseExpense = await DailyExpense.find({
+      hostel: hostelId,
+      productName : productName,
+      
+    });
+    console.log(totalExpense)
+    let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
+    return res.status(200).json({
+      success: true,
+      message: 'Total Expense Fetched Successfully',
+      total,
+      productNameWiseExpense,
+    });
+  } catch (error) {
+    console.log("error in fetching totals expense: ", error);
+    return res.status(500).json({
+      sucess: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+}
+
+
+
 
 //getExpenseInRangeAndTotal of hostel till now 
 
@@ -219,12 +294,12 @@ exports.getExpenseInRangeAndTotal = async (req, res) => {
       hostel: hostelId,
       $expr: {
         $and: [
-          { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, startDate] },
-          { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, endDate] }
+          { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
+          { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, endDate] }
         ]
       }
     });
-    console.log(totalExpense)
+    console.log(ExpenseInRange)
     let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
     return res.status(200).json({
       success: true,
@@ -241,5 +316,199 @@ exports.getExpenseInRangeAndTotal = async (req, res) => {
     });
   }
 }
+
+
+
+
+//getAllExpenseCategoryWiseAndTotal of hostel till now
+
+exports.getAllExpenseCategoryWiseAndTotal = async (req, res) => {
+  try {
+    // fetch hostel Id 
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId);
+    const hostelId = userDetails.hostel;
+    // console.log(hostelId)
+    const {
+      productCategory
+    } = req.body;
+
+    
+
+    const totalExpense = await DailyExpense.aggregate([
+      {
+        $match: {
+          "hostel": hostelId,
+          "productCategory" : productCategory
+        }
+      },
+
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$productPrice' }
+        }
+      }]);
+
+    const categoryWiseExpense = await DailyExpense.find({
+      hostel: hostelId,
+      productCategory : productCategory,
+    });
+    console.log(totalExpense)
+    let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
+    return res.status(200).json({
+      success: true,
+      message: 'Total Expense Fetched Successfully',
+      total,
+      categoryWiseExpense,
+    });
+  } catch (error) {
+    console.log("error in fetching totals expense: ", error);
+    return res.status(500).json({
+      sucess: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+}
+
+
+
+
+//getExpenseInRangeCategoryWiseAndTotal of hostel till now
+
+exports.getExpenseInRangeCategoryWiseAndTotal = async (req, res) => {
+  try {
+    // fetch hostel Id 
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId);
+    const hostelId = userDetails.hostel;
+    // console.log(hostelId)
+    const {
+      productCategory, startDate,endDate
+    } = req.body;
+
+    
+
+    const totalExpense = await DailyExpense.aggregate([
+      {
+        $match: {
+          "hostel": hostelId,
+          "productCategory" : productCategory,
+          $expr: {
+            $and: [
+              { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
+              { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, endDate] }
+            ]
+          }
+        }
+      },
+
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$productPrice' }
+        }
+      }]);
+
+    const categoryWiseExpense = await DailyExpense.find({
+      hostel: hostelId,
+      productCategory : productCategory,
+      $expr: {
+        $and: [
+          { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
+          { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, endDate] }
+        ]
+      }
+    });
+    console.log(totalExpense)
+    let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
+    return res.status(200).json({
+      success: true,
+      message: 'Total Expense Fetched Successfully',
+      total,
+      categoryWiseExpense,
+    });
+  } catch (error) {
+    console.log("error in fetching totals expense: ", error);
+    return res.status(500).json({
+      sucess: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+}
+
+
+
+
+//getExpenseInRangeProductWiseAndTotal of hostel till now
+
+exports.getExpenseInRangeProductWiseAndTotal = async (req, res) => {
+  try {
+    // fetch hostel Id 
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId);
+    const hostelId = userDetails.hostel;
+    // console.log(hostelId)
+    const {
+      productName, startDate,endDate
+    } = req.body;
+
+    
+
+    const totalExpense = await DailyExpense.aggregate([
+      {
+        $match: {
+          "hostel": hostelId,
+          "productName" : productName,
+          $expr: {
+            $and: [
+              { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
+              { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, endDate] }
+            ]
+          }
+        }
+      },
+
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$productPrice' }
+        }
+      }]);
+
+    const productNameWiseExpense = await DailyExpense.find({
+      hostel: hostelId,
+      productName : productName,
+      $expr: {
+        $and: [
+          { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
+          { $lte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, endDate] }
+        ]
+      }
+    });
+    console.log(totalExpense)
+    let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
+    return res.status(200).json({
+      success: true,
+      message: 'Total Expense Fetched Successfully',
+      total,
+      productNameWiseExpense,
+    });
+  } catch (error) {
+    console.log("error in fetching totals expense: ", error);
+    return res.status(500).json({
+      sucess: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+}
+
+
+
+
+
 
 
