@@ -1,35 +1,38 @@
 const mongoose = require('mongoose');
 
 const dailyExpenseSchema = new mongoose.Schema({
- hostel:{
-  type : mongoose.Schema.Types.ObjectId,
-  ref: 'Hostel',
-  required: true,
+  hostel: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Hostel',
+    required: true,
 
- },
-  productName :{
-  type : String,
-  trim: true,
-  required:true,
+  },
+  productName: {
+    type: String,
+    trim: true,
+    required: true,
 
- },
- productDescription :{
-  type : String,
-  trim: true,
+  },
+  productDescription: {
+    type: String,
+    trim: true,
 
- },
- productQuantity : {
-  type : String,
-  trim: true,
+  },
+  productQuantity: {
+    type: String,
+    trim: true,
 
- },
- productPrice:{
-  type : Number,
-  required:true,
-
- } 
+  },
+  productPrice: {
+    type: Number,
+    required: true,
+  },
+  dateOfExpense: {//
+    type: Date,
+    required: true,
+  }
 },
- { timestamps: true });
+  { timestamps: true });
 
 
 
