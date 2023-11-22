@@ -209,7 +209,7 @@ exports.getAllExpenseProductWiseAndTotal = async (req, res) => {
     // console.log(hostelId)
     const {
       productName, 
-    } = req.body;
+    } = req.query;
 
     
 
@@ -266,7 +266,7 @@ exports.getExpenseInRangeAndTotal = async (req, res) => {
     // console.log(hostelId)
     const {
       startDate, endDate
-    } = req.body;
+    } = req.query;
 
     console.log(startDate)
 
@@ -331,7 +331,7 @@ exports.getAllExpenseCategoryWiseAndTotal = async (req, res) => {
     // console.log(hostelId)
     const {
       productCategory
-    } = req.body;
+    } = req.query;
 
     
 
@@ -383,10 +383,13 @@ exports.getExpenseInRangeCategoryWiseAndTotal = async (req, res) => {
     const userId = req.user.id;
     const userDetails = await User.findById(userId);
     const hostelId = userDetails.hostel;
-    // console.log(hostelId)
-    const {
-      productCategory, startDate,endDate
-    } = req.body;
+     // console.log(hostelId)
+
+     // Extracting query parameters
+     const { 
+      startDate, endDate, productCategory
+     } = req.query;
+
 
     
 
@@ -450,10 +453,16 @@ exports.getExpenseInRangeProductWiseAndTotal = async (req, res) => {
     const userId = req.user.id;
     const userDetails = await User.findById(userId);
     const hostelId = userDetails.hostel;
-    // console.log(hostelId)
-    const {
-      productName, startDate,endDate
-    } = req.body;
+    console.log(hostelId)
+
+
+   // Extracting query parameters
+    const { startDate, endDate, productName } = req.query;
+
+   
+    console.log(startDate);
+    console.log(endDate);   
+    console.log(productName); 
 
     
 
