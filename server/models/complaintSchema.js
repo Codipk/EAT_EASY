@@ -42,6 +42,13 @@ const complaints = new mongoose.Schema({
     ref: "User",
     default: null,
   },
+  comments:[{
+    text:String,
+    commentedBy :{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"User"
+    }
+}],
 }, { timestamps: true }, { strictPopulate: false });
 
 

@@ -365,3 +365,51 @@ exports.resolveComplaint = async (req, res) => {
     });
   }
 };
+
+exports. commentsOnComplaints = async (req,res)=>{
+    try {
+      const comment = {
+        text: req.body.text,
+        commentedBy: req.user.id
+      };
+      const { complaintId } = req.body;
+  
+      const updatedComplaint = await Complaint.findByIdAndUpdate(
+        complaintId,
+        {
+          $push: { comments: comment }
+        },
+        {
+          new: true
+        }
+      )
+      .populate({
+        path: 'comments',
+
+        populate:{
+          path:'commentedBy',
+          select: 'firstName lastName'
+        },
+      });
+  
+      if (!updatedComplaint) {
+        return res.status(404).json({
+          success: false,
+          message: 'Complaint Not found'
+        });
+      }
+      res.status(200).json({
+        sucess: true,
+        message: 'Commented Successfully',
+        updatedComplaint
+      })
+      
+    } catch (error) {
+      console.log("Error in Commenting On Complaint: ", error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        error,
+      });
+    }
+}
