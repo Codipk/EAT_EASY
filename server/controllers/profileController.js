@@ -1,4 +1,4 @@
-const additionDetails = require('../models/additionalDetailSchema');
+const additionalDetails = require('../models/additionalDetailSchema');
 const User = require('../models/userSchema');
 const Hostel = require('../models/hostelSchema');
 const BlockedUser = require('../models/blockedUserSchema');
@@ -244,4 +244,34 @@ exports.findUserByRegistrationNumber = async (req, res) => {
   }
 }
 
+
+exports.markFeeStatusTrue = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const userDetails = await User.findById(userId);
+    console.log('UserDeatils : ', userDetails);
+    const details = await additionalDetails.findByIdAndUpdate(
+      userDetails.additionalDetails,
+      {
+        isMessFeePaid: true,
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Marked as Paid",
+      userDetails,
+      details,
+    });
+  } catch (error) {
+    console.log("error in marking fee status as true: ", error);
+    return res.status(500).json({
+      success: true,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+
+
+}
 
