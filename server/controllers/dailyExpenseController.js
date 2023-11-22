@@ -96,12 +96,40 @@ exports.editExpense = async (req, res) => {
   }
 }
 
+//get expenseById
+exports.getExpenseById = async (req, res) => {
+  try {
+    const expenseId = req.params.id;
+    const expense = await DailyExpense.findById(expenseId);
+    if (!expense) {
+      return res.status(200).json({
+        success: true,
+        message: 'No such expense Exist',
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Expense Fetched Successfully',
+      expense,
+    });
+  } catch (error) {
+    console.log("Error in Fetching expense by id ", error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+
+
+
+}
 
 
 
 //getAllExpense
 
-exports.getAllDetailsOfExpenseHostelWise = async (req, res) => {
+exports.getAllDetailsOfExpense = async (req, res) => {
   try {
     // fetch hostelId
     const userId = req.user.id;
@@ -390,7 +418,7 @@ exports.getExpenseInRangeCategoryWiseAndTotal = async (req, res) => {
       startDate, endDate, productCategory
      } = req.query;
 
-
+    
     
 
     const totalExpense = await DailyExpense.aggregate([
@@ -444,7 +472,6 @@ exports.getExpenseInRangeCategoryWiseAndTotal = async (req, res) => {
 
 
 
-
 //getExpenseInRangeProductWiseAndTotal of hostel till now
 
 exports.getExpenseInRangeProductWiseAndTotal = async (req, res) => {
@@ -461,7 +488,7 @@ exports.getExpenseInRangeProductWiseAndTotal = async (req, res) => {
 
    
     console.log(startDate);
-    console.log(endDate);   
+    console.log( endDate);   
     console.log(productName); 
 
     

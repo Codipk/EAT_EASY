@@ -1,7 +1,7 @@
 const Menu = require("../models/menuSchema");
 const User = require("../models/userSchema");
 const Hostel = require("../models/hostelSchema");
-
+const axios = require('axios');
 //add menu
 exports.addMessMenu = async (req, res) => {
   try {
@@ -180,3 +180,42 @@ exports.editMessMenu = async (req, res) => {
     });
   }
 };
+
+exports.getNutritionDetails = async (req, res) => {
+
+  let apiUrl = 'https://api.api-ninjas.com/v1/nutrition?query=';
+  const apiKey = process.env.NUTRITION_API_KEY;
+  const { itemName, itemQuantity } = req.body;
+  apiUrl = `${apiUrl} + ${itemName}`
+
+  axios.get(apiUrl, {
+    headers: {
+      'X-Api-Key': apiKey
+      // You might need to use a different header key or format based on the API documentation
+    }
+  })
+    .then(response => {
+      const apiRes = response.data[0]; // Assuming the API returns the date directly
+      //calories
+      //protein_g
+      //carbohydrates_total_g
+      //fat_total_g
+      const data = {};
+      data.calories = (apiRes.calories * itemQuantity) / 100;
+      data.protein_g = (apiRes.protein_g * itemQuantity) / 100;
+      data.carbohydrates_total_g = (apiRes.carbohydrates_total_g * itemQuantity) / 100;
+      data.fat_total_g = (apiRes.fat_total_g * itemQuantity) / 100;
+      return res.status(200).json({
+        success: true,
+        message: 'Calories Fetched Successfully',
+        data,
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching date:', error);
+    });
+
+
+
+}
+
