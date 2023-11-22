@@ -120,3 +120,20 @@ exports.notStudent = async (req, res, next) => {
     });
   }
 }
+
+exports.isAccountantOrIsWarden = async (req, res, next) => {
+  try {
+    if (!(req.user.accountType === "Chief-Warden" || req.user.accountType == "Accountant")) {
+      return res.status(401).json({
+        success: false,
+        message: "This is protected routes for accountants and wardens",
+      });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Cannot Mark as Paid. Please try again",
+    });
+  }
+}

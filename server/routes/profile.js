@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { auth, isChiefWarden, isAccountant } = require("../middleware/auth.middleware");
+const { auth, isChiefWarden, isAccountant, isAccountantOrIsWarden } = require("../middleware/auth.middleware");
 const {
   getAllUserDetails,
   updateProfile,
@@ -20,5 +20,5 @@ router.post("/blockuser", auth, isChiefWarden, blockUser);
 router.delete("/unblockuser", auth, isChiefWarden, unblockUser);
 router.delete("/deleteAccount", auth, deleteAccount);
 router.get("/getuserbyregistration", auth, findUserByRegistrationNumber);
-router.put("/markfeeaspaid", auth, isAccountant, markFeeStatusTrue);
+router.put("/markfeeaspaid", auth, isAccountantOrIsWarden, markFeeStatusTrue);
 module.exports = router;
