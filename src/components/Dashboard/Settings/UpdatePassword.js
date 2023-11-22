@@ -21,7 +21,7 @@ export default function UpdatePassword() {
   } = useForm();
 
   const submitPasswordForm = async (data) => {
-    // console.log("password Data - ", data)
+    console.log("password Data - ", data);
     try {
       await changePassword(token, data);
     } catch (error) {
@@ -32,8 +32,8 @@ export default function UpdatePassword() {
   return (
     <>
       <form onSubmit={handleSubmit(submitPasswordForm)}>
-        <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-yellow-100  p-8 px-12">
-          <h2 className="text-lg font-semibold text-pink-100">Password</h2>
+        <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
+          <h2 className="text-lg font-semibold text-richblack-5">Password</h2>
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
               <label htmlFor="oldPassword" className="lable-style">
@@ -125,12 +125,12 @@ export default function UpdatePassword() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-2 ">
+        <div className="flex justify-end gap-2">
           <button
             onClick={() => {
               navigate("/dashboard/my-profile");
             }}
-            className="cursor-pointer rounded-md bg-slate-500 border-yellow-100 py-2 px-5 font-semibold text-white"
+            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
           >
             Cancel
           </button>

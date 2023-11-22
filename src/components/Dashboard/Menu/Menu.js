@@ -5,16 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { fetchMessMenu } from "../../../services/operations/MessMenuAPI";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import RatingInput from "../../Dashboard/Menu/RatingInput";
+import { getAverageRating } from "../../../services/operations/ratingAPI";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
+import RatingDisplay from "./GetAvgRating";
 // import { setMessMenu } from "../../../slices/messMenuSlice";
 const Menu = () => {
   const navigate = useNavigate();
-  const { user } = (state) => state.profile;
+  const { user } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
   // const { loading, error, menu } = useSelector((state) => state.menu);
   const { token } = useSelector((state) => state.auth);
   const [menu, setMessMenu] = useState([]);
-
+  // const [averageRatings, setAverageRatings] = useState({});
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -29,10 +32,23 @@ const Menu = () => {
         console.error("Error fetching menu:", error.message);
       }
     };
-
+    // const fetchRatings = async () => {
+    //   try {
+    //     const ratings = await getAverageRating(token);
+    //     console.log("ratings", ratings);
+    //     setAverageRatings(ratings);
+    //   } catch (error) {
+    //     console.error("Error fetching average ratings:", error.message);
+    //     toast.error("Error fetching average ratings");
+    //   }
+    // };
     fetchMenu();
+    // fetchRatings();
   }, [dispatch, token]);
 
+  // const getMealAverageRating = (mealType) => {
+  //   return getAverageRating[mealType] || "N/A";
+  // };
   return (
     <>
       <div>
@@ -47,6 +63,7 @@ const Menu = () => {
                   <th>Lunch</th>
                   <th>Snacks</th>
                   <th>Dinner</th>
+                  {/* <th>Rating</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -61,6 +78,7 @@ const Menu = () => {
                     <td>{menu[0].monday.lunch}</td>
                     <td>{menu[0].monday.snacks}</td>
                     <td>{menu[0].monday.dinner}</td>
+                    {/* <td>{getMealAverageRating(menu[0].day)}</td> */}
                   </tr>
                 }
                 {
@@ -124,15 +142,29 @@ const Menu = () => {
           )}
         </div>
         <div className="mb-3 h-3">
-          {/* {user?.accountType === ACCOUNT_TYPE.MESS_COMMITEE && ( */}
-          <Link
-            className="bg-slate-500 p-2  font-semibold text-white mb-2"
-            to="edit-mess-menu"
-          >
-            Edit Mess Menu
-          </Link>
-          {/* )} */}
+          {user?.accountType === ACCOUNT_TYPE.MESS_COMMITEE && (
+            <Link
+              className="bg-slate-500 p-2  font-semibold text-white mb-2"
+              to="edit-mess-menu"
+            >
+              Edit Mess Menu
+            </Link>
+          )}
+          {user?.accountType === ACCOUNT_TYPE.ACCOUNTANT && (
+            <Link
+              className="bg-slate-500 p-2  font-semibold text-white mb-2"
+              to="edit-mess-menu"
+            >
+              Edit Mess Menu
+            </Link>
+          )}
         </div>
+        {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+          <>
+            <RatingInput />
+            <RatingDisplay token={token} />
+          </>
+        )}
       </div>
     </>
   );

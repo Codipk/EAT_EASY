@@ -1,13 +1,13 @@
-const User = require('../models/userSchema');
-const bcrypt = require('bcrypt');
+const User = require("../models/userSchema");
+const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const jwt = require('jsonwebtoken');
-const OTP = require('../models/OTPSchema');
-const Hostel = require('../models/hostelSchema');
-const AdditionalDetails = require('../models/additionalDetailSchema')
-const otpGenerator = require('otp-generator');
-const { passwordUpdated } = require('../mailTemplates/passwordUpdated');
-const { mailSender } = require('../utils/mailSender');
+const jwt = require("jsonwebtoken");
+const OTP = require("../models/OTPSchema");
+const Hostel = require("../models/hostelSchema");
+const AdditionalDetails = require("../models/additionalDetailSchema");
+const otpGenerator = require("otp-generator");
+const { passwordUpdated } = require("../mailTemplates/passwordUpdated");
+const { mailSender } = require("../utils/mailSender");
 exports.sendOtp = async (req, res) => {
   /*
       1. fetch email from req.body
@@ -20,20 +20,19 @@ exports.sendOtp = async (req, res) => {
     //1. fetch email from req.body
     const { email } = req.body;
 
-
     // 2. check whether user is registered or not
     const checkUserPresent = await User.findOne({ email });
     if (checkUserPresent) {
       return res.status(401).json({
         success: false,
-        message: "User Already Registered"
+        message: "User Already Registered",
       });
     }
     // 3. create OTP
     let otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
-      specialChars: false
+      specialChars: false,
     });
     console.log("OTP is : ", otp);
     //check whether it is unique or not
@@ -51,22 +50,21 @@ exports.sendOtp = async (req, res) => {
     // 4. create Entry in DB
     const otpPayload = { email, otp };
     const otpBody = await OTP.create(otpPayload);
-    console.log("OTP Saved in DB", otpBody)
+    console.log("OTP Saved in DB", otpBody);
     // 5. return response
     return res.status(200).json({
       success: true,
       message: "otp sent successfully",
-      otpBody
+      otpBody,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-
-}
+};
 
 exports.signup = async (req, res) => {
   /*
@@ -92,17 +90,19 @@ exports.signup = async (req, res) => {
       hostelName,
       password,
       confirmPassword,
-      otp
+      otp,
     } = req.body;
     // 2. Perform Validation -> all fields filled
-    if (!firstName ||
-      !lastName ||
-      !registrationNumber ||
-      !email ||
-      !hostelName ||
-      !password ||
-      !confirmPassword,
-      !otp) {
+    if (
+      (!firstName ||
+        !lastName ||
+        !registrationNumber ||
+        !email ||
+        !hostelName ||
+        !password ||
+        !confirmPassword,
+      !otp)
+    ) {
       return res.status(403).json({
         success: false,
         message: "All Fields Required",
@@ -124,7 +124,9 @@ exports.signup = async (req, res) => {
       });
     }
     // 5 . find most recent otp from the database
-    const recentOtp = await OTP.findOne({ email }).sort({ createdAt: -1 }).limit(1);
+    const recentOtp = await OTP.findOne({ email })
+      .sort({ createdAt: -1 })
+      .limit(1);
     console.log("Fetched otp form db is : ", recentOtp);
     // 6. Validate OTP
     if (recentOtp == null || recentOtp.length === 0) {
@@ -150,13 +152,13 @@ exports.signup = async (req, res) => {
         message: "Error inn hashing Password",
       });
     }
-    // for student to be of some hostel hostelName should be 
+    // for student to be of some hostel hostelName should be
     //present in our database
     let hostel = await Hostel.findOne({ hostelName });
     if (!hostel) {
       return res.status(400).json({
         success: false,
-        message: 'Hostel does not exist',
+        message: "Hostel does not exist",
       });
     }
 
@@ -169,7 +171,7 @@ exports.signup = async (req, res) => {
       IFSC: null,
       roomNo: null,
       contactNo: null,
-      branch: null
+      branch: null,
     });
     // 8. create user and additionalDetails entry in db
     const user = await User.create({
@@ -180,7 +182,7 @@ exports.signup = async (req, res) => {
       registrationNumber,
       hostel: hostel._id,
       additionalDetails: additionalDetails._id,
-      img: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
+      img: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     });
     hostel.students.push(user._id);
     await hostel.save();
@@ -190,7 +192,6 @@ exports.signup = async (req, res) => {
       message: "User is Registered Successfully",
       user,
     });
-
   } catch (error) {
     console.log("Error in Registration : ", error);
     return res.status(500).json({
@@ -198,7 +199,7 @@ exports.signup = async (req, res) => {
       message: "User Can not be Registered. Please try again ",
     });
   }
-}
+};
 
 //LogIn
 exports.login = async (req, res) => {
@@ -293,11 +294,10 @@ exports.changePassword = async (req, res) => {
     console.log(isPasswordMatch);
     if (!isPasswordMatch) {
       // If old password does not match, return a 401 (Unauthorized) error
-      return res
-        .status(401).json({
-          success: false,
-          message: "The password is incorrect"
-        });
+      return res.status(401).json({
+        success: false,
+        message: "The password is incorrect",
+      });
     }
 
     //Match new password and confirm new password
@@ -321,7 +321,7 @@ exports.changePassword = async (req, res) => {
     try {
       const emailResponse = await mailSender(
         updatedUserDetails.email,
-        'Password Changed',
+        "Password Changed",
         passwordUpdated(
           updatedUserDetails.email,
           `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
@@ -352,7 +352,6 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
-
 
 //resetPasswordToken
 exports.resetPasswordToken = async (req, res) => {
@@ -480,6 +479,3 @@ exports.resetPassword = async (req, res) => {
     });
   }
 };
-
-
-

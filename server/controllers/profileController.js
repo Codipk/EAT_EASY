@@ -1,11 +1,11 @@
-const additionalDetails = require('../models/additionalDetailSchema');
-const User = require('../models/userSchema');
-const Hostel = require('../models/hostelSchema');
-const BlockedUser = require('../models/blockedUserSchema');
-const { uploadImageToCloudinary } = require('../utils/imageUploader');
+const additionalDetails = require("../models/additionalDetailSchema");
+const User = require("../models/userSchema");
+const Hostel = require("../models/hostelSchema");
+const BlockedUser = require("../models/blockedUserSchema");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.updateProfile = async (req, res) => {
-  //getRequired Data 
+  //getRequired Data
   //get userId
   //validation
   //find profile
@@ -13,7 +13,8 @@ exports.updateProfile = async (req, res) => {
   //return response
   try {
     //fetch details
-    const { gender, DOB, AccountNo, IFSC, contactNo, branch, roomNo, about } = req.body;
+    const { gender, DOB, AccountNo, IFSC, contactNo, branch, roomNo, about } =
+      req.body;
     const id = req.user.id;
     //find profile by id
     const userDetails = await User.findById(id);
@@ -25,7 +26,9 @@ exports.updateProfile = async (req, res) => {
     }
     console.log("Type of userDetails ", typeof userDetails);
     console.log("UserDetails : ", userDetails);
-    const profile = await additionalDetails.findById(userDetails.additionalDetails);
+    const profile = await additionalDetails.findById(
+      userDetails.additionalDetails
+    );
     console.log("profile  : ", profile);
 
     //edit changes
@@ -43,7 +46,7 @@ exports.updateProfile = async (req, res) => {
       success: true,
       message: "Profile Updated Successfully",
       profile,
-    })
+    });
   } catch (error) {
     console.log("not able to update profile", error);
     return res.status(500).json({
@@ -51,8 +54,7 @@ exports.updateProfile = async (req, res) => {
       error: error.message,
     });
   }
-
-}
+};
 exports.updateProfilePicture = async (req, res) => {
   try {
     console.log("Req : ", req);
@@ -64,12 +66,15 @@ exports.updateProfilePicture = async (req, res) => {
       });
     }
     const userId = req.user.id;
-    const imgDetails = await uploadImageToCloudinary(profilePic, process.env.FOLDER_NAME);
+    const imgDetails = await uploadImageToCloudinary(
+      profilePic,
+      process.env.FOLDER_NAME
+    );
     if (!imgDetails) {
       return res.status(500).json({
         success: false,
-        message: 'Cannot upload img to cloudinary, Try again!',
-      })
+        message: "Cannot upload img to cloudinary, Try again!",
+      });
     }
     const updatedProfile = await User.findByIdAndUpdate(
       { _id: userId },
@@ -78,19 +83,17 @@ exports.updateProfilePicture = async (req, res) => {
     );
     return res.status(200).json({
       success: true,
-      message: 'Profile Pic Uploaded Successfully',
+      message: "Profile Pic Uploaded Successfully",
       updatedProfile,
     });
-  } catch (error) {
-
-  }
-}
+  } catch (error) {}
+};
 
 exports.getAllUserDetails = async (req, res) => {
   try {
     console.log(req.user);
     // const { id } = req.body;
-    const id = req.user.id
+    const id = req.user.id;
 
     const userDetails = await User.findById(id)
       .populate({
@@ -111,17 +114,16 @@ exports.getAllUserDetails = async (req, res) => {
       success: true,
       message: "User Details Fetched Successfully",
       userDetails,
-    })
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       success: false,
       messagee: "Internal Server Error",
       error,
-    })
+    });
   }
-
-}
+};
 
 exports.blockUser = async (req, res) => {
   try {
@@ -129,21 +131,21 @@ exports.blockUser = async (req, res) => {
     //check is already blocked -> otherwise multiple entry will be created
     //2. block userBy its emailId
     // console.log(req.body);
-    console.log("here@!")
+    console.log("here@!");
     const { userId } = req.body;
     const userDetails = await BlockedUser.find({ email: userId.email });
     if (!userDetails) {
       return res.status(403).json({
         sucess: false,
-        message: 'User Is already Blocked',
+        message: "User Is already Blocked",
       });
     }
     const blockedUserDetails = await BlockedUser.create(userId.email);
     return res.status(200).json({
       success: true,
-      message: 'User blocked Successfully',
+      message: "User blocked Successfully",
       blockedUserDetails,
-    })
+    });
   } catch (error) {
     console.log("Error in Blocking user", error);
     return res.status(500).json({
@@ -152,29 +154,27 @@ exports.blockUser = async (req, res) => {
       error,
     });
   }
-}
+};
 
 exports.unblockUser = async (req, res) => {
   try {
     const { userId } = req.body;
     const userDetails = await User.findById(userId);
     console.log(userDetails);
-    await BlockedUser.findOneAndDelete(
-      { email: userDetails.email }
-    );
+    await BlockedUser.findOneAndDelete({ email: userDetails.email });
     return res.status(200).json({
       success: true,
-      message: 'User Unblocked Successfully',
+      message: "User Unblocked Successfully",
     });
   } catch (error) {
-    console.log('Error in unblocking user: ', error);
+    console.log("Error in unblocking user: ", error);
     return res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
     });
   }
-}
+};
 //delete account
 exports.deleteAccount = async (req, res) => {
   try {
@@ -188,70 +188,66 @@ exports.deleteAccount = async (req, res) => {
     if (!userDetails) {
       return res.status(403).json({
         success: true,
-        message: 'User Does not Exist',
+        message: "User Does not Exist",
       });
     }
     await additionalDetails.findByIdAndDelete(userDetails.additionalDetails);
-    const hostelDetails = await Hostel.findByIdAndUpdate(
-      userDetails.hostel,
-      {
-        $pull: { students: userId },
-      }
-    )
+    const hostelDetails = await Hostel.findByIdAndUpdate(userDetails.hostel, {
+      $pull: { students: userId },
+    });
     const userInfo = await User.findByIdAndDelete(userId);
     return res.status(200).json({
       success: true,
-      message: 'User Deleted Successfully',
+      message: "User Deleted Successfully",
       userInfo,
     });
-
   } catch (error) {
-    console.log('Error in Deleting User: ', error);
+    console.log("Error in Deleting User: ", error);
     return res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
-    })
+      message: "Internal Server Error",
+    });
   }
 };
 
 exports.findUserByRegistrationNumber = async (req, res) => {
   try {
+    console.log("request", req);
     const { registrationNumber } = req.body;
     console.log("Registration Number : ", registrationNumber);
     if (!registrationNumber) {
       return res.status(403).json({
         sucess: false,
-        message: 'Enter Registration Number',
+        message: "Enter Registration Number",
       });
     }
     const userDetails = await User.find({
-      registrationNumber: registrationNumber
+      registrationNumber: registrationNumber,
     }).populate({
-      path: 'hostel additionalDetails',
-      select: '-menu -messCommittee -students',
+      path: "hostel additionalDetails",
+      select: "-menu -messCommittee -students",
     });
-    console.log("UserDetails inside findBYRegistrationNumber: ", userDetails)
+    console.log("UserDetails inside findBYRegistrationNumber: ", userDetails);
     return res.status(200).json({
       success: true,
-      message: 'User Details fetched Successfully',
+      message: "User Details fetched Successfully",
       userDetails,
     });
   } catch (error) {
     console.log("error in finding user: ", error);
     return res.status(500).json({
       success: true,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
-    })
+    });
   }
-}
-
+};
 
 exports.markFeeStatusTrue = async (req, res) => {
   try {
     const { userId } = req.body;
     const userDetails = await User.findById(userId);
-    console.log('UserDeatils : ', userDetails);
+    console.log("UserDeatils : ", userDetails);
     const details = await additionalDetails.findByIdAndUpdate(
       userDetails.additionalDetails,
       {
@@ -269,11 +265,8 @@ exports.markFeeStatusTrue = async (req, res) => {
     console.log("error in marking fee status as true: ", error);
     return res.status(500).json({
       success: true,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
     });
   }
-
-
-}
-
+};

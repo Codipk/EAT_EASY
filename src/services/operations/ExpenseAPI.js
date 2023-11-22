@@ -8,6 +8,10 @@ const {
   TOTAL_EXPENSE_API,
   DELETE_EXPENSE_API,
   ADD_EXPENSE_API,
+  EDIT_EXPENSE_API,
+  EXPENSE_PRODUCT_WISE_AND_TOTAL_API,
+  EXPENSE_CATEGORY_WISE_AND_TOTAL_API,
+  GET_EXPENSE_BY_ID,
 } = expenseEndpoints;
 
 // API function to fetch expenses based on hostel
@@ -138,5 +142,154 @@ export const fetchTotalExpense = async (token) => {
   } catch (error) {
     console.error("Error fetching total expense:", error);
     throw new Error("Failed to fetch total expense");
+  }
+};
+
+export function editExpense(
+  expenseId,
+  productName,
+  productDescription,
+  productQuantity,
+  productPrice,
+  dateOfExpense,
+  productCategory,
+  token
+) {
+  return async (dispatch) => {
+    let result = null;
+
+    // Create a Toast notification to indicate that the process is loading
+    const toastId = toast.loading("Adding Expense...");
+
+    // Try to make a POST request to the ADD_EXPENSE_API endpoint with the expense data as the payload
+    try {
+      const response = await apiConnector(
+        "PUT",
+        EDIT_EXPENSE_API,
+        {
+          expenseId,
+          productName,
+          productDescription,
+          productQuantity,
+          dateOfExpense,
+          productPrice,
+          productCategory,
+        },
+        {
+          // Set the Content-Type header to multipart/form-data if the expense data includes files
+          "Content-Type": "multipart/form-data",
+
+          // Set the Authorization header to Bearer followed by the authentication token
+          Authorization: `Bearer ${token}`,
+        }
+      );
+
+      // Log the response data to the console
+      console.log("Edit EXPENSE API RESPONSE............", response);
+
+      // If the response data indicates that the operation was not successful, throw an error
+      if (!response?.data?.success) {
+        throw new Error("Could Not Edit Expense");
+      }
+
+      // Display a Toast notification indicating that the expense was added successfully
+      toast.success(response.data.message);
+
+      // Return the response data
+      result = response?.data?.updatedExpense;
+    } catch (error) {
+      // Log the error to the console
+      console.log("Edit EXPENSE API ERROR............", error);
+
+      // Display a Toast notification indicating that the expense could not be added
+      toast.error(error.message);
+    } finally {
+      // Dismiss the Toast notification
+      toast.dismiss(toastId);
+    }
+
+    // Return the result
+    return result;
+  };
+}
+
+// Define the fectch expese productwise function
+export const fetchExpenseProductWiseAndTotal = async (token, productName) => {
+  try {
+    const response = await apiConnector(
+      "GET",
+      EXPENSE_PRODUCT_WISE_AND_TOTAL_API,
+      { productName },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("fetch expense productwise ", response);
+    if (response?.data?.success) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch expense product-wise and total");
+    }
+  } catch (error) {
+    console.error("Error fetching expense product-wise and total:", error);
+    throw new Error("Failed to fetch expense product-wise and total");
+  }
+};
+
+// define the fetchexpenseCategorywise
+export const fetchExpenseCategoryWiseAndTotal = async (
+  token,
+  productCategory
+) => {
+  // const toastId = toast.loading("Loading...");
+  console.log("inside fetchExpense Category", token, productCategory);
+  try {
+    const response = await apiConnector(
+      "GET",
+      EXPENSE_CATEGORY_WISE_AND_TOTAL_API,
+      { productCategory },
+      {
+        // "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log(
+      "Fetch expense category wise api response...........",
+      response
+    );
+    if (response?.data?.success) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch expense category-wise and total");
+    }
+  } catch (error) {
+    console.error("Error fetching expense category-wise and total:", error);
+    throw new Error("Failed to fetch expense category-wise and total");
+  }
+};
+
+// getting expense by Id api
+export const getExpenseById = async (token, expenseId) => {
+  console.log("token", token);
+  console.log("expense id", expenseId);
+  try {
+    const response = await apiConnector(
+      "POST",
+      // ` ${GET_EXPENSE_BY_ID}/${expenseId}`,
+      GET_EXPENSE_BY_ID,
+      { expenseId },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("GET EXPENSE API RESPONSE......", response);
+    if (response?.data?.success) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch expense by id");
+    }
+  } catch (error) {
+    console.error("Error fetching expense by id:", error);
+    throw new Error("Failed to fetch expense by id");
   }
 };

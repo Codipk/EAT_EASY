@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { auth, isChiefWarden, isAccountant, isAccountantOrIsWarden } = require("../middleware/auth.middleware");
+const {
+  auth,
+  isChiefWarden,
+  isAccountant,
+  isAccountantOrIsWarden,
+} = require("../middleware/auth.middleware");
 const {
   getAllUserDetails,
   updateProfile,
@@ -9,9 +14,8 @@ const {
   deleteAccount,
   findUserByRegistrationNumber,
   updateProfilePicture,
-  markFeeStatusTrue
+  markFeeStatusTrue,
 } = require("../controllers/profileController");
-
 
 router.get("/getAllUserDetails", auth, getAllUserDetails);
 router.put("/updateProfile", auth, updateProfile);

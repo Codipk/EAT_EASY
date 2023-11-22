@@ -58,9 +58,9 @@ const AllExpenses = () => {
   };
   return (
     <div>
-      {/* <div className="mb-14 flex items-center justify-between">
+      <div className="mb-14 flex items-center justify-between">
         <h1 className="text-3xl font-medium text-richblack-5">All Expenses</h1>
-      </div> */}
+      </div>
       {loading && <p>Loading...</p>}
       <div className="mb-14 flex items-center justify-between">
         <h1 className="text-3xl font-medium text-richblack-5">All Expenses</h1>

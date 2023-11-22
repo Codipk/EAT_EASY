@@ -12,6 +12,7 @@ const {
   GET_ALL_COMPLAINTS_API,
   LIKE_COMPLAINT_API,
   DISLIKE_COMPLAINT_API,
+  RESOLVE_COMPLAINT_API,
 } = complaintEndpoints;
 
 // cration of complains
@@ -215,7 +216,7 @@ export const likeComplaint = async (complaintId, token) => {
       throw new Error("Could Not Like Complaint");
     }
 
-    toast.success("Complaint Liked");
+    toast.success(response.data.message);
     success = true;
     result = response?.data;
   } catch (error) {
@@ -248,7 +249,7 @@ export const dislikeComplaint = async (complaintId, token) => {
       throw new Error("Could Not Dislike Complaint");
     }
 
-    toast.success("Complaint Disliked");
+    toast.success(response.data.message);
     success = true;
     result = response?.data;
   } catch (error) {
@@ -259,5 +260,41 @@ export const dislikeComplaint = async (complaintId, token) => {
   }
 
   toast.dismiss(toastId);
+  return result;
+};
+
+export const resolveComplaint = async (complaintId, token) => {
+  const toastId = toast.loading("Loading...");
+  let success = false;
+  let result = null;
+
+  try {
+    const response = await apiConnector(
+      "PUT",
+      RESOLVE_COMPLAINT_API,
+      { complaintId },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Resolve Complaint API RESPONSE............", response);
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Resolve the Complaint");
+    }
+
+    toast.success(response?.data?.message);
+    success = true;
+    result = response?.data;
+  } catch (error) {
+    success = false;
+    console.log("Resolve Complaint API ERROR............", error);
+    toast.error(error.message);
+    // Instead of returning success directly, return an object with success property
+    return success;
+  }
+  toast.dismiss(toastId);
+
   return result;
 };
