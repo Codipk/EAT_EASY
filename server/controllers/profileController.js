@@ -25,7 +25,7 @@ exports.updateProfile = async (req, res) => {
     }
     console.log("Type of userDetails ", typeof userDetails);
     console.log("UserDetails : ", userDetails);
-    const profile = await additionDetails.findById(userDetails.additionalDetails);
+    const profile = await additionalDetails.findById(userDetails.additionalDetails);
     console.log("profile  : ", profile);
 
     //edit changes
@@ -191,7 +191,7 @@ exports.deleteAccount = async (req, res) => {
         message: 'User Does not Exist',
       });
     }
-    await additionDetails.findByIdAndDelete(userDetails.additionalDetails);
+    await additionalDetails.findByIdAndDelete(userDetails.additionalDetails);
     const hostelDetails = await Hostel.findByIdAndUpdate(
       userDetails.hostel,
       {
@@ -217,6 +217,7 @@ exports.deleteAccount = async (req, res) => {
 exports.findUserByRegistrationNumber = async (req, res) => {
   try {
     const { registrationNumber } = req.body;
+    console.log("Registration Number : ", registrationNumber);
     if (!registrationNumber) {
       return res.status(403).json({
         sucess: false,
@@ -229,6 +230,7 @@ exports.findUserByRegistrationNumber = async (req, res) => {
       path: 'hostel additionalDetails',
       select: '-menu -messCommittee -students',
     });
+    console.log("UserDetails inside findBYRegistrationNumber: ", userDetails)
     return res.status(200).json({
       success: true,
       message: 'User Details fetched Successfully',
