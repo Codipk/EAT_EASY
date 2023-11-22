@@ -195,9 +195,16 @@ exports.getNutritionDetails = async (req, res) => {
     }
   })
     .then(response => {
-      const data = response.data; // Assuming the API returns the date directly
-      console.log('Current data from API:', (data[0].calories * itemQuantity) / 100);
-      console.log("Type of data : ", typeof data);
+      const apiRes = response.data[0]; // Assuming the API returns the date directly
+      //calories
+      //protein_g
+      //carbohydrates_total_g
+      //fat_total_g
+      const data = {};
+      data.calories = (apiRes.calories * itemQuantity) / 100;
+      data.protein_g = (apiRes.protein_g * itemQuantity) / 100;
+      data.carbohydrates_total_g = (apiRes.carbohydrates_total_g * itemQuantity) / 100;
+      data.fat_total_g = (apiRes.fat_total_g * itemQuantity) / 100;
       return res.status(200).json({
         success: true,
         message: 'Calories Fetched Successfully',
