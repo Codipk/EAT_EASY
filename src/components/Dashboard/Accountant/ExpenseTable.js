@@ -6,12 +6,16 @@ import { formattedDate } from "../../../utils/dateFormatter";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import ConfirmationModal from "../../common/ConfirmationModal";
 import { fetchHostelWiseExpenses } from "../../../services/operations/ExpenseAPI";
+import { useNavigate } from "react-router-dom";
+import { FiEdit2 } from "react-icons/fi";
+
 const ExpenseTable = ({ expenses, setExpenses }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(null);
   console.log("Expense", expenses);
+  const navigate = useNavigate();
   const handleExpenseDelete = async (expenseId) => {
     setLoading(true);
     const expense_Id = expenseId.toString();
@@ -52,6 +56,9 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
             <Th className="text-left text-sm font-medium uppercase text-slate-200">
               Delete
             </Th>
+            <Th className="text-left text-sm font-medium uppercase text-slate-200">
+              Edit
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -87,6 +94,16 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
                 <Td className="text-white">{expense.productPrice}</Td>
                 <Td className="text-white">{expense.productQuantity}</Td>
                 <Td>
+                  <button
+                    disabled={loading}
+                    onClick={() => {
+                      navigate(`/dashboard/edit-expense/${expense._id}`);
+                    }}
+                    title="Edit"
+                    className="px-2 transition-all duration-200 hover:scale-110 hover:text-caribbeangreen-300"
+                  >
+                    <FiEdit2 size={20} />
+                  </button>
                   <button
                     disabled={loading}
                     onClick={() => {

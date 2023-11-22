@@ -17,6 +17,9 @@ const menuSlice = createSlice({
     setEditMessMenu(state, action) {
       state.editMessMenu = action.payload;
     },
+    // setNutritionDetails(state,action){
+    //   state.nutrio
+    // }
   },
 });
 

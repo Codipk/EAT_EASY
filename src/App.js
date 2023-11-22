@@ -25,6 +25,12 @@ import PrivateRoute from "./components/AuthRoute/PrivateRoute";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import AllExpenses from "./components/Dashboard/Accountant/AllExpenses";
 import CreateExpense from "./components/Dashboard/Accountant/CreateExpense";
+import EditExpense from "./components/Dashboard/Accountant/EditExpense";
+import CreateMessCommittee from "./components/Dashboard/Warden/Committee/CreateMessCommittee";
+import UpdatePassword from "./components/Dashboard/UpdatePassword";
+import Accountant from "./components/Dashboard/Accountant/Accountant";
+import ProductWise from "./components/Dashboard/Accountant/ProductWise";
+import CalorieCalculate from "./components/Dashboard/Calorie/CalorieCalculate";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,10 +44,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="/update-password/:id" element={<UpdatePassword />} />
           <Route path="/signup" element={<Register />}></Route>
           <Route path="/verify-email" element={<VerifyEmail />}></Route>
           <Route path="/aboutUs" element={<AboutUS />}></Route>
-          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+
           <Route
             element={
               <PrivateRoute>
@@ -76,16 +83,42 @@ function App() {
                 <Route path="dashboard/mess-menu" element={<Menu />} />
               </>
             )}
-            {/* {accountType === ACCOUNT_TYPE.MESS_COMMITEE && ( */}
-            <Route
-              path="dashboard/mess-menu/edit-mess-menu"
-              element={<EditMessMenu />}
-            />
-            {/* )} */}
-            <Route path="/dashboard/all-expenses" element={<AllExpenses />} />
-            <Route path="/dashboard/add-expenses" element={<CreateExpense />} />
-          </Route>
+            {accountType === ACCOUNT_TYPE.ACCOUNTANT && (
+              <>
+                <Route
+                  path="dashboard/mess-menu/edit-mess-menu"
+                  element={<EditMessMenu />}
+                />
+                <Route
+                  path="dashboard/edit-expense/:expenseId"
+                  element={<EditExpense />}
+                />
+                <Route
+                  path="/dashboard/all-expenses"
+                  element={<AllExpenses />}
+                />
+                <Route
+                  path="/dashboard/add-expenses"
+                  element={<CreateExpense />}
+                />
+                <Route
+                  path="/dashboard/daily-expenses"
+                  element={<Accountant />}
+                />
+                {/* <Route
+                  path="/dashboard/daily-expenses"
+                  element={<ProductWise />}
+                /> */}
+              </>
+            )}
 
+            <Route
+              path="/dashboard/mess-committee"
+              element={<CreateMessCommittee />}
+            />
+            <Route path="/dashboard/calorie" element={<CalorieCalculate />} />
+          </Route>
+          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
           {/* <Route path="dashboard/Settings" element={<Settings />} /> */}
           <Route path="*" element={<Error />}></Route>
         </Routes>

@@ -77,9 +77,6 @@ export default function AllComplaints() {
 
     fetchComplaints();
   }, [filterType, token, dispatch]);
-  // ***************************************************************
-  // HANDLE UPVOTE
-
   console.log("complaint", complaint);
   return (
     <div>
@@ -105,8 +102,6 @@ export default function AllComplaints() {
         <ComplaintTable2
           complaints={complaint}
           filter={filter}
-          // onUpvote={handleUpvote}
-          // onDownvote={handleDownvote}
           setComplaint={setComplaint}
         />
       )}

@@ -8,6 +8,7 @@ const initialState = {
   userDetails: null,
   loading: false,
   error: null,
+  searchResult: null,
 };
 
 const profileSlice = createSlice({
@@ -19,6 +20,12 @@ const profileSlice = createSlice({
     },
     setLoading(state, value) {
       state.loading = value.payload;
+    },
+    setSearchResult(state, value) {
+      state.searchResult = value.payload;
+    },
+    clearSearchResult(state, value) {
+      state.searchResult = null;
     },
   },
   extraReducers: (builder) => {
@@ -39,5 +46,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { setUser, setLoading } = profileSlice.actions;
+export const { setUser, setLoading, setSearchResult, clearSearchResult } =
+  profileSlice.actions;
 export default profileSlice.reducer;

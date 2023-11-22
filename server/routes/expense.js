@@ -1,12 +1,11 @@
 // Import the required modules
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-//import middleware -> 
+//import middleware ->
 
-const { auth, isAccountant } = require('../middleware/auth.middleware');
+const { auth, isAccountant } = require("../middleware/auth.middleware");
 
 const {
-
   addExpense,
   editExpense,
   getTotaltExpense,
@@ -17,9 +16,8 @@ const {
   getExpenseInRangeCategoryWiseAndTotal,
   getExpenseInRangeProductWiseAndTotal,
   getAllExpenseProductWiseAndTotal,
-  getExpenseById
-
-} = require('../controllers/dailyExpenseController');
+  getExpenseById,
+} = require("../controllers/dailyExpenseController");
 
 //import controllers
 router.post("/addDailyExpense", auth, isAccountant, addExpense);
@@ -30,18 +28,48 @@ router.get("/getTotalExpense", auth, isAccountant, getTotaltExpense);
 
 router.delete("/deleteExpense", auth, isAccountant, deleteExpense);
 
-router.get("/getAllDetailsOfExpenseHostelWise", auth, isAccountant, getAllDetailsOfExpense);
+router.get(
+  "/getAllDetailsOfExpenseHostelWise",
+  auth,
+  isAccountant,
+  getAllDetailsOfExpense
+);
 
-router.get("/getExpenseInRangeAndTotalHostelWise", auth, isAccountant, getExpenseInRangeAndTotal);
+router.get(
+  "/getExpenseInRangeAndTotalHostelWise",
+  auth,
+  isAccountant,
+  getExpenseInRangeAndTotal
+);
 
-router.get("/getAllExpenseCategoryWiseAndTotal", auth, isAccountant, getAllExpenseCategoryWiseAndTotal);
+router.get(
+  "/getAllExpenseCategoryWiseAndTotal",
+  auth,
+  isAccountant,
+  getAllExpenseCategoryWiseAndTotal
+);
 
-router.get("/getExpenseInRangeCategoryWiseAndTotal", auth, isAccountant, getExpenseInRangeCategoryWiseAndTotal);
+router.get(
+  "/getExpenseInRangeCategoryWiseAndTotal",
+  auth,
+  isAccountant,
+  getExpenseInRangeCategoryWiseAndTotal
+);
 
-router.get("/getExpenseInRangeProductWiseAndTotal", auth, isAccountant, getExpenseInRangeProductWiseAndTotal);
+router.post(
+  "/getExpenseInRangeProductWiseAndTotal",
+  auth,
+  isAccountant,
+  getExpenseInRangeProductWiseAndTotal
+);
 
-router.get("/getAllExpenseProductWiseAndTotal", auth, isAccountant, getAllExpenseProductWiseAndTotal);
+router.get(
+  "/getAllExpenseProductWiseAndTotal",
+  auth,
+  isAccountant,
+  getAllExpenseProductWiseAndTotal
+);
 
-router.get("/getExpense/:id", auth, isAccountant, getExpenseById);
+router.post("/getExpense", auth, isAccountant, getExpenseById);
 
 module.exports = router;

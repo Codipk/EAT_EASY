@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import {
   setProductName,
   setProductDescription,
@@ -7,10 +8,14 @@ import {
   setProductPrice,
   setError,
 } from "../../../slices/expenseSlice";
-import { addExpense } from "../../../services/operations/ExpenseAPI";
-import { useForm } from "react-hook-form";
+import {
+  editExpense,
+  fetchExpenseDetails,
+  getExpenseById,
+} from "../../../services/operations/ExpenseAPI";
+import ExpenseForm from "./ExpenseForm";
 import IconBtn from "../../common/IconBtn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const categoryOptions = [
   "Vegetables",
   "Oils",
@@ -19,29 +24,77 @@ const categoryOptions = [
   "Furniture-and-Utensils",
   "Others",
 ];
-export default function AddExpense() {
-  const { expense } = useSelector((state) => state.expense);
+const EditExpense = ({ expense }) => {
+  // const { expense } = useSelector((state) => state.expense);
+  const { expenseId } = useParams();
+  console.log("expenseId", expenseId);
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
+  console.log("expense", expense);
+  useEffect(() => {
+    const getExpense = async () => {
+      try {
+        const response = await getExpenseById(token, expenseId);
+        console.log("response", response);
+        const expense = response.expense;
+        if (response) {
+          setValue("productName", expense.productName);
+          setValue("productDescription", expense.productDescription);
+          setValue("productQuantity", expense.productQuantity);
+          setValue("productPrice", expense.productPrice);
+          setValue("productCategory", expense.productCategory);
+        }
+      } catch (error) {
+        console.log("error in fetching expense by id", error);
+      }
+    };
+    getExpense();
+  }, [token, dispatch]);
 
-  const submitExpenseForm = (data) => {
+  const submitExpenseForm = async (data) => {
     console.log("Form Data - ", data);
+    console.log("expense Id", expenseId);
     const currentDate = new Date().toISOString().split("T")[0];
     data.dateOfExpense = currentDate;
-    dispatch(addExpense(data, token));
+    console.log("data", data);
+    const result = await dispatch(
+      editExpense(
+        expenseId,
+        data.productName,
+        data.productDescription,
+        data.productQuantity,
+        data.productPrice,
+        data.dateOfExpense,
+        data.productCategory,
+        token
+      )
+    );
+
+    if (result) {
+      // Handle success, e.g., navigate to expense list page
+      console.log("Response in submitEdit", result);
+      navigate("/dashboard/all-expenses");
+    } else {
+      console.log("updated expense is null");
+    }
   };
 
   return (
     <>
       <form onSubmit={handleSubmit(submitExpenseForm)}>
-        {/* Expense Information */}
         <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-yellow-100 p-8 px-12">
           <h2 className="text-lg font-semibold text-white">
             Expense Information
@@ -188,4 +241,6 @@ export default function AddExpense() {
       </form>
     </>
   );
-}
+};
+
+export default EditExpense;

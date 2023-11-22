@@ -6,6 +6,8 @@ const User = require("../models/userSchema");
 exports.auth = async (req, res, next) => {
   try {
     console.log("BEFORE ToKEN EXTRACTION");
+    console.log("request", req.header);
+
     //extract token
     const token =
       req.cookies.token ||
@@ -119,11 +121,16 @@ exports.notStudent = async (req, res, next) => {
       message: "User cannot be verified. Please try again",
     });
   }
-}
+};
 
 exports.isAccountantOrIsWarden = async (req, res, next) => {
   try {
-    if (!(req.user.accountType === "Chief-Warden" || req.user.accountType == "Accountant")) {
+    if (
+      !(
+        req.user.accountType === "Chief-Warden" ||
+        req.user.accountType == "Accountant"
+      )
+    ) {
       return res.status(401).json({
         success: false,
         message: "This is protected routes for accountants and wardens",
@@ -136,4 +143,4 @@ exports.isAccountantOrIsWarden = async (req, res, next) => {
       message: "Cannot Mark as Paid. Please try again",
     });
   }
-}
+};

@@ -8,6 +8,7 @@ import {
   deleteComplaint,
   likeComplaint,
   dislikeComplaint,
+  resolveComplaint,
 } from "../../services/operations/ComplaintAPI";
 import {
   upvoteComplaint,
@@ -19,7 +20,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { HiClock } from "react-icons/hi";
 import ConfirmationModal from "../common/ConfirmationModal";
 import toast from "react-hot-toast";
-const ComplaintTable = ({ complaints, setComplaint }) => {
+const ComplaintTable2 = ({ complaints, setComplaint }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
@@ -78,6 +79,36 @@ const ComplaintTable = ({ complaints, setComplaint }) => {
       }
     } catch (error) {
       console.error("Error while liking complaint:", error.message);
+    }
+  };
+  // **************mark as resolved
+  const handleResolveClick = async (complaintId) => {
+    try {
+      // Make an API call to mark the complaint as resolved
+      // You need to implement the API endpoint for this operation
+      const response = await resolveComplaint(complaintId, token);
+      console.log("response ", response);
+      if (response?.success) {
+        // Successfully marked as resolved
+        const updatedComplaint = response?.complaint;
+        console.log("Updated Complaint after resolving:", updatedComplaint);
+
+        // Update the local state
+        setComplaint((prevComplaints) =>
+          prevComplaints.map((complaint) =>
+            complaint._id === updatedComplaint._id
+              ? updatedComplaint
+              : complaint
+          )
+        );
+
+        // toast.success("response.");
+        console.log("MARKED COMPLAINT AS RESOLVED");
+      } else {
+        console.log("Failed to mark as resolved");
+      }
+    } catch (error) {
+      console.error("Error while resolving complaint:", error.message);
     }
   };
 
@@ -165,6 +196,16 @@ const ComplaintTable = ({ complaints, setComplaint }) => {
                           <FaCheck size={8} />
                         </div>
                         Unresolved
+                        <button
+                          disabled={loading}
+                          className="bg-slate-500 p-1 text-yellow-200"
+                          onClick={() => handleResolveClick(complaint._id)}
+                        >
+                          Resolved
+                        </button>
+                        {/* {complaint.isResolved === true && (
+                          <p>Resolve by {complaint.resolvedBy}</p>
+                        )} */}
                       </p>
                     )}
                   </div>
@@ -233,4 +274,4 @@ const ComplaintTable = ({ complaints, setComplaint }) => {
   );
 };
 
-export default ComplaintTable;
+export default ComplaintTable2;
