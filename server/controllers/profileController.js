@@ -219,7 +219,7 @@ exports.findUserByRegistrationNumber = async (req, res) => {
     const { registrationNumber } = req.body;
     if (!registrationNumber) {
       return res.status(403).json({
-        sucess: true,
+        sucess: false,
         message: 'Enter Registration Number',
       });
     }

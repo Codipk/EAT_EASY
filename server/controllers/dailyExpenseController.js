@@ -4,7 +4,6 @@ const DailyExpense = require('../models/dailyExpensechema');
 
 
 //add
-
 exports.addExpense = async (req, res) => {
   try {
     // Get hostel id
@@ -16,7 +15,7 @@ exports.addExpense = async (req, res) => {
     const userDetails = await User.findById(req.user.id);
     const hostelId = userDetails.hostel;
     let {
-      productName, productDescription, productQuantity, productPrice, dateOfExpense,productCategory
+      productName, productDescription, productQuantity, productPrice, dateOfExpense, productCategory
     } = req.body;
     if (!productName || !productPrice) {
       return res.status(403).json({
@@ -52,8 +51,6 @@ exports.addExpense = async (req, res) => {
 }
 
 
-
-
 //edit
 
 exports.editExpense = async (req, res) => {
@@ -63,7 +60,7 @@ exports.editExpense = async (req, res) => {
     //findbyid and update expense 
     //return response
 
-    const { expenseId, productName, productDescription, productQuantity, productPrice,dateOfExpense,productCategory } = req.body;
+    const { expenseId, productName, productDescription, productQuantity, productPrice, dateOfExpense, productCategory } = req.body;
     if (!productName || !productPrice) {
       return res.status(403).json({
         success: false,
@@ -96,12 +93,39 @@ exports.editExpense = async (req, res) => {
   }
 }
 
+//get expenseById
+exports.getExpenseById = async (req, res) => {
+  try {
+    const expenseId = req.params.id;
+    const expense = await DailyExpense.findById(expenseId);
+    if (!expense) {
+      return res.status(200).json({
+        success: true,
+        message: 'No such expense Exist',
+      })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Expense Fetched Successfully',
+      expense,
+    });
+  } catch (error) {
+    console.log("Error in Fetching expense by id ", error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+
+
+
+}
 
 
 
 //getAllExpense
-
-exports.getAllDetailsOfExpenseHostelWise = async (req, res) => {
+exports.getAllDetailsOfExpense = async (req, res) => {
   try {
     // fetch hostelId
     const userId = req.user.id;
@@ -125,12 +149,7 @@ exports.getAllDetailsOfExpenseHostelWise = async (req, res) => {
     });
   }
 }
-
-
-
-
 //delete
-
 exports.deleteExpense = async (req, res) => {
   try {
     // fetch expenseId req.body
@@ -155,9 +174,6 @@ exports.deleteExpense = async (req, res) => {
     });
   }
 }
-
-
-
 
 //getTotalExpense of hostel till now 
 
@@ -196,8 +212,6 @@ exports.getTotaltExpense = async (req, res) => {
 }
 
 
-
-
 //getAllExpenseProductWiseAndTotal of hostel till now
 
 exports.getAllExpenseProductWiseAndTotal = async (req, res) => {
@@ -208,17 +222,17 @@ exports.getAllExpenseProductWiseAndTotal = async (req, res) => {
     const hostelId = userDetails.hostel;
     // console.log(hostelId)
     const {
-      productName, 
+      productName,
     } = req.body;
 
-    
+
 
     const totalExpense = await DailyExpense.aggregate([
       {
         $match: {
           "hostel": hostelId,
-          "productName" : productName,
-          
+          "productName": productName,
+
         }
       },
 
@@ -231,8 +245,8 @@ exports.getAllExpenseProductWiseAndTotal = async (req, res) => {
 
     const productNameWiseExpense = await DailyExpense.find({
       hostel: hostelId,
-      productName : productName,
-      
+      productName: productName,
+
     });
     console.log(totalExpense)
     let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
@@ -252,11 +266,7 @@ exports.getAllExpenseProductWiseAndTotal = async (req, res) => {
   }
 }
 
-
-
-
 //getExpenseInRangeAndTotal of hostel till now 
-
 exports.getExpenseInRangeAndTotal = async (req, res) => {
   try {
     // fetch hostel Id 
@@ -317,9 +327,6 @@ exports.getExpenseInRangeAndTotal = async (req, res) => {
   }
 }
 
-
-
-
 //getAllExpenseCategoryWiseAndTotal of hostel till now
 
 exports.getAllExpenseCategoryWiseAndTotal = async (req, res) => {
@@ -333,13 +340,13 @@ exports.getAllExpenseCategoryWiseAndTotal = async (req, res) => {
       productCategory
     } = req.body;
 
-    
+
 
     const totalExpense = await DailyExpense.aggregate([
       {
         $match: {
           "hostel": hostelId,
-          "productCategory" : productCategory
+          "productCategory": productCategory
         }
       },
 
@@ -352,7 +359,7 @@ exports.getAllExpenseCategoryWiseAndTotal = async (req, res) => {
 
     const categoryWiseExpense = await DailyExpense.find({
       hostel: hostelId,
-      productCategory : productCategory,
+      productCategory: productCategory,
     });
     console.log(totalExpense)
     let total = totalExpense.length > 0 ? totalExpense[0].total : 0;
@@ -385,16 +392,16 @@ exports.getExpenseInRangeCategoryWiseAndTotal = async (req, res) => {
     const hostelId = userDetails.hostel;
     // console.log(hostelId)
     const {
-      productCategory, startDate,endDate
+      productCategory, startDate, endDate
     } = req.body;
 
-    
+
 
     const totalExpense = await DailyExpense.aggregate([
       {
         $match: {
           "hostel": hostelId,
-          "productCategory" : productCategory,
+          "productCategory": productCategory,
           $expr: {
             $and: [
               { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
@@ -413,7 +420,7 @@ exports.getExpenseInRangeCategoryWiseAndTotal = async (req, res) => {
 
     const categoryWiseExpense = await DailyExpense.find({
       hostel: hostelId,
-      productCategory : productCategory,
+      productCategory: productCategory,
       $expr: {
         $and: [
           { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
@@ -452,16 +459,16 @@ exports.getExpenseInRangeProductWiseAndTotal = async (req, res) => {
     const hostelId = userDetails.hostel;
     // console.log(hostelId)
     const {
-      productName, startDate,endDate
+      productName, startDate, endDate
     } = req.body;
 
-    
+
 
     const totalExpense = await DailyExpense.aggregate([
       {
         $match: {
           "hostel": hostelId,
-          "productName" : productName,
+          "productName": productName,
           $expr: {
             $and: [
               { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },
@@ -480,7 +487,7 @@ exports.getExpenseInRangeProductWiseAndTotal = async (req, res) => {
 
     const productNameWiseExpense = await DailyExpense.find({
       hostel: hostelId,
-      productName : productName,
+      productName: productName,
       $expr: {
         $and: [
           { $gte: [{ $dateToString: { format: "%Y-%m-%d", date: "$dateOfExpense" } }, startDate] },

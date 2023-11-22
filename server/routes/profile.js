@@ -1,5 +1,5 @@
 const express = require("express");
-
+const router = express.Router();
 const { auth, isChiefWarden } = require("../middleware/auth.middleware");
 const {
   getAllUserDetails,
@@ -10,7 +10,7 @@ const {
   findUserByRegistrationNumber,
   updateProfilePicture
 } = require("../controllers/profileController");
-const router = express.Router();
+
 
 router.get("/getAllUserDetails", auth, getAllUserDetails);
 router.put("/updateProfile", auth, updateProfile);

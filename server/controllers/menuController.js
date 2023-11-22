@@ -1,7 +1,7 @@
 const Menu = require("../models/menuSchema");
 const User = require("../models/userSchema");
 const Hostel = require("../models/hostelSchema");
-
+const axios = require('axios');
 //add menu
 exports.addMessMenu = async (req, res) => {
   try {
@@ -180,3 +180,35 @@ exports.editMessMenu = async (req, res) => {
     });
   }
 };
+
+exports.getNutritionDetails = async (req, res) => {
+
+  let apiUrl = 'https://api.api-ninjas.com/v1/nutrition?query=';
+  const apiKey = process.env.NUTRITION_API_KEY;
+  const { itemName, itemQuantity } = req.body;
+  apiUrl = `${apiUrl} + ${itemName}`
+
+  axios.get(apiUrl, {
+    headers: {
+      'X-Api-Key': apiKey
+      // You might need to use a different header key or format based on the API documentation
+    }
+  })
+    .then(response => {
+      const data = response.data; // Assuming the API returns the date directly
+      console.log('Current data from API:', (data[0].calories * itemQuantity) / 100);
+      console.log("Type of data : ", typeof data);
+      return res.status(200).json({
+        success: true,
+        message: 'Calories Fetched Successfully',
+        data,
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching date:', error);
+    });
+
+
+
+}
+
