@@ -3,7 +3,7 @@ const User = require("../models/userSchema");
 const Hostel = require("../models/hostelSchema");
 const BlockedUser = require("../models/blockedUserSchema");
 require("dotenv").config();
-
+const mongoose = require('mongoose');
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { find, findByIdAndUpdate } = require("../models/additionalDetailSchema");
 
@@ -415,7 +415,13 @@ exports.commentsOnComplaints = async (req, res) => {
 }
 exports.getComplaintByMostVotes = async (req, res) => {
   try {
+    const userDetails = await User.findById(req.user.id);
+    const hostelDetails = await Hostel.findById(userDetails.hostel);
+
     const complaints = await Complaint.aggregate([
+      {
+        $match: { hostelName: hostelDetails.hostelName }
+      },
       {
         $lookup: {
           from: 'users', // Assuming your users collection name is 'users'
@@ -475,7 +481,13 @@ exports.getComplaintByMostVotes = async (req, res) => {
 };
 exports.getMostRecentsComplaints = async (req, res) => {
   try {
+    const userDetails = await User.findById(req.user.id);
+    const hostelDetails = await Hostel.findById(userDetails.hostel);
+
     const complaints = await Complaint.aggregate([
+      {
+        $match: { hostelName: hostelDetails.hostelName }
+      },
       {
         $lookup: {
           from: 'users', // Assuming your users collection name is 'users'
