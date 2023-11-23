@@ -142,7 +142,7 @@ export const searchUserByRegistrationNumber = async (
       // Dispatch success action and update the Redux state
       // dispatch(setUserDetails(response?.data?.userDetails)); // Replace
       toast.success("User details fetched successfully");
-      return response?.data?.userDetails; // Return the user data
+      return response?.data; // Return the user data
     } else {
       // If the response does not indicate success, throw an error
       throw new Error("Could Not Fetch User Details");

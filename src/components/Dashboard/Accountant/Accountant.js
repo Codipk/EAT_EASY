@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchHostelWiseExpenses } from "../../../services/operations/ExpenseAPI"; // Import the function to fetch expenses
 import ProductWise from "./ProductWise";
 import { Link } from "react-router-dom";
-
+import CategoryWise from "./CategoryWise";
+import Ranges from "./Ranges";
 const Accountant = () => {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
@@ -51,7 +52,9 @@ const Accountant = () => {
         <div>
           {/* Display expense-wise statistics */}
           <div className="my-4 flex-[450px] space-x-10">
-            <ProductWise token={token} />
+            {/* <ProductWise token={token} /> */}
+            <CategoryWise />
+            {/* <Ranges /> */}
             <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 py-6 px-32">
               <p className="text-2xl font-extrabold">Statistics</p>
               <div className="flex flex-col py-4 text-xl">

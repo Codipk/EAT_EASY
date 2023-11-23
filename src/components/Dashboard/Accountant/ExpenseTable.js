@@ -14,7 +14,7 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(null);
-  console.log("Expense", expenses);
+
   const navigate = useNavigate();
   const handleExpenseDelete = async (expenseId) => {
     setLoading(true);
@@ -35,6 +35,7 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
     setConfirmationModal(null);
     setLoading(false);
   };
+  console.log("Expense", expenses);
 
   return (
     <>
@@ -42,7 +43,7 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
         <Thead>
           <Tr className="flex gap-x-10 rounded-t-md border-b border-b-yellow-100 px-6 py-2">
             <Th className="text-left text-sm font-medium uppercase text-slate-200">
-              Expense Name
+              Complaint Name
             </Th>
             <Th className="text-left text-sm font-medium uppercase text-slate-200">
               Price
@@ -74,13 +75,12 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
                 key={expense._id}
                 className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
               >
-                <Td className="text-white ">
-                  <p className="text-lg font-semibold text-white">
-                    {expense.productName}
-                  </p>
-                </Td>
+                {/* <Td className="text-white "></Td> */}
                 <Td>
-                  <div>
+                  <div className="flex flex-col justify-between">
+                    <p className="text-lg font-semibold text-white">
+                      {expense.productName}
+                    </p>
                     <p className="text-xs text-white">
                       {" "}
                       {expense.productDescription}
@@ -91,8 +91,12 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
                   </div>
                 </Td>
 
-                <Td className="text-white">{expense.productPrice}</Td>
-                <Td className="text-white">{expense.productQuantity}</Td>
+                <Td className="text-sm font-medium text-white">
+                  {expense.productPrice}
+                </Td>
+                <Td className="text-sm font-medium text-white">
+                  {expense.productQuantity}
+                </Td>
                 <Td>
                   <button
                     disabled={loading}
