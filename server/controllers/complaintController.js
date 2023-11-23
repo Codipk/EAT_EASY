@@ -134,6 +134,44 @@ exports.getAllComplaints = async (req, res) => {
     });
   }
 };
+
+// get complaint by id
+exports.getComplaintById = async (req,res) =>{
+  try {
+    const { complaintId } = req.params; // Extract complaint ID from URL parameters
+    console.log(complaintId);
+   
+    const complaint = await Complaint.findById(complaintId)
+      .populate({
+        path: 'author',
+        populate: {
+          path: 'additionalDetails hostel',
+        },
+      })
+      .exec();
+     console.log(complaint);
+    if (!complaint) {
+      return res.status(404).json({
+        success: false,
+        message: 'Complaint not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Complaint Fetched Successfully',
+      complaint,
+    });
+    
+  } catch (error) {
+    console.log("error in getting complaints by id: ", error);
+    return res.status(500).json({
+      sucess: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+}
 //get unresolved complaint
 exports.getUnresolvedComplaints = async (req, res) => {
   try {
@@ -365,53 +403,6 @@ exports.resolveComplaint = async (req, res) => {
   }
 };
 
-exports.commentsOnComplaints = async (req, res) => {
-  try {
-    const comment = {
-      text: req.body.text,
-      commentedBy: req.user.id
-    };
-    const { complaintId } = req.body;
-
-    const updatedComplaint = await Complaint.findByIdAndUpdate(
-      complaintId,
-      {
-        $push: { comments: comment }
-      },
-      {
-        new: true
-      }
-    )
-      .populate({
-        path: 'comments',
-
-        populate: {
-          path: 'commentedBy',
-          select: 'firstName lastName'
-        },
-      });
-
-    if (!updatedComplaint) {
-      return res.status(404).json({
-        success: false,
-        message: 'Complaint Not found'
-      });
-    }
-    res.status(200).json({
-      sucess: true,
-      message: 'Commented Successfully',
-      updatedComplaint
-    })
-
-  } catch (error) {
-    console.log("Error in Commenting On Complaint: ", error);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error,
-    });
-  }
-}
 exports.getComplaintByMostVotes = async (req, res) => {
   try {
     const userDetails = await User.findById(req.user.id);
@@ -542,3 +533,5 @@ exports.getMostRecentsComplaints = async (req, res) => {
     })
   }
 };
+
+

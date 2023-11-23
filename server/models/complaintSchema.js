@@ -19,7 +19,7 @@ const complaints = new mongoose.Schema({
     required: true
   },
   img: {
-    type: String,//url for image
+    type: String,
   },
   upVotedBy: [
     {
@@ -42,13 +42,6 @@ const complaints = new mongoose.Schema({
     ref: "User",
     default: null,
   },
-  comments:[{
-    text:String,
-    commentedBy :{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"User"
-    }
-}],
 }, { timestamps: true }, { strictPopulate: false });
 
 
