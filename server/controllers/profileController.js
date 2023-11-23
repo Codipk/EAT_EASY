@@ -215,8 +215,9 @@ exports.deleteAccount = async (req, res) => {
 
 exports.findUserByRegistrationNumber = async (req, res) => {
   try {
-    console.log("request", req);
     const { registrationNumber } = req.body;
+    const userId = req.user.id;
+    const userInfo = await User.findById(userId);
     console.log("Registration Number : ", registrationNumber);
     if (!registrationNumber) {
       return res.status(403).json({
@@ -226,6 +227,7 @@ exports.findUserByRegistrationNumber = async (req, res) => {
     }
     const userDetails = await User.find({
       registrationNumber: registrationNumber,
+      hostel: userInfo.hostel
     }).populate({
       path: "hostel additionalDetails",
       select: "-menu -messCommittee -students",

@@ -5,22 +5,10 @@ const messCommitteeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  messManager: {
+  messMember: [{
     type: mongoose.Schema.Types.ObjectId,
-    trim: true,
-  },
-  messSecretary: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      trim: true,
-    }
-  ],
-  messMember: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      trim: true,
-    }
-  ]
+    ref: 'User',
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model("MessCommittee", messCommitteeSchema);

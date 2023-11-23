@@ -5,7 +5,6 @@ const BlockedUser = require("../models/blockedUserSchema");
 require("dotenv").config();
 const mongoose = require('mongoose');
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-const { find, findByIdAndUpdate } = require("../models/additionalDetailSchema");
 
 //function to create new complaint
 exports.createComplaint = async (req, res) => {
