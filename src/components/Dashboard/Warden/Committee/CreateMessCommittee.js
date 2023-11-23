@@ -4,6 +4,7 @@ import {
   setSearchResult,
   clearSearchResult,
 } from "../../../../slices/profileSlice";
+import { toast } from "react-hot-toast";
 import { searchUserByRegistrationNumber } from "../../../../services/operations/messcommitteeAPI";
 import UserDetailsComponent from "./CreateCommittee/UserDetails";
 
@@ -23,10 +24,11 @@ const SearchUser = () => {
       );
       // Dispatch success action
       console.log("response in handle search", response);
-      dispatch(setSearchResult(response[0]));
+      dispatch(setSearchResult(response.userDetails));
       setShowDetails(false);
     } catch (error) {
       // Dispatch failure action
+      toast.error("User has not been updated his profile");
       console.error("Error searching for user details:", error.message);
     }
   };
@@ -44,14 +46,18 @@ const SearchUser = () => {
       <button onClick={handleSearch} disabled={loading}>
         Search
       </button>
-      <button onClick={handleShowDetails} disabled={!searchResult}>
-        Show Details
-      </button>
-      {loading && <p>Loading...</p>}
-      {searchResult === null && (
-        <div className="text-white p-2 font-semibold">Not Found</div>
-      )}
       {searchResult && (
+        <button onClick={handleShowDetails} disabled={!searchResult}>
+          Show Details
+        </button>
+      )}
+      {loading && <p>Loading...</p>}
+      {searchResult && searchResult.length === 0 && (
+        <div className="text-white p-2 font-semibold">
+          Not Found or User not updated his/her details
+        </div>
+      )}
+      {searchResult && searchResult.length > 0 && (
         <div className="text-white p-2 font-semibold">
           {loading && <p>Loading...</p>}
           {searchResult === null && (
@@ -59,9 +65,9 @@ const SearchUser = () => {
           )}
           {searchResult && showDetails && (
             <div className="text-white p-2 font-semibold">
-              User found: {searchResult.firstName}
+              User found: {searchResult[0].firstName}
               {/* Add more details here based on the user object */}
-              <UserDetailsComponent userDetails={searchResult} />
+              <UserDetailsComponent userDetails={searchResult[0]} />
             </div>
           )}
         </div>

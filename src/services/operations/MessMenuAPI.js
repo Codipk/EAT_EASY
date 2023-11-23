@@ -88,7 +88,7 @@ export const getNutritionDetails = async (token, itemName, itemQuantity) => {
   try {
     console.log("token", token);
     const response = await apiConnector(
-      "GET",
+      "POST",
       GET_NUTRITION_DETAILS_API,
       { itemName, itemQuantity },
       {
@@ -102,7 +102,7 @@ export const getNutritionDetails = async (token, itemName, itemQuantity) => {
       // Assuming you have a setNutritionDetails action, replace it with the actual action you're using
       // dispatch(setNutritionDetails(response?.data?.data));
       toast.success("Nutrition details fetched successfully");
-      return response?.data?.data; // Return the nutrition data
+      return response?.data; // Return the nutrition data
     } else {
       // If the response does not indicate success, throw an error
       throw new Error("Could Not Fetch Nutrition Details");

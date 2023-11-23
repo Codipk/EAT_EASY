@@ -14,7 +14,8 @@ const {
   GET_USER_DETAILS_API,
   BLOCK_THE_USER,
   UNBLOCK_USER,
-
+  MARK_FEE_PAID,
+  MARK_FEE_PAID_FALSE,
   RESETPASSWORD_API,
 } = settingsEndpoints;
 
@@ -219,7 +220,7 @@ export const UnBlockUser = async (token, userId) => {
     // Replace with your actual backend API endpoint
 
     const response = await apiConnector(
-      "POST",
+      "DELETE",
       UNBLOCK_USER,
       { userId },
       {
@@ -241,6 +242,75 @@ export const UnBlockUser = async (token, userId) => {
     }
   } catch (error) {
     console.error("USER UnBlocked API ERROR............", error);
+    toast.error(error.message);
+    // Dispatch error action and update the Redux state
+    // dispatch(setError(error.message)); // Remove this line if you don't have an 'setError' action
+    return null; // Return null to indicate an error
+  }
+};
+
+// mark feee status
+export const markFeeStatusTrue = async (token, userId) => {
+  let result = null;
+  // const toastId = toast.loading("Fetching user details...");
+  try {
+    const response = await apiConnector(
+      "PUT",
+      MARK_FEE_PAID,
+      { userId },
+      {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("FEE Paid RESPONSE............", response);
+
+    if (response?.data?.success === true) {
+      // Dispatch success action and update the Redux state
+      // dispatch(setUserDetails(response?.data?.userDetails)); // Replace
+      // toast.success(response.data.message);
+      return response?.data; // Return the user data
+    } else {
+      // If the response does not indicate success, throw an error
+      throw new Error("Could Not update the mess fee");
+    }
+  } catch (error) {
+    console.error("FEe Paid API ERROR............", error);
+    toast.error(error.message);
+    // Dispatch error action and update the Redux state
+    // dispatch(setError(error.message)); // Remove this line if you don't have an 'setError' action
+    return null; // Return null to indicate an error
+  }
+};
+
+export const markFeeStatusFalse = async (token, userId) => {
+  let result = null;
+  // const toastId = toast.loading("Fetching user details...");
+  try {
+    const response = await apiConnector(
+      "PUT",
+      MARK_FEE_PAID_FALSE,
+      { userId },
+      {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("FEE NOTPaid RESPONSE............", response);
+
+    if (response?.data?.success === true) {
+      // Dispatch success action and update the Redux state
+      // dispatch(setUserDetails(response?.data?.userDetails)); // Replace
+      // toast.success(response.data.message);
+      return response?.data; // Return the user data
+    } else {
+      // If the response does not indicate success, throw an error
+      throw new Error("Could Not update the mess fee");
+    }
+  } catch (error) {
+    console.error("FEe not Paid API ERROR............", error);
     toast.error(error.message);
     // Dispatch error action and update the Redux state
     // dispatch(setError(error.message)); // Remove this line if you don't have an 'setError' action

@@ -3,32 +3,111 @@ import { toast } from "react-hot-toast";
 import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { BlockUser } from "../../../../../services/operations/SettingsAPI";
+import { ACCOUNT_TYPE } from "../../../../../utils/constants";
+import {
+  BlockUser,
+  markFeeStatusTrue,
+  markFeeStatusFalse,
+  UnBlockUser,
+} from "../../../../../services/operations/SettingsAPI";
 const UserDetailsComponent = ({ userDetails }) => {
+  const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
   const [isBlocked, setIsBlocked] = useState(userDetails?.isBlocked || false);
   const userId = userDetails._id;
-  const handleBlockToggle = async () => {
-    try {
-      // Replace the URL with your actual API endpoint for updating block status
+  const [isMessFeePaid, setIsMessFeePaid] = useState(
+    userDetails?.additionalDetails?.isMessFeePaid || false
+  );
 
-      const response = await BlockUser(token, userId);
-      console.log("response in block toggle", response);
-      if (response) {
-        setIsBlocked(!isBlocked);
-        if (isBlocked) {
-          toast.success("successfully blocked the user");
+  const handleBlockToggle = async () => {
+    if (!isBlocked) {
+      try {
+        // Replace the URL with your actual API endpoint for updating block status
+
+        const response = await BlockUser(token, userId);
+
+        if (response) {
+          if (!isBlocked) {
+            toast.success(response?.message);
+          }
+          console.log("response in block toggle", response);
+          setIsBlocked(!isBlocked);
         } else {
-          toast.success("Successfully Unblocked the user");
+          // Handle errors, e.g., show a message to the user
+          console.error("Failed to update block status:", response.statusText);
         }
-      } else {
-        // Handle errors, e.g., show a message to the user
-        console.error("Failed to update block status:", response.statusText);
+      } catch (error) {
+        console.error("Error updating block status:", error.message);
       }
-    } catch (error) {
-      console.error("Error updating block status:", error.message);
+    } else {
+      try {
+        // Replace the URL with your actual API endpoint for updating block status
+
+        const response = await UnBlockUser(token, userId);
+
+        if (response) {
+          if (!isBlocked) {
+            toast.success(response?.message);
+          }
+          // } else {
+          //   toast.success("Successfully Blocked the user");
+          // }
+          console.log("response in unblock toggle", response);
+          setIsBlocked(!isBlocked);
+        } else {
+          // Handle errors, e.g., show a message to the user
+          console.error("Failed to update block status:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error updating block status:", error.message);
+      }
     }
   };
+  const handleMessFeeToggle = async () => {
+    if (isMessFeePaid) {
+      try {
+        const response = await markFeeStatusTrue(token, userId);
+        console.log("response in mess fee toggle", response);
+        if (response) {
+          setIsMessFeePaid(!isMessFeePaid);
+          toast.success(
+            isMessFeePaid
+              ? "Successfully marked mess fee as unpaid"
+              : "Successfully marked mess fee as paid"
+          );
+        } else {
+          console.error(
+            "Failed to update mess fee status:",
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Error updating mess fee status:", error.message);
+      }
+    } else {
+      try {
+        const response = await markFeeStatusFalse(token, userId);
+        console.log("response in mess fee toggle", response);
+        if (response) {
+          setIsMessFeePaid(!isMessFeePaid);
+          toast.success(
+            isMessFeePaid
+              ? "Successfully marked mess fee as paid"
+              : "Successfully marked mess fee as unpaid"
+          );
+        } else {
+          console.error(
+            "Failed to update mess fee status:",
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Error updating mess fee status:", error.message);
+      }
+    }
+  };
+  console.log("userdetails", userDetails);
+
   return (
     <div>
       <form className="flex max-w-[500px] justify-between">
@@ -69,24 +148,32 @@ const UserDetailsComponent = ({ userDetails }) => {
             value={userDetails?.registrationNumber}
             readOnly
           />
-          <label>Mess Fee Paid Or Not:</label>
+          <label>Mess Fee Status:</label>
           <input
             type="text"
             className="form-style"
-            value={userDetails?.additionalDetails?.isMessFeePaid}
+            value={isMessFeePaid ? "Paid" : "Not Paid"}
             readOnly
           />
-          <label>Block Status:</label>
-          <input
-            type="text"
-            className="form-style"
-            value={isBlocked ? "Blocked" : "Active"}
-            readOnly
-          />
-
-          <button type="button" onClick={handleBlockToggle}>
-            {isBlocked ? "Unblock User" : "Block User"}
+          <button type="button" onClick={handleMessFeeToggle}>
+            {isMessFeePaid ? "Mark as Unpaid" : "Mark as Paid"}
           </button>
+
+          {user?.accountType === ACCOUNT_TYPE.WARDEN && (
+            <>
+              <label>Block Status:</label>
+              <input
+                type="text"
+                className="form-style"
+                value={isBlocked ? "Blocked" : "Active"}
+                readOnly
+              />
+
+              <button type="button" onClick={handleBlockToggle}>
+                {isBlocked ? "Unblock User" : "Block User"}
+              </button>
+            </>
+          )}
 
           {/* Add more fields as needed */}
         </div>

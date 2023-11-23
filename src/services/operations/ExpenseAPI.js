@@ -218,8 +218,8 @@ export const fetchExpenseProductWiseAndTotal = async (token, productName) => {
   try {
     const response = await apiConnector(
       "GET",
-      EXPENSE_PRODUCT_WISE_AND_TOTAL_API,
-      { productName },
+      `http://localhost:4000/api/v1/expense/getAllExpenseProductWiseAndTotal?productName=${productName}`,
+      null,
       {
         Authorization: `Bearer ${token}`,
       }
@@ -237,34 +237,29 @@ export const fetchExpenseProductWiseAndTotal = async (token, productName) => {
 };
 
 // define the fetchexpenseCategorywise
+
 export const fetchExpenseCategoryWiseAndTotal = async (
   token,
   productCategory
 ) => {
-  // const toastId = toast.loading("Loading...");
-  console.log("inside fetchExpense Category", token, productCategory);
   try {
     const response = await apiConnector(
       "GET",
-      EXPENSE_CATEGORY_WISE_AND_TOTAL_API,
-      { productCategory },
+      `http://localhost:4000/api/v1/expense/getAllExpenseCategoryWiseAndTotal?productCategory=${productCategory}`,
+      null,
       {
-        // "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       }
     );
-    console.log(
-      "Fetch expense category wise api response...........",
-      response
-    );
-    if (response?.data?.success) {
+    console.log("reponse in fetchcategorywise total", response);
+    if (response?.data?.success === true) {
       return response.data;
     } else {
-      throw new Error("Failed to fetch expense category-wise and total");
+      throw new Error("Failed to fetch expense data");
     }
   } catch (error) {
-    console.error("Error fetching expense category-wise and total:", error);
-    throw new Error("Failed to fetch expense category-wise and total");
+    console.error("Error fetching expense data:", error);
+    throw error;
   }
 };
 
@@ -291,5 +286,36 @@ export const getExpenseById = async (token, expenseId) => {
   } catch (error) {
     console.error("Error fetching expense by id:", error);
     throw new Error("Failed to fetch expense by id");
+  }
+};
+
+// getting getExpenseInRangeProductWiseAndTotal
+export const getExpenseInRangeProductWiseAndTotal = async (
+  token,
+  startDate,
+  endDate,
+  productName
+) => {
+  console.log("token", token);
+  console.log("start date", startDate);
+  console.log("end date", endDate);
+  try {
+    const response = await apiConnector(
+      "GET",
+      `http://localhost:4000/api/v1/expense/getAllExpenseCategoryWiseAndTotal?productCategory=${productName}`,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("reponse in fetchcategorywise total", response);
+    if (response?.data?.success === true) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch expense data");
+    }
+  } catch (error) {
+    console.error("Error fetching expense data:", error);
+    throw error;
   }
 };

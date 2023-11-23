@@ -56,7 +56,7 @@ router.get(
   getExpenseInRangeCategoryWiseAndTotal
 );
 
-router.post(
+router.get(
   "/getExpenseInRangeProductWiseAndTotal",
   auth,
   isAccountant,

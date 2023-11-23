@@ -17,6 +17,8 @@ export const settingsEndpoints = {
   HANDLE_SEARCH_API: BASE_URL + "/profile/getuserbyregistration",
   BLOCK_THE_USER: BASE_URL + "/profile/blockUser",
   UNBLOCK_USER: BASE_URL + "/profile/unblockuser",
+  MARK_FEE_PAID: BASE_URL + "/profile/markfeeaspaid",
+  MARK_FEE_PAID_FALSE: BASE_URL + "/profile/markfeeasnotpaid",
 };
 //Complaint Related aPI
 export const complaintEndpoints = {
