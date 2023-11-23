@@ -131,16 +131,19 @@ exports.blockUser = async (req, res) => {
     //check is already blocked -> otherwise multiple entry will be created
     //2. block userBy its emailId
     // console.log(req.body);
-    console.log("here@!");
     const { userId } = req.body;
-    const userDetails = await BlockedUser.find({ email: userId.email });
-    if (!userDetails) {
+    const userDetails = await User.findById(userId);
+
+    //check whether already blocked
+    const isBlocked = await BlockedUser.find({ email: userDetails.email });
+    console.log("isBlocked")
+    if (isBlocked.length != 0) {
       return res.status(403).json({
         sucess: false,
         message: "User Is already Blocked",
       });
     }
-    const blockedUserDetails = await BlockedUser.create(userId.email);
+    const blockedUserDetails = await BlockedUser.create({ email: userDetails.email });
     return res.status(200).json({
       success: true,
       message: "User blocked Successfully",

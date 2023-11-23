@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
 const blockedUser = new mongoose.Schema({
-  blockedUser: {
+  email: {
     type: String,
+    required: true,
   }
 }, { timestamps: true });
 
