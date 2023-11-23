@@ -366,50 +366,168 @@ exports.resolveComplaint = async (req, res) => {
   }
 };
 
-exports. commentsOnComplaints = async (req,res)=>{
-    try {
-      const comment = {
-        text: req.body.text,
-        commentedBy: req.user.id
-      };
-      const { complaintId } = req.body;
-  
-      const updatedComplaint = await Complaint.findByIdAndUpdate(
-        complaintId,
-        {
-          $push: { comments: comment }
-        },
-        {
-          new: true
-        }
-      )
+exports.commentsOnComplaints = async (req, res) => {
+  try {
+    const comment = {
+      text: req.body.text,
+      commentedBy: req.user.id
+    };
+    const { complaintId } = req.body;
+
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
+      complaintId,
+      {
+        $push: { comments: comment }
+      },
+      {
+        new: true
+      }
+    )
       .populate({
         path: 'comments',
 
-        populate:{
-          path:'commentedBy',
+        populate: {
+          path: 'commentedBy',
           select: 'firstName lastName'
         },
       });
-  
-      if (!updatedComplaint) {
-        return res.status(404).json({
-          success: false,
-          message: 'Complaint Not found'
-        });
-      }
-      res.status(200).json({
-        sucess: true,
-        message: 'Commented Successfully',
-        updatedComplaint
-      })
-      
-    } catch (error) {
-      console.log("Error in Commenting On Complaint: ", error);
-      return res.status(500).json({
+
+    if (!updatedComplaint) {
+      return res.status(404).json({
         success: false,
-        message: "Internal Server Error",
-        error,
+        message: 'Complaint Not found'
       });
     }
+    res.status(200).json({
+      sucess: true,
+      message: 'Commented Successfully',
+      updatedComplaint
+    })
+
+  } catch (error) {
+    console.log("Error in Commenting On Complaint: ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
 }
+exports.getComplaintByMostVotes = async (req, res) => {
+  try {
+    const complaints = await Complaint.aggregate([
+      {
+        $lookup: {
+          from: 'users', // Assuming your users collection name is 'users'
+          localField: 'resolvedBy',
+          foreignField: '_id',
+          as: 'resolvedBy'
+        },
+      },
+      {
+        $unwind: { path: '$resolvedBy', preserveNullAndEmptyArrays: true } // Deconstructs the resolvedBy array created by $lookup
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          body: 1,
+          hostelName: 1,
+          author: {
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+          },
+          img: 1,
+          upVotedBy: 1,
+          downVotedBy: 1,
+          isResolved: 1,
+          resolvedBy: { // Projection for resolvedBy details
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+            // Add other fields you want to include
+          },
+          voteCount: { $size: '$upVotedBy' }
+        }
+      },
+      {
+        $sort: {
+          voteCount: -1 // Sort based on the vote count in descending order
+        }
+      }
+    ]);
+
+    console.log(complaints);
+    return res.status(200).json({
+      success: true,
+      message: 'Complaints Fetched Successfully',
+      complaints,
+    });
+  } catch (error) {
+    console.log("Error in get complaints by Most votes: ", error);
+    return res.status(500).json({
+      success: true,
+      message: 'Internal Server Error',
+      error,
+    })
+  }
+};
+exports.getMostRecentsComplaints = async (req, res) => {
+  try {
+    const complaints = await Complaint.aggregate([
+      {
+        $lookup: {
+          from: 'users', // Assuming your users collection name is 'users'
+          localField: 'resolvedBy',
+          foreignField: '_id',
+          as: 'resolvedBy'
+        },
+      },
+      {
+        $unwind: { path: '$resolvedBy', preserveNullAndEmptyArrays: true } // Deconstructs the resolvedBy array created by $lookup
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          body: 1,
+          hostelName: 1,
+          author: {
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+          },
+          img: 1,
+          upVotedBy: 1,
+          downVotedBy: 1,
+          isResolved: 1,
+          resolvedBy: { // Projection for resolvedBy details
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+            // Add other fields you want to include
+          },
+          createdAt: 1,
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1 // Sort based on the vote count in descending order
+        }
+      }
+    ]);
+    return res.status(200).json({
+      success: true,
+      message: 'Complaints Fetched Successfully',
+      complaints,
+    });
+  } catch (error) {
+    console.log("Error in geting most recent complaints : ", error);
+    return res.status(500).json({
+      success: true,
+      message: 'Internal Server Error',
+      error,
+    })
+  }
+};

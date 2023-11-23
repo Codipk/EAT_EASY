@@ -15,6 +15,7 @@ const {
   findUserByRegistrationNumber,
   updateProfilePicture,
   markFeeStatusTrue,
+  markFeeStatusFalse
 } = require("../controllers/profileController");
 
 router.get("/getAllUserDetails", auth, getAllUserDetails);
@@ -25,4 +26,5 @@ router.delete("/unblockuser", auth, isChiefWarden, unblockUser);
 router.delete("/deleteAccount", auth, deleteAccount);
 router.get("/getuserbyregistration", auth, findUserByRegistrationNumber);
 router.put("/markfeeaspaid", auth, isAccountantOrIsWarden, markFeeStatusTrue);
+router.put("/markfeeasunpaid", auth, isAccountant, markFeeStatusFalse);
 module.exports = router;

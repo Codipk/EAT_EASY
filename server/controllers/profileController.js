@@ -86,7 +86,7 @@ exports.updateProfilePicture = async (req, res) => {
       message: "Profile Pic Uploaded Successfully",
       updatedProfile,
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 exports.getAllUserDetails = async (req, res) => {
@@ -255,11 +255,11 @@ exports.markFeeStatusTrue = async (req, res) => {
       },
       { new: true }
     );
+    const isMessFeePaid = details.isMessFeePaid;
     return res.status(200).json({
       success: true,
       message: "Marked as Paid",
-      userDetails,
-      details,
+      isMessFeePaid,
     });
   } catch (error) {
     console.log("error in marking fee status as true: ", error);
@@ -269,4 +269,36 @@ exports.markFeeStatusTrue = async (req, res) => {
       error,
     });
   }
-};
+
+
+}
+exports.markFeeStatusFalse = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const userDetails = await User.findById(userId);
+    console.log('UserDeatils : ', userDetails);
+    const details = await additionalDetails.findByIdAndUpdate(
+      userDetails.additionalDetails,
+      {
+        isMessFeePaid: false,
+      },
+      { new: true }
+    );
+    const isMessFeePaid = details.isMessFeePaid;
+    return res.status(200).json({
+      success: true,
+      message: "Marked as Unpaid",
+      isMessFeePaid
+    });
+  } catch (error) {
+    console.log("error in marking fee status as false: ", error);
+    return res.status(500).json({
+      success: true,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+
+
+}
+

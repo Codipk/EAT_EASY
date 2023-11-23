@@ -19,5 +19,5 @@ const { getNutritionDetails } = require("../controllers/menuController");
 router.post("/addMenu", auth, notStudent, addMessMenu);
 router.put("/editMenu", auth, notStudent, editMessMenu);
 router.get("/viewMenu", auth, viewMessMenu);
-router.get("/getnutrition", auth, getNutritionDetails);
+router.post("/getnutrition", auth, getNutritionDetails);
 module.exports = router;
