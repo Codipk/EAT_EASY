@@ -27,7 +27,7 @@ export const fetchHostelWiseExpenses = async (token, dispatch) => {
     if (response?.data?.success === true) {
       // Dispatch success action and update the Redux state
       // dispatch(setExpenses(response?.data?.allExpense)); // Assuming you have a 'setExpenses' action
-      toast.success("Expenses fetched successfully");
+      toast.success(response?.data?.message);
       return response?.data?.allExpense; // Return the expense data
     } else {
       // If the response does not indicate success, throw an error

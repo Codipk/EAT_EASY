@@ -30,6 +30,8 @@ const menuRoutes = require('./routes/menu');
 const committeeRoutes = require('./routes/commitee');
 const dailyExpense = require('./routes/expense');
 const ratingRoutes = require('./routes/rating');
+
+
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/complaint", complaintRoutes);
 app.use("/api/v1/profile", profileRoutes);
@@ -37,6 +39,8 @@ app.use("/api/v1/menu", menuRoutes);
 app.use("/api/v1/committee", committeeRoutes);
 app.use("/api/v1/expense", dailyExpense)
 app.use("/api/v1/rating", ratingRoutes);
+
+
 
 //adding defaut route
 app.get("/", (req, res) => {
