@@ -122,7 +122,7 @@ exports.passwordUpdated = (email, name) => {
           <div class="support">
             If you have any questions or need further assistance, please feel
             free to reach out to us at
-            <a href="mailto:sundram.smn@gmail.com">vidya@sarthi.com</a>. We are
+            <a href="mailto:sundram.smn@gmail.com">sundram.smn@gmail.com</a>. We are
             here to help!
           </div>
         </div>

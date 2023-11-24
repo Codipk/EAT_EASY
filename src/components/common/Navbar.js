@@ -2,19 +2,27 @@ import React from "react";
 import "../../assets/styles/nav.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ProfileDropDown from "../../pages/ProfileDropDown";
 // import { apiConnector } from "../../services/apiconnector";
-
+import logo from "../../assets/images/logo.png";
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
   // const { user } = useSelector((state) => state.profile);
   return (
     <div>
-      <div>
+      <div className=" ">
         <header className="header">
           <nav className="navbar">
             <h2 className="logo">
-              <Link to="/">EAT EASY</Link>
+              <Link to="/">
+                <img
+                  src={logo}
+                  alt="Logo"
+                  width={160}
+                  height={32}
+                  loading="lazy"
+                />
+                {/* EATEASY */}
+              </Link>
             </h2>
             <input type="checkbox" id="menu-toggle" />
             <label htmlFor="menu-toggle" id="hamburger-btn">
@@ -41,14 +49,6 @@ const Navbar = () => {
                   <h3 className="font-semibold">About Us</h3>
                 </Link>
               </li>
-              {/* <li>
-                <Link to="/Services">
-                  <h3 className="font-semibold">Services</h3>
-                </Link>
-              </li> */}
-              {/* <li>
-                <a href="/">Portfolio</a>
-              </li> */}
               <li>
                 <Link to="/contactUs">
                   <h3 className="font-semibold">Contact Us</h3>
@@ -56,17 +56,15 @@ const Navbar = () => {
               </li>
             </ul>
             <div className="buttons mr-6">
-              {
-                token !== null
-                // <Link to="/dashboard/profile" className="relative">
-                //   {/* <AiOutlineShoppingCart className="text-2xl text-richblack-100" /> */}
-                //   {
-                //     <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
-                //       Dashboard
-                //     </span>
-                //   }
-                // </Link>
-              }
+              {token !== null && (
+                <Link to="/dashboard/my-profile" className="relative">
+                  {
+                    <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                      {/* Dashboard */}
+                    </span>
+                  }
+                </Link>
+              )}
               {token === null && (
                 <Link to="/login" className="signin">
                   Login
@@ -77,7 +75,6 @@ const Navbar = () => {
                   Sign Up
                 </Link>
               )}
-              {token !== null && <ProfileDropDown />}
             </div>
           </nav>
         </header>

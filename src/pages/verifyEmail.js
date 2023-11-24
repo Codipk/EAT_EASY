@@ -57,10 +57,10 @@ function VerifyEmail() {
         </div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">
+          <h1 className="text-orange-700 font-semibold text-[1.875rem] leading-[2.375rem]">
             Verify Email
           </h1>
-          <p className="text-[1.125rem] leading-[1.625rem] my-4 text-richblack-100">
+          <p className="text-[1.125rem] leading-[1.625rem] my-4 text-yellow-500">
             A verification code has been sent to you. Enter the code below
           </p>
           <form onSubmit={handleVerifyAndSignup}>

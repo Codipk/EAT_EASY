@@ -14,12 +14,13 @@ export default function Upload({
   errors,
   video = false,
   viewData = null,
-  //   editData = null,
+  editData,
 }) {
-  const { complaint } = useSelector((state) => state.course);
-
+  const { complaint } = useSelector((state) => state.complaint);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [previewSource, setPreviewSource] = useState(viewData ? viewData : "");
+  const [previewSource, setPreviewSource] = useState(
+    viewData ? viewData : editData ? editData : ""
+  );
   const inputRef = useRef(null);
 
   const onDrop = (acceptedFiles) => {
@@ -38,7 +39,7 @@ export default function Upload({
   });
 
   const previewFile = (file) => {
-    console.log("preview File", file);
+    console.log(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -81,7 +82,7 @@ export default function Upload({
               <button
                 type="button"
                 onClick={() => {
-                  //   setPreviewSource("");
+                  setPreviewSource("");
                   setSelectedFile(null);
                   setValue(name, null);
                 }}

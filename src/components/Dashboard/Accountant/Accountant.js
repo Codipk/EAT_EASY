@@ -33,10 +33,6 @@ const Accountant = () => {
     getExpenseDataWithStats();
   }, [token]);
 
-  const totalAmount = expenseData?.reduce(
-    (acc, curr) => acc + curr.totalAmountGenerated,
-    0
-  );
   const totalExpenses = expenseData?.length;
 
   return (
@@ -51,20 +47,16 @@ const Accountant = () => {
       ) : totalExpenses > 0 ? (
         <div>
           {/* Display expense-wise statistics */}
+
           <div className="my-4 flex-[450px] space-x-10">
             {/* <ProductWise token={token} /> */}
             <CategoryWise />
             {/* <Ranges /> */}
             <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 py-6 px-32">
-              <p className="text-2xl font-extrabold">Statistics</p>
-              <div className="flex flex-col py-4 text-xl">
-                <p className="font-extrabold">Total Expenses</p>
+              {/* <div className="flex flex-col py-4 text-xl">
+                <p className="font-extrabold">Total Quantity</p>
                 <p className="font-semibold">{totalExpenses}</p>
-              </div>
-              <div className="flex flex-col py-4 text-xl">
-                <p className="font-extrabold">Total Amount</p>
-                <p className="font-semibold">Rs.{totalAmount}</p>
-              </div>
+              </div> */}
             </div>
           </div>
 

@@ -58,13 +58,16 @@ const CalorieCalculate = () => {
 
   return (
     <div>
-      <h2 className="mb-6 ... mt-4 ... text-gray-100">Calorie Intake Calculator</h2>
+      <h2 className="mb-6 ... mt-4 ... text-gray-100">
+        Calorie Intake Calculator
+      </h2>
       <div>
-        <label className="mr-8 text-gray-100 " >Item Name:</label>
+        <label className="mr-8 text-gray-100 ">Item Name:</label>
 
-        <input 
+        <input
           type="text"
           value={itemName}
+          placeholder="Enter Item Name"
           className="form-style mb-3 ml-1 rounded-md"
           onChange={(e) => setItemName(e.target.value)}
         />
@@ -74,11 +77,17 @@ const CalorieCalculate = () => {
         <input
           type="text"
           value={itemQuantity}
+          placeholder="Enter quantity in grams"
           className="form-style mb-2"
           onChange={(e) => setItemQuantity(e.target.value)}
         />
       </div>
-      <button className="mt-3 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" onClick={handleCalculate}>Calculate Calories</button>
+      <button
+        className="mt-3 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        onClick={handleCalculate}
+      >
+        Calculate Calories
+      </button>
       {calories !== null && (
         <div className="w-1/3">
           <h2 className="mb-6 ... mt-4 ... text-gray-100">Nutrition Chart</h2>

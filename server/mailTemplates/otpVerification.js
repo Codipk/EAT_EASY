@@ -136,7 +136,7 @@ const otpTemplate = (otp) => {
 		  </div>
         </div>
         <div class="support">For any further queries or clarification, feel free to reach out to us by visiting <a
-					href="mailto:sundram.smn@gmail.com">vidya@sarthi.com</a>. We are here to help!</div>
+					href="mailto:sundram.smn@gmail.com">sundram.smn@gmail.com</a>. We are here to help!</div>
 		</div> 
       </div>
       <!--4444  -->

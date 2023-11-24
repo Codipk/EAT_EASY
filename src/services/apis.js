@@ -34,7 +34,7 @@ export const complaintEndpoints = {
   LIKE_COMPLAINT_API: BASE_URL + "/complaint/updateUpvote",
   RESOLVE_COMPLAINT_API: BASE_URL + "/complaint/resolvecomplaint",
   GET_COMPLAINT_MOST_VOTE: BASE_URL + "/complaint/getByMostVotes",
-  GET_RECENT_COMPLAINT: BASE_URL + "complaint/getMostRecentComplaints",
+  GET_RECENT_COMPLAINT: BASE_URL + "/complaint/getMostRecentComplaints",
 };
 // mess menu related api
 export const menuEndpoints = {

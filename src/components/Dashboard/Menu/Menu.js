@@ -141,7 +141,7 @@ const Menu = () => {
             <p>Loading...</p>
           )}
         </div>
-        <div className="mb-3 h-3">
+        <div className="mb-3 h-3 ">
           {user?.accountType === ACCOUNT_TYPE.MESS_COMMITEE && (
             <Link
               className="bg-slate-500 p-2  font-semibold text-white mb-2"

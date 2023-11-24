@@ -104,7 +104,7 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
                       navigate(`/dashboard/edit-expense/${expense._id}`);
                     }}
                     title="Edit"
-                    className="px-2 transition-all duration-200 hover:scale-110 hover:text-caribbeangreen-300"
+                    className="px-2 transition-all duration-200 hover:scale-110 text-white hover:text-caribbeangreen-300"
                   >
                     <FiEdit2 size={20} />
                   </button>
@@ -126,7 +126,7 @@ const ExpenseTable = ({ expenses, setExpenses }) => {
                       });
                     }}
                     title="Delete"
-                    className="px-1 transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
+                    className="px-1 transition-all duration-200 hover:scale-110 text-red-500 hover:text-[#ff0000]"
                   >
                     <RiDeleteBin6Line size={20} />
                   </button>
