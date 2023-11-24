@@ -275,27 +275,10 @@ export default function EditProfile() {
               )}
             </div>
             <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="isMessFeePaid" className="lable-style">
+              {/* <label htmlFor="isMessFeePaid" className="lable-style">
                 Mess Fee Status
-              </label>{" "}
-              {/* /* <input
-                type="boolean"
-                name="isMessFeePaid"
-                id="isMessFeePaid"
-                placeholder="Enter yes or no"
-                className="form-style"
-                {...register("isMessFeePaid", {
-                  // required: {
-                  //   value: true,
-                  //   message: "Please enter your Account Number.",
-                  // },
-                  // maxLength: { value: 16, message: "Invalid Account Number" },
-                  // minLength: { value: 16, message: "Invalid Account Number" },
-                })}
-                defaultValue={user?.additionalDetails?.isMessFeePaid}
-              />{" "}
-              */}
-              <label htmlFor="paid" className="text-white">
+              </label>{" "} */}
+              {/* <label htmlFor="paid" className="text-white">
                 <input
                   type="radio"
                   id="paid"
@@ -308,8 +291,8 @@ export default function EditProfile() {
                   defaultValue={user?.additionalDetails?.isMessFeePaid}
                 />
                 Paid
-              </label>
-              <label htmlFor="not-paid" className="text-white">
+              </label> */}
+              {/* <label htmlFor="not-paid" className="text-white">
                 <input
                   type="radio"
                   id="not-paid"
@@ -322,12 +305,12 @@ export default function EditProfile() {
                   defaultValue={user?.additionalDetails?.isMessFeePaid}
                 />
                 Not Paid
-              </label>
-              {errors.isMessFeePaid && (
+              </label> */}
+              {/* {errors.isMessFeePaid && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
                   {errors.isMessFeePaid.message}
                 </span>
-              )}
+              )} */}
             </div>
           </div>
         </div>

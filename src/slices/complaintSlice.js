@@ -11,10 +11,19 @@ const complaintSlice = createSlice({
     body: "",
     complaintImage: null,
     error: null,
+    mostvoted: [],
+    recent: [],
   },
   reducers: {
     setComplaint(state, action) {
       state.complaint = action.payload;
+    },
+    setMostVotedComplaints(state, action) {
+      state.mostVoted = action.payload;
+    },
+
+    setMostRecentComplaints(state, action) {
+      state.mostRecent = action.payload;
     },
     setComplaints(state, action) {
       state.complaint = action.payload;
@@ -30,6 +39,12 @@ const complaintSlice = createSlice({
       state.unresolvedComplaints = action.payload.filter(
         (complaint) => !complaint.isResolved
       );
+      // state.mostvoted = action.payload.filter(
+      //   (complaint) => complaint.isResolved
+      // );
+      // state.recent = action.payload.filter(
+      //   (complaint) => !complaint.isResolved
+      // );
     },
     addComplaint(state, action) {
       state.complaint = action.payload;
@@ -88,6 +103,8 @@ export const {
   setError,
   setResolvedComplaints,
   setUnresolvedComplaints,
+  setMostVotedComplaints,
+  setMostRecentComplaints,
 } = complaintSlice.actions;
 
 export default complaintSlice.reducer;

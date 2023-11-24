@@ -4,6 +4,8 @@ import {
   fetchUnresolvedComplaintsAPI,
   likeComplaint,
   dislikeComplaint,
+  fetchMostVotedComplaints,
+  fetchMostRecentComplaints,
 } from "../../services/operations/ComplaintAPI";
 
 import { useEffect, useState } from "react";
@@ -14,8 +16,8 @@ import ComplaintTable2 from "./ComplaintTable";
 import complaintSlice, {
   setResolvedComplaints,
   setUnresolvedComplaints,
-  upvoteComplaint,
-  downvoteComplaint,
+  setMostVotedComplaints,
+  setMostRecentComplaints,
 } from "../../slices/complaintSlice";
 import { downvote } from "../../slices/voteSlice";
 
@@ -58,6 +60,27 @@ export default function AllComplaints() {
           }
 
           break;
+        case "mostVoted":
+          result = await fetchMostVotedComplaints(token);
+          if (result) {
+            console.log("Fetching UNcomplaints in MyComplaint", result);
+            setComplaint(result);
+            dispatch(setMostVotedComplaints(result));
+          } else {
+            console.log("dO NOT GETTING UNRESOLVED COMPLAINT");
+          }
+          break;
+
+        case "mostRecent":
+          result = await fetchMostRecentComplaints(token);
+          if (result) {
+            console.log("Fetching UNcomplaints in MyComplaint", result);
+            setComplaint(result);
+            dispatch(setMostRecentComplaints(result));
+          } else {
+            console.log("dO NOT GETTING UNRESOLVED COMPLAINT");
+          }
+          break;
         default:
           result = await fetchAllComplaints(token);
           console.log("printing result", result);
@@ -84,9 +107,9 @@ export default function AllComplaints() {
         {/* <h1 className="text-3xl font-medium text-richblack-5">
           All Complaints
         </h1> */}
-        <label className="text-sm font-medium text-white bg-slate-50 mr-2">
+        {/* <label className="text-sm font-medium text-white bg-slate-50 mr-2">
           Filter:
-        </label>
+        </label> */}
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
@@ -95,6 +118,8 @@ export default function AllComplaints() {
           <option value="all">All Complaints</option>
           <option value="resolved">Resolved Complaints</option>
           <option value="unresolved">Unresolved Complaints</option>
+          <option value="mostVoted">MostVoted Complaints</option>
+          <option value="recent">Most Recent Complaints</option>
         </select>
       </div>
       {/* if complaints exist then show the table */}

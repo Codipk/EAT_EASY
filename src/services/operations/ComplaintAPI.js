@@ -3,6 +3,7 @@ import { apiConnector } from "../apiconnector";
 import { complaintEndpoints } from "../apis";
 import { setComplaint } from "../../slices/complaintSlice";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 const { CREATE_COMPLAINT_API } = complaintEndpoints;
 const {
   GET_ALL_MY_COMPLAINTS_API,
@@ -13,6 +14,9 @@ const {
   LIKE_COMPLAINT_API,
   DISLIKE_COMPLAINT_API,
   RESOLVE_COMPLAINT_API,
+  GET_RECENT_COMPLAINT,
+  GET_COMPLAINT_MOST_VOTE,
+  GET_COMPLAINT_ID,
 } = complaintEndpoints;
 
 // cration of complains
@@ -297,4 +301,147 @@ export const resolveComplaint = async (complaintId, token) => {
   toast.dismiss(toastId);
 
   return result;
+};
+// fetc most recent
+export const fetchMostRecentComplaints = async (token) => {
+  const toastId = toast.loading("Loading...");
+  let result = [];
+
+  try {
+    const response = await apiConnector(
+      "GET",
+      GET_RECENT_COMPLAINT, // Replace with your API endpoint
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Getting fetchMostRecentComplaintsAPI", response);
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Most Recent Complaints");
+    }
+
+    result = response?.data?.mostRecentComplaints;
+  } catch (error) {
+    console.log("GET_MOST_RECENT_COMPLAINTS_API API ERROR............", error);
+    toast.error(error.message);
+  }
+
+  toast.dismiss(toastId);
+  return result;
+};
+
+// fetch most voted
+export const fetchMostVotedComplaints = async (token) => {
+  const toastId = toast.loading("Loading...");
+  let result = [];
+
+  try {
+    const response = await apiConnector(
+      "GET",
+      GET_COMPLAINT_MOST_VOTE, // Replace with your API endpoint
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Getting fetchMostVotedComplaintsAPI", response);
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Most Voted Complaints");
+    }
+
+    result = response?.data?.mostVotedComplaints;
+  } catch (error) {
+    console.log("GET_MOST_VOTED_COMPLAINTS_API API ERROR............", error);
+    toast.error(error.message);
+  }
+
+  toast.dismiss(toastId);
+  return result;
+};
+
+// get complaints by id
+export const fetchComplaintById = async (complaintId, token) => {
+  try {
+    const response = await apiConnector(
+      "GET",
+      `http://localhost:4000/api/v1/complaint/getComplaintById/${complaintId}`,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("Complaint by ID API RESPONSE: ", response);
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Complaint by ID");
+    }
+
+    const complaint = response?.data?.complaint;
+    return complaint;
+  } catch (error) {
+    console.error("Error fetching complaint by ID:", error);
+    throw error;
+  }
+};
+
+// adding comment to complaint
+export const addCommentToComplaint = async (complaintId, comment, token) => {
+  console.log("comment", comment);
+  console.log("complaintId", complaintId);
+  console.log("token in compleint", token);
+  try {
+    const response = await apiConnector(
+      "POST",
+      `http://localhost:4000/api/v1/complaint/${complaintId}/createComment`,
+      { comment },
+      {
+        // headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        // },
+      }
+    );
+
+    const data = response.data;
+
+    console.log("Create Comment API Response: ", data);
+
+    if (!data.success) {
+      throw new Error("Failed to create comment");
+    }
+    toast.success(response.data.message);
+    return data.createComment;
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    throw error;
+  }
+};
+// getting comment to comaplint
+
+export const getCommentsByComplaintId = async (complaintId, token) => {
+  try {
+    const response = await apiConnector(
+      "GET",
+      `http://localhost:4000/api/v1/complaint/${complaintId}/getComment`,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could not fetch comments");
+    }
+    toast.success(response.data.message);
+    return response.data.comment;
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    throw error; // Propagate the error to the caller
+  }
 };

@@ -11,6 +11,7 @@ const {
   EDIT_EXPENSE_API,
   EXPENSE_PRODUCT_WISE_AND_TOTAL_API,
   EXPENSE_CATEGORY_WISE_AND_TOTAL_API,
+
   GET_EXPENSE_BY_ID,
 } = expenseEndpoints;
 
@@ -290,7 +291,7 @@ export const getExpenseById = async (token, expenseId) => {
 };
 
 // getting getExpenseInRangeProductWiseAndTotal
-export const getExpenseInRangeProductWiseAndTotal = async (
+export const fetchExpenseInRangeProductWiseAndTotal = async (
   token,
   startDate,
   endDate,
@@ -302,7 +303,38 @@ export const getExpenseInRangeProductWiseAndTotal = async (
   try {
     const response = await apiConnector(
       "GET",
-      `http://localhost:4000/api/v1/expense/getAllExpenseCategoryWiseAndTotal?productCategory=${productName}`,
+      `http://localhost:4000/api/v1/expense/getExpenseInRangeProductWiseAndTotal?startDate=${startDate}&endDate=${endDate}&productName=${productName}`,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("reponse in fetchcategorywise range total", response);
+    if (response?.data?.success === true) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch expense data");
+    }
+  } catch (error) {
+    console.error("Error fetching expense data:", error);
+    throw error;
+  }
+};
+
+//getting expensein range category wise
+export const fetchExpenseInRangeCategoryWiseAndTotal = async (
+  token,
+  startDate,
+  endDate,
+  productCategory
+) => {
+  console.log("token", token);
+  console.log("start date", startDate);
+  console.log("end date", endDate);
+  try {
+    const response = await apiConnector(
+      "GET",
+      `http://localhost:4000/api/v1/expense/getExpenseInRangeCategoryWiseAndTotal?startDate=${startDate}&endDate=${endDate}&productCategory=${productCategory}`,
       null,
       {
         Authorization: `Bearer ${token}`,
@@ -312,10 +344,41 @@ export const getExpenseInRangeProductWiseAndTotal = async (
     if (response?.data?.success === true) {
       return response.data;
     } else {
-      throw new Error("Failed to fetch expense data");
+      throw new Error("Failed to fetch  category expense expense data");
     }
   } catch (error) {
-    console.error("Error fetching expense data:", error);
+    console.error("Error fetching category expense data:", error);
+    throw error;
+  }
+};
+
+// get total expense range
+export const fetchExpenseInRangeAndTotal = async (
+  token,
+  startDate,
+  endDate,
+  productCategory
+) => {
+  console.log("token", token);
+  console.log("start date", startDate);
+  console.log("end date", endDate);
+  try {
+    const response = await apiConnector(
+      "GET",
+      `http://localhost:4000/api/v1/expense/getExpenseInRangeAndTotalHostelWise?startDate=${startDate}&endDate=${endDate}`,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("reponse in total range expense total", response);
+    if (response?.data?.success === true) {
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch range total expense data");
+    }
+  } catch (error) {
+    console.error("Error fetching range total expense data:", error);
     throw error;
   }
 };

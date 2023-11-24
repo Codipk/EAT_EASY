@@ -3,7 +3,7 @@ const User = require("../models/userSchema");
 const Hostel = require("../models/hostelSchema");
 const BlockedUser = require("../models/blockedUserSchema");
 require("dotenv").config();
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 //function to create new complaint
@@ -143,24 +143,23 @@ exports.getComplaintById = async (req, res) => {
 
     const complaint = await Complaint.findById(complaintId)
       .populate({
-        path: 'author resolvedBy',
-        select: 'firstName lastName'
+        path: "author resolvedBy",
+        select: "firstName lastName",
       })
       .exec();
     console.log(complaint);
     if (!complaint) {
       return res.status(404).json({
         success: false,
-        message: 'Complaint not found',
+        message: "Complaint not found",
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: 'Complaint Fetched Successfully',
+      message: "Complaint Fetched Successfully",
       complaint,
     });
-
   } catch (error) {
     console.log("error in getting complaints by id: ", error);
     return res.status(500).json({
@@ -169,7 +168,7 @@ exports.getComplaintById = async (req, res) => {
       error,
     });
   }
-}
+};
 //get unresolved complaint
 exports.getUnresolvedComplaints = async (req, res) => {
   try {
@@ -401,6 +400,51 @@ exports.resolveComplaint = async (req, res) => {
   }
 };
 
+exports.commentsOnComplaints = async (req, res) => {
+  try {
+    const comment = {
+      text: req.body.text,
+      commentedBy: req.user.id,
+    };
+    const { complaintId } = req.body;
+
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
+      complaintId,
+      {
+        $push: { comments: comment },
+      },
+      {
+        new: true,
+      }
+    ).populate({
+      path: "comments",
+
+      populate: {
+        path: "commentedBy",
+        select: "firstName lastName",
+      },
+    });
+
+    if (!updatedComplaint) {
+      return res.status(404).json({
+        success: false,
+        message: "Complaint Not found",
+      });
+    }
+    res.status(200).json({
+      sucess: true,
+      message: "Commented Successfully",
+      updatedComplaint,
+    });
+  } catch (error) {
+    console.log("Error in Commenting On Complaint: ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
 exports.getComplaintByMostVotes = async (req, res) => {
   try {
     const userDetails = await User.findById(req.user.id);
@@ -408,18 +452,18 @@ exports.getComplaintByMostVotes = async (req, res) => {
 
     const complaints = await Complaint.aggregate([
       {
-        $match: { hostelName: hostelDetails.hostelName }
+        $match: { hostelName: hostelDetails.hostelName },
       },
       {
         $lookup: {
-          from: 'users', // Assuming your users collection name is 'users'
-          localField: 'resolvedBy',
-          foreignField: '_id',
-          as: 'resolvedBy'
+          from: "users", // Assuming your users collection name is 'users'
+          localField: "resolvedBy",
+          foreignField: "_id",
+          as: "resolvedBy",
         },
       },
       {
-        $unwind: { path: '$resolvedBy', preserveNullAndEmptyArrays: true } // Deconstructs the resolvedBy array created by $lookup
+        $unwind: { path: "$resolvedBy", preserveNullAndEmptyArrays: true }, // Deconstructs the resolvedBy array created by $lookup
       },
       {
         $project: {
@@ -436,35 +480,36 @@ exports.getComplaintByMostVotes = async (req, res) => {
           upVotedBy: 1,
           downVotedBy: 1,
           isResolved: 1,
-          resolvedBy: { // Projection for resolvedBy details
+          resolvedBy: {
+            // Projection for resolvedBy details
             firstName: 1,
             lastName: 1,
             email: 1,
             // Add other fields you want to include
           },
-          voteCount: { $size: '$upVotedBy' }
-        }
+          voteCount: { $size: "$upVotedBy" },
+        },
       },
       {
         $sort: {
-          voteCount: -1 // Sort based on the vote count in descending order
-        }
-      }
+          voteCount: -1, // Sort based on the vote count in descending order
+        },
+      },
     ]);
 
     console.log(complaints);
     return res.status(200).json({
       success: true,
-      message: 'Complaints Fetched Successfully',
+      message: "Complaints Fetched Successfully",
       complaints,
     });
   } catch (error) {
     console.log("Error in get complaints by Most votes: ", error);
     return res.status(500).json({
       success: true,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
-    })
+    });
   }
 };
 exports.getMostRecentsComplaints = async (req, res) => {
@@ -474,18 +519,18 @@ exports.getMostRecentsComplaints = async (req, res) => {
 
     const complaints = await Complaint.aggregate([
       {
-        $match: { hostelName: hostelDetails.hostelName }
+        $match: { hostelName: hostelDetails.hostelName },
       },
       {
         $lookup: {
-          from: 'users', // Assuming your users collection name is 'users'
-          localField: 'resolvedBy',
-          foreignField: '_id',
-          as: 'resolvedBy'
+          from: "users", // Assuming your users collection name is 'users'
+          localField: "resolvedBy",
+          foreignField: "_id",
+          as: "resolvedBy",
         },
       },
       {
-        $unwind: { path: '$resolvedBy', preserveNullAndEmptyArrays: true } // Deconstructs the resolvedBy array created by $lookup
+        $unwind: { path: "$resolvedBy", preserveNullAndEmptyArrays: true }, // Deconstructs the resolvedBy array created by $lookup
       },
       {
         $project: {
@@ -502,34 +547,33 @@ exports.getMostRecentsComplaints = async (req, res) => {
           upVotedBy: 1,
           downVotedBy: 1,
           isResolved: 1,
-          resolvedBy: { // Projection for resolvedBy details
+          resolvedBy: {
+            // Projection for resolvedBy details
             firstName: 1,
             lastName: 1,
             email: 1,
             // Add other fields you want to include
           },
           createdAt: 1,
-        }
+        },
       },
       {
         $sort: {
-          createdAt: -1 // Sort based on the vote count in descending order
-        }
-      }
+          createdAt: -1, // Sort based on the vote count in descending order
+        },
+      },
     ]);
     return res.status(200).json({
       success: true,
-      message: 'Complaints Fetched Successfully',
+      message: "Complaints Fetched Successfully",
       complaints,
     });
   } catch (error) {
     console.log("Error in geting most recent complaints : ", error);
     return res.status(500).json({
       success: true,
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
       error,
-    })
+    });
   }
 };
-
-
