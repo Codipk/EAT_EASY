@@ -559,7 +559,7 @@ exports.getMostRecentsComplaints = async (req, res) => {
       },
       {
         $sort: {
-          createdAt: -1, // Sort based on the vote count in descending order
+          createdAt: 1, // Sort based on the vote count in descending order
         },
       },
     ]);

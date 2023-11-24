@@ -45,7 +45,9 @@ const RatingDisplay = ({ token }) => {
     //   </table>
     // </div>
     <div>
-      <h2 className="text-2xl font-bold mb-4">Average Ratings</h2>
+      <h2 className="text-2xl text-red-200 mt-2 font-bold mb-4">
+        Average Ratings
+      </h2>
       {loading ? (
         <p>Loading...</p>
       ) : (

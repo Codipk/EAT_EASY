@@ -108,7 +108,7 @@ const UserDetailsComponent = ({ userDetails }) => {
     }
   };
 
-  const handleAddToMessCommittee = async () => {
+  const handleAddToMessCommittee = async (e) => {
     try {
       const response = await addToMessCommittee(userId, token);
 

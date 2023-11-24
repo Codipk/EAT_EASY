@@ -74,7 +74,7 @@ export default function AllComplaints() {
         case "mostRecent":
           result = await fetchMostRecentComplaints(token);
           if (result) {
-            console.log("Fetching UNcomplaints in MyComplaint", result);
+            console.log("Fetching recent in MyComplaint", result);
             setComplaint(result);
             dispatch(setMostRecentComplaints(result));
           } else {
@@ -119,7 +119,7 @@ export default function AllComplaints() {
           <option value="resolved">Resolved Complaints</option>
           <option value="unresolved">Unresolved Complaints</option>
           <option value="mostVoted">MostVoted Complaints</option>
-          <option value="recent">Most Recent Complaints</option>
+          <option value="mostRecent">Most Recent Complaints</option>
         </select>
       </div>
       {/* if complaints exist then show the table */}

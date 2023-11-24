@@ -91,10 +91,10 @@ function Register() {
     <div>
       <section
         className="vh-100 bg-image "
-      // style={{
-      //   backgroundImage:
-      //     'url("https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp")',
-      // }}
+        // style={{
+        //   backgroundImage:
+        //     'url("https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp")',
+        // }}
       >
         <div className="mask d-flex align-items-center h-100 gradient-custom-3  overflow-x-hidden">
           <div className="container h-100">
@@ -210,24 +210,6 @@ function Register() {
                               }}
                               className="w-full rounded-[0.5rem] bg-richblack-500 p-[12px] text-richblack-5"
                             />
-                            {/* <select
-                              name="hostelName"
-                              value={selectedHostel}
-                              onChange={handleSelectChange}
-                              style={{
-                                boxShadow:
-                                  "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
-                              }}
-                              className="w-full rounded-[0.5rem] bg-richblack-500 p-[12px] text-richblack-5"
-                            >
-                              <option value="" disabled>
-                                Select your hostel
-                              </option>
-                              <option value="hostel1">MALVIYA</option>
-                              <option value="hostel2">KNGH</option>
-                              <option value="hostel3">SVBH</option>
-                              
-                            </select> */}
                           </label>
                         </div>
                       </div>
@@ -252,7 +234,7 @@ function Register() {
                           />
                           <span
                             onClick={() => setShowPassword((prev) => !prev)}
-                            className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                            className="absolute  mb-80 top-[38px] z-[10] cursor-pointer"
                           >
                             {showPassword ? (
                               <AiOutlineEyeInvisible

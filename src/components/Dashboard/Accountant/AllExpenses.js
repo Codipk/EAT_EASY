@@ -58,14 +58,11 @@ const AllExpenses = () => {
   };
   return (
     <div>
-      <div className="mb-14 flex items-center justify-between">
-        <h1 className="text-3xl font-medium text-richblack-5">All Expenses</h1>
-      </div>
       {loading && <p>Loading...</p>}
       <div className="mb-14 flex items-center justify-between">
         <h1 className="text-3xl font-medium text-richblack-5">All Expenses</h1>
         {showTotal ? (
-          <h2 className="text-3xl text-white">${total}</h2>
+          <h2 className="text-3xl text-white">Rs: {total}</h2>
         ) : (
           <button
             onClick={handleShowTotalClick}

@@ -32,6 +32,7 @@ import Accountant from "./components/Dashboard/Accountant/Accountant";
 import ProductWise from "./components/Dashboard/Accountant/ProductWise";
 import CalorieCalculate from "./components/Dashboard/Calorie/CalorieCalculate";
 import IndividualComplaint from "./components/Dashboard/Warden/Committee/IndividualComplaint";
+import ContactForm from "./pages/ContactUs";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/contactUs" element={<ContactForm />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/update-password/:id" element={<UpdatePassword />} />
           <Route path="/signup" element={<Register />}></Route>
@@ -86,6 +88,14 @@ function App() {
                 />
 
                 <Route path="dashboard/mess-menu" element={<Menu />} />
+              </>
+            )}
+            {accountType === ACCOUNT_TYPE.MESS_COMMITEE && (
+              <>
+                <Route
+                  path="dashboard/mess-menu/edit-mess-menu"
+                  element={<EditMessMenu />}
+                />
               </>
             )}
             {accountType === ACCOUNT_TYPE.ACCOUNTANT && (

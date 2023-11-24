@@ -82,8 +82,8 @@ const CreateComplaint = () => {
 
       {/* create a component for uploading and showing preview of media */}
       <Upload
-        name="img"
-        label="Complaint Img"
+        name="courseImage"
+        label="Course Thumbnail"
         register={register}
         setValue={setValue}
         errors={errors}

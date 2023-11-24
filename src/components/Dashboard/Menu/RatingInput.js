@@ -36,17 +36,21 @@ const RatingInput = () => {
 
   return (
     <div>
-      <h2 className="text-white">Rate a Meal</h2>
-      <label>
-        <p className="text-white"> Meal Type:</p>
-        <select value={mealType} onChange={(e) => setMealType(e.target.value)}>
-          <option value="breakFast">Breakfast</option>
-          <option value="lunch">Lunch</option>
-          <option value="snacks">Snacks</option>
-          <option value="dinner">Dinner</option>
-        </select>
-      </label>
-      {/* <br />
+      <h2 className="text-white font-xl font-extrabold">Rate a Meal</h2>
+      <div className="flex flex-col gap-2 w-fit ">
+        <label>
+          <p className="text-orange-500"> Meal Type:</p>
+          <select
+            value={mealType}
+            onChange={(e) => setMealType(e.target.value)}
+          >
+            <option value="breakFast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="snacks">Snacks</option>
+            <option value="dinner">Dinner</option>
+          </select>
+        </label>
+        {/* <br />
       <label>
         <p className="text-white">Date:</p>
         <input
@@ -55,25 +59,26 @@ const RatingInput = () => {
           onChange={(e) => setDate(e.target.value)}
         />
       </label> */}
-      <br />
-      <label>
-        <p className="text-white"> Rating:</p>
 
-        <input
-          type="number"
-          min="1"
-          max="5"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-      </label>
-      <br />
-      <button
-        className="text-white p-2 bg-slate-400"
-        onClick={handleRatingSubmit}
-      >
-        Submit Rating
-      </button>
+        <label className="flex flex-col w-fit">
+          <p className="text-orange-400"> Rating:</p>
+
+          <input
+            type="number"
+            min="1"
+            max="5"
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+          />
+        </label>
+
+        <button
+          className="text-white p-2 bg-slate-400  border-slate-950 rounded-md"
+          onClick={handleRatingSubmit}
+        >
+          Submit Rating
+        </button>
+      </div>
     </div>
   );
 };

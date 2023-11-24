@@ -35,9 +35,9 @@ export default function MyComplaint() {
         <ComplaintTable complaints={complaint} setComplaint={setComplaint} />
       )}
       {
-        <p className="text-2xl font-medium text-orange-100">
-          No complaints till now !!!
-        </p>
+        // <p className="text-2xl font-medium text-orange-100">
+        //   No complaints till now !!!
+        // </p>
       }
     </div>
   );
