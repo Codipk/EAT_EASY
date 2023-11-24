@@ -53,14 +53,14 @@ const RatingDisplay = ({ token }) => {
           <thead>
             <tr className="bg-gray-300">
               <th>Meal Type</th>
-              <th>Average Rating</th>
+              <th className="text-red-200">Average Rating</th>
             </tr>
           </thead>
           <tbody>
             {res.map((rating) => (
               <tr key={rating._id}>
                 <td className="font-bold">{rating._id}</td>
-                <td>{rating.averageRating}</td>
+                <td>{rating.averageRating.toFixed(1)}</td>
               </tr>
             ))}
           </tbody>

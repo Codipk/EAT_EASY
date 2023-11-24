@@ -31,6 +31,7 @@ import UpdatePassword from "./components/Dashboard/UpdatePassword";
 import Accountant from "./components/Dashboard/Accountant/Accountant";
 import ProductWise from "./components/Dashboard/Accountant/ProductWise";
 import CalorieCalculate from "./components/Dashboard/Calorie/CalorieCalculate";
+import IndividualComplaint from "./components/Dashboard/Warden/Committee/IndividualComplaint";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -78,6 +79,10 @@ function App() {
                 <Route
                   path="dashboard/all-complaints"
                   element={<AllComplaints />}
+                />
+                <Route
+                  path="/complaint/:id"
+                  element={<IndividualComplaint />}
                 />
 
                 <Route path="dashboard/mess-menu" element={<Menu />} />

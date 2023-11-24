@@ -1,21 +1,39 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Bar } from "react-chartjs-2";
-import { Pie } from "react-chartjs-2";
+import { Line, time } from "react-chartjs-2";
 import { useSelector } from "react-redux";
+// import { Registry } from "chart.js";
 import { fetchExpenseCategoryWiseAndTotal } from "../../../services/operations/ExpenseAPI";
 import PieChart from "./PieChart";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { BarElement, CategoryScale, LinearScale, Title } from "chart.js";
-import ProductWise from "./ProductWise";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+import "chartjs-adapter-date-fns";
+import { enGB } from "date-fns/locale";
+import {
+  Chart as ChartJS,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
+  TimeScale,
+  registerables,
+} from "chart.js";
+
+import { BarElement, CategoryScale, LinearScale, Title } from "chart.js";
+import ProductWise from "./ProductWise";
+import Ranges from "./Ranges";
+
+import ExpenseRangeChart from "./Ranges";
+ChartJS.register(
+  // CategoryScale,
+  // LinearScale,
+  // BarElement,
+  // Title,
+  // // TimeScale,
+  // ArcElement,
+  // Tooltip,
+  // Legend
+  ...registerables
 );
+
+// Registry.registerScaleType("time", TimeScale);
 const CategoryWise = () => {
   const [expenseData, setExpenseData] = useState(null);
   const { token } = useSelector((state) => state.auth);
@@ -114,28 +132,24 @@ const CategoryWise = () => {
   console.log("selected category", selectedCategory);
   console.log("barchart data", barChartData);
   return (
-    <div>
+    <div className="flex ">
       <h2>Total Expenses by Category</h2>
-      <div>
-        {/* <PieChart
-          chartData={chartData}
-          options={options}
-          onCategoryClick={handleCategoryClick}
-        /> */}
-        <Bar data={barChartData} options={barChartOptions} />
-      </div>
-      {selectedCategory && (
-        <div>
-          <h3>Details for {selectedCategory}</h3>
-          <ProductWise productCategory={selectedCategory} />
-          {/* Add code to display details of the selected category */}
+      <div className="flex-col ">
+        <div className="flex flex-col gap-3">
+          <div>
+            <Bar data={barChartData} options={barChartOptions} />
+          </div>
+          {selectedCategory && (
+            <div>
+              <h3>Details for {selectedCategory}</h3>
+              <ProductWise productCategory={selectedCategory} />
+              {/* Add code to display details of the selected category */}
+            </div>
+          )}
         </div>
-      )}
-      <div>
-        {/* Display the bar chart when a category is selected */}
-        {/* {productName && productData && ( */}
-
-        {/* )} */}
+        <div>
+          <ExpenseRangeChart />
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { VscAdd } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ComplaintTable from "./ComplaintTable";
+import ComplaintTable from "../Dashboard/Settings/ComplaintTable2";
 
 export default function MyComplaint() {
   const { token } = useSelector((state) => state.auth);
@@ -34,7 +34,11 @@ export default function MyComplaint() {
       {complaint && (
         <ComplaintTable complaints={complaint} setComplaint={setComplaint} />
       )}
-      {<p className="text-2xl font-medium text-orange-100">No complaints till now !!!</p>}
+      {
+        <p className="text-2xl font-medium text-orange-100">
+          No complaints till now !!!
+        </p>
+      }
     </div>
   );
 }

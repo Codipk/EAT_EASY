@@ -64,10 +64,10 @@ const UserDetailsComponent = ({ userDetails }) => {
     }
   };
   const handleMessFeeToggle = async () => {
-    if (isMessFeePaid) {
+    if (!isMessFeePaid) {
       try {
         const response = await markFeeStatusTrue(token, userId);
-        console.log("response in mess fee toggle", response);
+        console.log("response in mess try fee toggle", response);
         if (response) {
           setIsMessFeePaid(!isMessFeePaid);
           toast.success(
@@ -87,20 +87,16 @@ const UserDetailsComponent = ({ userDetails }) => {
     } else {
       try {
         const response = await markFeeStatusFalse(token, userId);
-        console.log("response in mess fee toggle", response);
+        console.log("response in mess else fee toggle", response);
         if (response) {
-          setIsMessFeePaid(!isMessFeePaid);
-          toast.success(
-            isMessFeePaid
-              ? "Successfully marked mess fee as paid"
-              : "Successfully marked mess fee as unpaid"
-          );
+          toast.success(response.message);
         } else {
           console.error(
             "Failed to update mess fee status:",
             response.statusText
           );
         }
+        setIsMessFeePaid(!isMessFeePaid);
       } catch (error) {
         console.error("Error updating mess fee status:", error.message);
       }

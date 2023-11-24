@@ -70,6 +70,16 @@ export const sidebarLinks = [
     icon: "VscOrganization",
   },
   {
+    id: 7,
+    name: "Mess-Commitee",
+    path: "/dashboard/mess-committee",
+    type:
+      // ACCOUNT_TYPE.MESS_COMMITEE ||
+      // ACCOUNT_TYPE.WARDEN,
+      ACCOUNT_TYPE.ACCOUNTANT,
+    icon: "VscOrganization",
+  },
+  {
     id: 8,
     name: "All Expenses",
     path: "/dashboard/all-expenses",

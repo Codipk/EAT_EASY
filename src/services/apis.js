@@ -18,7 +18,7 @@ export const settingsEndpoints = {
   BLOCK_THE_USER: BASE_URL + "/profile/blockUser",
   UNBLOCK_USER: BASE_URL + "/profile/unblockuser",
   MARK_FEE_PAID: BASE_URL + "/profile/markfeeaspaid",
-  MARK_FEE_PAID_FALSE: BASE_URL + "/profile/markfeeasnotpaid",
+  MARK_FEE_PAID_FALSE: BASE_URL + "/profile/markfeeasunpaid",
 };
 //Complaint Related aPI
 export const complaintEndpoints = {
@@ -33,6 +33,8 @@ export const complaintEndpoints = {
   DISLIKE_COMPLAINT_API: BASE_URL + "/complaint/updateDownvote",
   LIKE_COMPLAINT_API: BASE_URL + "/complaint/updateUpvote",
   RESOLVE_COMPLAINT_API: BASE_URL + "/complaint/resolvecomplaint",
+  GET_COMPLAINT_MOST_VOTE: BASE_URL + "/complaint/getByMostVotes",
+  GET_RECENT_COMPLAINT: BASE_URL + "complaint/getMostRecentComplaints",
 };
 // mess menu related api
 export const menuEndpoints = {
