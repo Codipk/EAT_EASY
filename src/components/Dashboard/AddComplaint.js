@@ -29,43 +29,44 @@ export default function AddComplaint() {
     formState: { errors },
   } = useForm();
   // function to upload
-  const uploadImageToCloudinary = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary upload preset
+  // const uploadImageToCloudinary = async (file) => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary upload preset
 
-      // Upload image to Cloudinary using the fetch API
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  //     // Upload image to Cloudinary using the fetch API
+  //     const response = await fetch(
+  //       `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       }
+  //     );
 
-      const result = await response.json();
-      if (result.secure_url) {
-        return result.secure_url;
-      } else {
-        throw new Error("Image upload to Cloudinary failed");
-      }
-    } catch (error) {
-      console.error("Error uploading image to Cloudinary:", error);
-      throw new Error("Image upload to Cloudinary failed");
-    }
-  };
+  //     const result = await response.json();
+  //     if (result.secure_url) {
+  //       return result.secure_url;
+  //     } else {
+  //       throw new Error("Image upload to Cloudinary failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading image to Cloudinary:", error);
+  //     throw new Error("Image upload to Cloudinary failed");
+  //   }
+  // };
   const submitComplaintForm = async (data) => {
     console.log("FormData Image", data.complaintImage);
     console.log("Form Data - ", data);
     dispatch(ComplaintCreation(data, token));
-    try {
-      const imageUrl = await uploadImageToCloudinary(data.complaintImage[0]);
-      data.complaintImage = imageUrl;
-    } catch (error) {
-      console.error("Error uploading complaint image:", error);
-    }
+    // try {
+    //   const imageUrl = await uploadImageToCloudinary(data.complaintImage[0]);
+    //   data.complaintImage = imageUrl;
+    // } catch (error) {
+    //   console.error("Error uploading complaint image:", error);
+    // }
   };
+  console.log("complaint in add", complaint);
   return (
     <>
       <form onSubmit={handleSubmit(submitComplaintForm)}>

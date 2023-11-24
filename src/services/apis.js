@@ -59,7 +59,9 @@ export const expenseEndpoints = {
 
 // mess committee related apis
 export const messcommitteeEndpoints = {
-  CREATE_MESS_COMMITTEE_API: BASE_URL + "/committee/createCommittee",
+  CREATE_MESS_COMMITTEE_API: BASE_URL + "/committee/addtocommittee",
+  GET_MESS_COMMITTEE: BASE_URL + "/committee/getcommitteedetails",
+  REMOVE_FROM_COMMITEE: BASE_URL + "/committee/removefromcommittee",
 };
 
 // ratingEndpoints
