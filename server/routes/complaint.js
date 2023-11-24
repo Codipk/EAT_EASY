@@ -25,7 +25,6 @@ const {
   dislikeComplaints,
   deleteComplaints,
   resolveComplaint,
-  commentsOnComplaints,
   getComplaintByMostVotes,
   getMostRecentsComplaints,
   getComplaintById,
