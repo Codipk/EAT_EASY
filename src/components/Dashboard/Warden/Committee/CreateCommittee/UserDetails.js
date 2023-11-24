@@ -10,11 +10,16 @@ import {
   markFeeStatusFalse,
   UnBlockUser,
 } from "../../../../../services/operations/SettingsAPI";
+import {
+  removeFromMessCommittee,
+  addToMessCommittee,
+} from "../../../../../services/operations/messcommitteeAPI";
 const UserDetailsComponent = ({ userDetails }) => {
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
   const [isBlocked, setIsBlocked] = useState(userDetails?.isBlocked || false);
   const userId = userDetails._id;
+  const [committeeMem, setCommitteeMem] = useState(null);
   const [isMessFeePaid, setIsMessFeePaid] = useState(
     userDetails?.additionalDetails?.isMessFeePaid || false
   );
@@ -102,6 +107,43 @@ const UserDetailsComponent = ({ userDetails }) => {
       }
     }
   };
+
+  const handleAddToMessCommittee = async () => {
+    try {
+      const response = await addToMessCommittee(userId, token);
+
+      if (response) {
+        console.log("response", response);
+        setCommitteeMem(true); // Update the committee membership status
+        // toast.success(response?.message);
+      } else {
+        console.error(
+          "Failed to add user to mess committee:",
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error adding user to mess committee:", error.message);
+    }
+  };
+  const handleRemoveFromMessCommittee = async () => {
+    try {
+      const response = await removeFromMessCommittee(userId, token);
+
+      if (response) {
+        console.log("response", response);
+        setCommitteeMem(false);
+        // toast.success(response.message);
+      } else {
+        console.error(
+          "Failed to remove user from mess committee:",
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error removing user from mess committee:", error.message);
+    }
+  };
   console.log("userdetails", userDetails);
 
   return (
@@ -144,16 +186,20 @@ const UserDetailsComponent = ({ userDetails }) => {
             value={userDetails?.registrationNumber}
             readOnly
           />
-          <label>Mess Fee Status:</label>
-          <input
-            type="text"
-            className="form-style"
-            value={isMessFeePaid ? "Paid" : "Not Paid"}
-            readOnly
-          />
-          <button type="button" onClick={handleMessFeeToggle}>
-            {isMessFeePaid ? "Mark as Unpaid" : "Mark as Paid"}
-          </button>
+          {user.accountType === ACCOUNT_TYPE.ACCOUNTANT && (
+            <>
+              <label>Mess Fee Status:</label>
+              <input
+                type="text"
+                className="form-style"
+                value={isMessFeePaid ? "Paid" : "Not Paid"}
+                readOnly
+              />
+              <button type="button" onClick={handleMessFeeToggle}>
+                {isMessFeePaid ? "Mark as Unpaid" : "Mark as Paid"}
+              </button>
+            </>
+          )}
 
           {user?.accountType === ACCOUNT_TYPE.WARDEN && (
             <>
@@ -168,6 +214,16 @@ const UserDetailsComponent = ({ userDetails }) => {
               <button type="button" onClick={handleBlockToggle}>
                 {isBlocked ? "Unblock User" : "Block User"}
               </button>
+              {!committeeMem ? (
+                <button type="button" onClick={handleAddToMessCommittee}>
+                  Add to Mess Committee
+                </button>
+              ) : (
+                <button type="button" onClick={handleRemoveFromMessCommittee}>
+                  {" "}
+                  Remove From Mess Committee
+                </button>
+              )}
             </>
           )}
 

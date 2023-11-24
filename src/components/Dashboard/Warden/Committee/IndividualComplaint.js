@@ -104,7 +104,9 @@ const IndividualComplaint = () => {
         <form className="flex max-w-[500px] justify-between">
           <div className="flex flex-col gap-y-2">
             <div className="flex flex-row gap-2">
-              <label>Title:</label>
+              <label className="text-orange-300 font-semibold p-2">
+                Title:
+              </label>
               <input
                 type="text"
                 className="form-style"
@@ -114,7 +116,9 @@ const IndividualComplaint = () => {
             </div>
 
             <div className="flex-flex-row gap-2">
-              <label className="text-white">Complaint Desc:</label>{" "}
+              <label className="text-orange-300 font-semibold p-2">
+                Complaint Desc:
+              </label>{" "}
               <input
                 type="text"
                 className="form-style"
@@ -122,21 +126,27 @@ const IndividualComplaint = () => {
                 readOnly
               />
             </div>
-            <label>upVotedBy</label>
+            <label className="text-orange-300 font-semibold p-2">
+              upVotedBy
+            </label>
             <input
               type="text"
               className="form-style"
               value={complaint?.upVotedBy?.length}
               readOnly
             />
-            <label>downVotedBy</label>
+            <label className="text-orange-300 font-semibold p-2">
+              downVotedBy
+            </label>
             <input
               type="text"
               className="form-style"
               value={complaint?.downVotedBy?.length}
               readOnly
             />
-            <label>Status of Complaint</label>
+            <label className="text-orange-300 font-semibold p-2">
+              Status of Complaint
+            </label>
             <input
               type="text"
               className="form-style"
@@ -145,7 +155,9 @@ const IndividualComplaint = () => {
               readOnly
             />
             {/* add resolved by */}
-            <label>Created By:</label>
+            <label className="text-orange-300 font-semibold p-2">
+              Created By:
+            </label>
             <input
               type="text"
               className="form-style"
@@ -156,13 +168,18 @@ const IndividualComplaint = () => {
             {/* Add more fields as needed */}
 
             <div className="flex flex-col gap-2">
-              <div>
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Add your comment..."
-                />
-                <button className="text-white" onClick={handleAddComment}>
+              <div className="flex-row gap-2">
+                <div>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Add your comment..."
+                  />
+                </div>
+                <button
+                  className="text-white bg-slate-500 p-2 rounded-md"
+                  onClick={handleAddComment}
+                >
                   Add Comment
                 </button>
               </div>

@@ -5,106 +5,103 @@ import { apiConnector } from "../apiconnector";
 import { setUserDetails } from "../../slices/profileSlice";
 import axios from "axios";
 const hello = "IN THE MESS COMMITTE API";
-const { CREATE_MESS_COMMITTEE_API, GET_MESS_COMMITTEE } =
+const { CREATE_MESS_COMMITTEE_API, GET_MESS_COMMITTEE, REMOVE_FROM_COMMITEE } =
   messcommitteeEndpoints;
 const { HANDLE_SEARCH_API } = settingsEndpoints;
-export function MessCommitteeCreation(data, token) {
-  return async (dispatch) => {
-    let result = null;
-    // const dispatch = useDispatch();
-    // Create a Toast notification to indicate that the process is loading
-    const toastId = toast.loading("Creating MESS COMMITTEe...");
-    console.log("Add mess committee API", data);
-    // Try to make a POST request to the CREATE_COMPLAINT_API endpoint with the complaint data as the payload
-    try {
-      const response = await apiConnector(
-        "POST",
-        CREATE_MESS_COMMITTEE_API,
-        data,
-        {
-          // Set the Content-Type header to multipart/form-data if the complaint data includes files
-          "Content-Type": "multipart/form-data",
+export const addToMessCommittee = async (userId, token) => {
+  let result = null;
+  // const dispatch = useDispatch();
+  // Create a Toast notification to indicate that the process is loading
+  const toastId = toast.loading("Creating MESS COMMITTEe...");
+  console.log("Add mess committee API", userId);
+  // Try to make a POST request to the CREATE_COMPLAINT_API endpoint with the complaint data as the payload
+  try {
+    const response = await apiConnector(
+      "PUT",
+      CREATE_MESS_COMMITTEE_API,
+      { userId },
+      {
+        // Set the Content-Type header to multipart/form-data if the complaint data includes files
+        "Content-Type": "multipart/form-data",
 
-          // Set the Authorization header to Bearer followed by the authentication token
-          Authorization: `Bearer ${token}`,
-        }
-      );
-      const MessCommitteedata = await response.data;
-      // Log the response data to the console
-      // const ComplaintImage = response.complaint.img
-      //   ? response.complaint.img
-      //   : `https://api.dicebear.com/5.x/initials/svg?seed=}`;
-      // dispatch(
-      //   setComplaint({ ...response.complaint.img, img: ComplaintImage })
-      // );
-      console.log("CREATE MESS COMMITTEE API RESPONSE............", response);
-
-      // If the response data indicates that the operation was not successful, throw an error
-      if (!MessCommitteedata?.success) {
-        throw new Error("Could Not Mess-committee");
+        // Set the Authorization header to Bearer followed by the authentication token
+        Authorization: `Bearer ${token}`,
       }
+    );
+    const MessCommitteedata = await response.data;
+    // Log the response data to the console
+    // const ComplaintImage = response.complaint.img
+    //   ? response.complaint.img
+    //   : `https://api.dicebear.com/5.x/initials/svg?seed=}`;
+    // dispatch(
+    //   setComplaint({ ...response.complaint.img, img: ComplaintImage })
+    // );
+    console.log("CREATE MESS COMMITTEE API RESPONSE............", response);
 
-      // Display a Toast notification indicating that the complaint was created successfully
-      toast.success(response.data.message);
-
-      // Return the response data
-      result = MessCommitteedata;
-    } catch (error) {
-      // Log the error to the console
-      console.log("CREATE MEss committee API ERROR............", error);
-
-      // Display a Toast notification indicating that the complaint could not be created
-      toast.error(error.message);
+    // If the response data indicates that the operation was not successful, throw an error
+    if (!MessCommitteedata?.success) {
+      throw new Error("Could Not Mess-committee");
     }
-    // Return null
-    toast.dismiss(toastId);
-    return result;
-    // Dismiss the Toast notification
-  };
-}
+
+    // Display a Toast notification indicating that the complaint was created successfully
+    toast.success(response.data.message);
+
+    // Return the response data
+    result = MessCommitteedata;
+  } catch (error) {
+    // Log the error to the console
+    console.log("CREATE MEss committee API ERROR............", error);
+
+    // Display a Toast notification indicating that the complaint could not be created
+    toast.error(error.message);
+  }
+  // Return null
+  toast.dismiss(toastId);
+  return result;
+  // Dismiss the Toast notification
+};
+
 // for getting mess commitee
-export function getMessCommittee(data, token) {
-  return async (dispatch) => {
-    let result = null;
+export const getMessCommittee = async (token) => {
+  let result = null;
 
-    // Create a Toast notification to indicate that the process is loading
-    const toastId = toast.loading("Searching MESS COMMITTEe...");
+  // Create a Toast notification to indicate that the process is loading
+  const toastId = toast.loading("Getting MESS COMMITTEe...");
+  console.log("getting mess commitee");
+  // Try to make a POST request to the SEARCH_MESS_COMMITTEE_API endpoint with the filter data as the payload
+  try {
+    const response = await apiConnector("GET", GET_MESS_COMMITTEE, null, {
+      "Content-Type": "application/json", // Set the Content-Type header to application/json
+      Authorization: `Bearer ${token}`, // Set the Authorization header to Bearer followed by the authentication token
+    });
 
-    // Try to make a POST request to the SEARCH_MESS_COMMITTEE_API endpoint with the filter data as the payload
-    try {
-      const response = await apiConnector("GET", GET_MESS_COMMITTEE, null, {
-        "Content-Type": "application/json", // Set the Content-Type header to application/json
-        Authorization: `Bearer ${token}`, // Set the Authorization header to Bearer followed by the authentication token
-      });
+    // Log the response data to the console
+    console.log("GET MESS COMMITTEE API RESPONSE............", response);
 
-      // Log the response data to the console
-      console.log("SEARCH MESS COMMITTEE API RESPONSE............", response);
-
-      // If the response data indicates that the operation was not successful, throw an error
-      if (!response?.data?.sucess) {
-        throw new Error("Could Not Search Mess-committee");
-      }
-
-      // Display a Toast notification indicating that the search was successful
-      toast.success(response.data.message);
-
-      // Return the response data
-      result = response.data;
-    } catch (error) {
-      // Log the error to the console
-      console.log("SEARCH MEss committee API ERROR............", error);
-
-      // Display a Toast notification indicating that the search could not be performed
-      toast.error(error.message);
-    } finally {
-      // Dismiss the Toast notification
-      toast.dismiss(toastId);
+    // If the response data indicates that the operation was not successful, throw an error
+    if (!response?.data?.success) {
+      throw new Error("Could Not Search Mess-committee");
     }
 
-    // Return the result
-    return result;
-  };
-}
+    // Display a Toast notification indicating that the search was successful
+    toast.success(response.data.message);
+
+    // Return the response data
+    result = response.data;
+  } catch (error) {
+    // Log the error to the console
+    console.log("SEARCH MEss committee API ERROR............", error);
+
+    // Display a Toast notification indicating that the search could not be performed
+    toast.error(error.message);
+  } finally {
+    // Dismiss the Toast notification
+    toast.dismiss(toastId);
+  }
+
+  // Return the result
+  return result;
+};
 
 // handle search filter api
 export const searchUserByRegistrationNumber = async (
@@ -158,14 +155,57 @@ export const searchUserByRegistrationNumber = async (
     toast.dismiss(toastId);
   }
 };
-// export const searchUserByRegistrationNumber = async (registrationNumber) => {
-//   try {
-//     const response = await axios.get(
-//       `${HANDLE_SEARCH_API}/${registrationNumber}`
-//     );
-//     console.log("reponse", response);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+// remove
+export const removeFromMessCommittee = async (userId, token) => {
+  let result = null;
+  // const dispatch = useDispatch();
+  // Create a Toast notification to indicate that the process is loading
+  const toastId = toast.loading("Removing MESS COMMITTEe...");
+  // console.log("Add mess committee API", data);
+  // Try to make a POST request to the CREATE_COMPLAINT_API endpoint with the complaint data as the payload
+  try {
+    const response = await apiConnector(
+      "PUT",
+      REMOVE_FROM_COMMITEE,
+      // data,
+      { userId },
+      {
+        // Set the Content-Type header to multipart/form-data if the complaint data includes files
+        "Content-Type": "multipart/form-data",
+
+        // Set the Authorization header to Bearer followed by the authentication token
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    const MessCommitteedata = await response.data;
+    // Log the response data to the console
+    // const ComplaintImage = response.complaint.img
+    //   ? response.complaint.img
+    //   : `https://api.dicebear.com/5.x/initials/svg?seed=}`;
+    // dispatch(
+    //   setComplaint({ ...response.complaint.img, img: ComplaintImage })
+    // );
+    console.log("CREATE MESS COMMITTEE API RESPONSE............", response);
+
+    // If the response data indicates that the operation was not successful, throw an error
+    if (!MessCommitteedata?.success) {
+      throw new Error("Could Not Mess-committee");
+    }
+
+    // Display a Toast notification indicating that the complaint was created successfully
+    toast.success(response.data.message);
+
+    // Return the response data
+    result = MessCommitteedata;
+  } catch (error) {
+    // Log the error to the console
+    console.log("CREATE MEss committee API ERROR............", error);
+
+    // Display a Toast notification indicating that the complaint could not be created
+    toast.error(error.message);
+  }
+  // Return null
+  toast.dismiss(toastId);
+  return result;
+  // Dismiss the Toast notification
+};
