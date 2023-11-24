@@ -9,6 +9,7 @@ import {
 } from "../../../../services/operations/ComplaintAPI";
 import { useSelect } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
+import { formattedDate } from "../../../../utils/dateFormatter"
 
 const IndividualComplaint = () => {
   const { id } = useParams();
@@ -44,7 +45,7 @@ const IndividualComplaint = () => {
       if (response) {
         // Update the local state or fetch the updated complaint again
         console.log("response in adding comment", response);
-        setComplaint(response);
+        //setComplaint(response);
         setComment(""); // Clear the comment input
       } else {
         console.error("Error adding comment");
@@ -101,85 +102,109 @@ const IndividualComplaint = () => {
   return (
     <>
       <div>
-        <form className="flex max-w-[500px] justify-between">
+        <form className="flex max-w-[1000px] justify-between">
           <div className="flex flex-col gap-y-2">
-            <div className="flex flex-row gap-2">
-              <label className="text-orange-300 font-semibold p-2">
-                Title:
-              </label>
-              <input
-                type="text"
-                className="form-style"
-                value={complaint?.title}
-                readOnly
-              />
+            <div className="flex flex-row gap-2 mt-6 mb-2">
+              <label  className="mr-8 text-gray-100 font-bold text-xl">Title:</label>
+              <h1
+                className="mr-8 text-gray-100 font-bold text-xl"
+              >{complaint?.title}</h1>
             </div>
 
-            <div className="flex-flex-row gap-2">
-              <label className="text-orange-300 font-semibold p-2">
-                Complaint Desc:
-              </label>{" "}
-              <input
-                type="text"
-                className="form-style"
-                value={complaint?.body}
-                readOnly
-              />
+
+            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2">
+            <img
+                    src={complaint?.img}
+                    alt={complaint?.title}
+                    className="h-[300px] w-[400px] rounded-lg object-cover "
+                  />
             </div>
-            <label className="text-orange-300 font-semibold p-2">
-              upVotedBy
-            </label>
-            <input
-              type="text"
-              className="form-style"
-              value={complaint?.upVotedBy?.length}
-              readOnly
-            />
-            <label className="text-orange-300 font-semibold p-2">
-              downVotedBy
-            </label>
-            <input
-              type="text"
-              className="form-style"
-              value={complaint?.downVotedBy?.length}
-              readOnly
-            />
-            <label className="text-orange-300 font-semibold p-2">
-              Status of Complaint
-            </label>
-            <input
-              type="text"
-              className="form-style"
-              value={complaint?.isResolved ? "Resolved" : "Unresolved"}
-              style={{ color: complaint?.isResolved ? "green" : "red" }}
-              readOnly
-            />
-            {/* add resolved by */}
-            <label className="text-orange-300 font-semibold p-2">
-              Created By:
-            </label>
-            <input
-              type="text"
-              className="form-style"
-              value={complaint?.author?.firstName}
-              readOnly
-            />
+
+            <div className="flex flex-col gap-2 ml-5">
+              <label  className="mr-8 text-gray-100">Complaint Desc:</label>{" "}
+              <h1 className=" text-yellow-100">
+              {complaint?.body}
+              </h1>
+
+            </div>
+            </div>
+
+          <div className="flex flex-row gap-2">
+
+            <div className="flex flex-row gap-2">
+            <label  className="mt-2 text-gray-100">upVotedBy: </label>
+            
+            <h1 className="mr-6 mt-2.5 text-gray-100">
+            {complaint?.upVotedBy?.length}
+            </h1>
+
+            </div>
+
+            <div className="flex flex-row gap-2">
+            <label  className="mt-2 text-gray-100">downVotedBy: </label>
+            
+            <h1 className="mr-6 mt-2.5 text-gray-100">
+            {complaint?.downVotedBy?.length}
+            </h1>
+
+            </div>
+
+          
+
+            <div className="flex flex-col gap-1">
+            <label  className="mr-8 mt-1.5 text-gray-100">Status of Complaint:</label>
+            <h1 style={{ color: complaint?.isResolved ? "green" : "red" }}> 
+            
+              
+              {complaint?.isResolved ? "Resolved" : "Unresolved"}
+              
+              
+              </h1>
+             
+          
+            </div>
+
+            <div className="flex flex-col align-center gap-1">
+               {/* add resolved by */}
+            <label  className="mr-8 mt-1.5 text-gray-100">Created By:</label>
+
+            <h1  className="mr-8 text-gray-100">
+            {complaint?.author?.firstName}
+            </h1>
+              
+            </div>
+
+        </div>
+            
+            
+            
+           
+           
 
             {/* Add more fields as needed */}
 
             <div className="flex flex-col gap-2">
-              <div className="flex-row gap-2">
-                <div>
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Add your comment..."
-                  />
-                </div>
-                <button
-                  className="text-white bg-slate-500 p-2 rounded-md"
-                  onClick={handleAddComment}
-                >
+              <div>
+                {/* <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Add your comment..."
+                /> */}
+
+                
+             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
+                  <textarea 
+                     id="message"
+                     rows="3"
+                     value={comment}
+                     onChange={(e) => setComment(e.target.value)} 
+                     class="block p-1  w-full text-l text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     placeholder="Write your thoughts here..."
+                     ></textarea>
+
+                <button className="ml-50 mt-3 mb-3 py-2 px-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" 
+                onClick={handleAddComment}>
                   Add Comment
                 </button>
               </div>
@@ -189,7 +214,7 @@ const IndividualComplaint = () => {
                   setShowComments(true);
                 }}
                 disabled={isLoadingComments}
-                className="bg-red-200"
+                className=" mt-3 mb-3 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
               >
                 {isLoadingComments
                   ? "Loading Comments..."
@@ -199,9 +224,21 @@ const IndividualComplaint = () => {
                 <ul className="form-style text-white">
                   {comments.map((comment) => (
                     <div key={comment._id}>
-                      <p>
+                      {/* <p>
                         {comment?.userName}: {comment.text}{" "}
-                      </p>
+                      </p> */}
+
+                      
+<div class="mx-auto my-8 flex max-w-screen-sm rounded-xl border border-gray-100 p-4 text-left text-white-600 shadow-lg sm:p-8">
+  <div class="w-full text-left">
+    <div class="mb-2 flex flex-col justify-between text-white-600 sm:flex-row">
+      <h3 class="font-medium">{comment?.userName}</h3>
+      <time class="text-xs" datetime="2022-11-13T20:00Z">{formattedDate(comment.createdAt)}</time>
+    </div>
+    <p class="text-sm">{comment.text}{" "}</p>
+  </div>
+</div>
+                      
                     </div>
                   ))}
                 </ul>

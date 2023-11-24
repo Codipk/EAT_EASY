@@ -182,7 +182,7 @@ const ComplaintTable2 = ({ complaints, setComplaint }) => {
                       {complaint.title}
                       <td>
                         <Link to={`/complaint/${complaint?._id}`}>
-                          {complaint?.title}
+                          Click Here
                         </Link>
                       </td>
                     </p>

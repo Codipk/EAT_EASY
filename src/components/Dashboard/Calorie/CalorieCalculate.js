@@ -58,32 +58,33 @@ const CalorieCalculate = () => {
 
   return (
     <div>
-      <h2>Calorie Intake Calculator</h2>
+      <h2 className="mb-6 ... mt-4 ... text-gray-100">Calorie Intake Calculator</h2>
       <div>
-        <label>Item Name:</label>
-        <input
+        <label className="mr-8 text-gray-100 " >Item Name:</label>
+
+        <input 
           type="text"
           value={itemName}
-          className="form-style"
+          className="form-style mb-3 ml-1 rounded-md"
           onChange={(e) => setItemName(e.target.value)}
         />
       </div>
       <div>
-        <label>Item Quantity:</label>
+        <label className="mr-4 text-gray-100 ">Item Quantity:</label>
         <input
           type="text"
           value={itemQuantity}
-          className="form-style"
+          className="form-style mb-2"
           onChange={(e) => setItemQuantity(e.target.value)}
         />
       </div>
-      <button onClick={handleCalculate}>Calculate Calories</button>
+      <button className="mt-3 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" onClick={handleCalculate}>Calculate Calories</button>
       {calories !== null && (
         <div className="w-1/3">
-          <h2>Nutrition Chart</h2>
+          <h2 className="mb-6 ... mt-4 ... text-gray-100">Nutrition Chart</h2>
           <Pie data={chartData} />
           <p className="p-2 text-white">
-            Total Energy: {totalEnergy.toFixed(4)}calories
+            {/* Total Energy: {totalEnergy.toFixed(4)}calories */}
           </p>
         </div>
       )}
