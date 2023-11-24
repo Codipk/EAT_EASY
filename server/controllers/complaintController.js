@@ -136,20 +136,18 @@ exports.getAllComplaints = async (req, res) => {
 };
 
 // get complaint by id
-exports.getComplaintById = async (req,res) =>{
+exports.getComplaintById = async (req, res) => {
   try {
     const { complaintId } = req.params; // Extract complaint ID from URL parameters
     console.log(complaintId);
-   
+
     const complaint = await Complaint.findById(complaintId)
       .populate({
-        path: 'author',
-        populate: {
-          path: 'additionalDetails hostel',
-        },
+        path: 'author resolvedBy',
+        select: 'firstName lastName'
       })
       .exec();
-     console.log(complaint);
+    console.log(complaint);
     if (!complaint) {
       return res.status(404).json({
         success: false,
@@ -162,7 +160,7 @@ exports.getComplaintById = async (req,res) =>{
       message: 'Complaint Fetched Successfully',
       complaint,
     });
-    
+
   } catch (error) {
     console.log("error in getting complaints by id: ", error);
     return res.status(500).json({

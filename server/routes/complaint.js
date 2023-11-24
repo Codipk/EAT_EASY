@@ -9,7 +9,7 @@ const { auth, isStudent, isChiefWarden, isCommitteeMember, isAccountant, notStud
 //import controllers
 
 
-const { createComplaint, getAllComplaints, getResolvedComplaints, getUnresolvedComplaints, myComplaints, likeComplaints, dislikeComplaints, deleteComplaints, resolveComplaint, commentsOnComplaints, getComplaintByMostVotes, getMostRecentsComplaints } = require('../controllers/complaintController');
+const { createComplaint, getAllComplaints, getResolvedComplaints, getUnresolvedComplaints, myComplaints, likeComplaints, dislikeComplaints, deleteComplaints, resolveComplaint, commentsOnComplaints, getComplaintByMostVotes, getMostRecentsComplaints, getComplaintById } = require('../controllers/complaintController');
 const { createComment, getComment } = require('../controllers/commentController');
 
 
@@ -28,8 +28,8 @@ router.put("/resolvecomplaint", auth, notStudent, resolveComplaint);
 router.get("/getByMostVotes", auth, getComplaintByMostVotes);
 router.get("/getMostRecentComplaints", auth, getMostRecentsComplaints)
 
-router.post('/:complaintId/createComment',auth,createComment)
-router.get('/:complaintId/getComment',auth,getComment)
+router.post('/:complaintId/createComment', auth, createComment)
+router.get('/:complaintId/getComment', auth, getComment)
 
 
 module.exports = router;
