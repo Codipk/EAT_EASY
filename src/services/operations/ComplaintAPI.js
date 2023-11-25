@@ -36,7 +36,8 @@ export function ComplaintCreation(data, token) {
         // Set the Authorization header to Bearer followed by the authentication token
         Authorization: `Bearer ${token}`,
       });
-      const Complaintdata = await response.complaint;
+
+      const Complaintdata = response.complaint;
       // Log the response data to the console
       // const ComplaintImage = response.complaint.img
       //   ? response.complaint.img

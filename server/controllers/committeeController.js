@@ -75,8 +75,10 @@ exports.getMessCommitteDetails = async (req, res) => {
   try {
     const userId = req.user.id;
     const userDetails = await User.findById(userId);
-
-    const committeDeatils = await MessCommittee.find({ hostel: userDetails.hostel })
+    // console.log("userDetails in get Committee: ", userDetails)
+    const hostelId = userDetails.hostel;
+    console.log("hostelId: ", hostelId);
+    const committeDetails = await MessCommittee.find({ hostel: hostelId })
       .populate({
         path: "messMember",
         select: "firstName lastName email registrationNumber img",
@@ -84,7 +86,7 @@ exports.getMessCommitteDetails = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Fetched Successfully",
-      committeDeatils,
+      committeDetails,
     })
   } catch (error) {
     console.log("Error in geting committee details: ", error);
