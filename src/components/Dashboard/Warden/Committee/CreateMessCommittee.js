@@ -26,7 +26,8 @@ const SearchUser = () => {
       const response = await getMessCommittee(token);
       if (response) {
         console.log("inside get commitee", response);
-        setMessCommitte(response.committeDeatils);
+        setMessCommitte(response.committeDetails
+        );
       } else {
         console.error("Error fetching commitee");
       }

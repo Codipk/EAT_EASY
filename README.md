@@ -11,12 +11,9 @@
     </div>
     <div class="responsive-container-block img-cont">
       <img class="img img-big" src="./public/img4.jpeg">
-      <img class="img img-big img-last" src="">
     </div>
     <div class="responsive-container-block img-cont">
       <img class="img" src="./public//img5.png">
-      <img class="img" src="">
-  
   </div>
 </div>
 
