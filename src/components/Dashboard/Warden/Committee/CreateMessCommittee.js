@@ -18,23 +18,24 @@ const SearchUser = () => {
   const { token } = useSelector((state) => state.auth);
   const [showDetails, setShowDetails] = useState(false);
   const [messCommitte, setMessCommitte] = useState(null);
-  useEffect(() => {
-    console.log("inside useEffect of getCommitee");
-    const getCommittee = async () => {
-      try {
-        const response = await getMessCommittee(token);
-        if (response) {
-          console.log("inside get commitee", response);
-          setMessCommitte(response.committeDeatils);
-        } else {
-          console.error("Error fetching commitee");
-        }
-      } catch (error) {
-        console.error("Error fetching committee:", error);
+  const [fetchCommittee, setFetchCommittee] = useState(false);
+  // useEffect(() => {
+  //   console.log("inside useEffect of getCommitee");
+  const getCommittee = async () => {
+    try {
+      const response = await getMessCommittee(token);
+      if (response) {
+        console.log("inside get commitee", response);
+        setMessCommitte(response.committeDeatils);
+      } else {
+        console.error("Error fetching commitee");
       }
-    };
-    getCommittee();
-  }, [token]);
+    } catch (error) {
+      console.error("Error fetching committee:", error);
+    }
+  };
+  //   getCommittee();
+  // }, [token]);
   console.log("commitee members", messCommitte);
   const handleSearch = async () => {
     dispatch(clearSearchResult()); // Clear previous search result
@@ -54,6 +55,19 @@ const SearchUser = () => {
       console.error("Error searching for user details:", error.message);
     }
   };
+  useEffect(() => {
+    if (fetchCommittee) {
+      getCommittee();
+      setFetchCommittee(false);
+    }
+  }, [fetchCommittee, token]);
+
+  const handleShowCommittee = () => {
+    // Set the fetchCommittee state to true when the button is clicked
+    setFetchCommittee(true);
+  };
+  console.log("fetch commitee", fetchCommittee);
+
   const handleShowDetails = () => {
     setShowDetails(true);
   };
@@ -105,14 +119,24 @@ const SearchUser = () => {
         )}
       </div>
       <div>
+        <button
+          onClick={handleShowCommittee}
+          className="font-semibold mt-4 text-white"
+        >
+          Show Committee Members
+        </button>
         <h3 className="flex text-yellow-400 mt-4 flex-col">
           Committee Members :
         </h3>
+
         <ul className="text-purple-200 flex-col">
           {messCommitte && messCommitte[0]?.messMember ? (
             messCommitte[0].messMember.map((member) => (
-              <li key={member._id}>
-                {member.firstName} {member.lastName}
+              <li key={member._id} className="flex flex-row gap-3">
+                <p>
+                  {member.firstName} {member.lastName}
+                </p>
+                <p>{member?.registrationNumber}</p>
               </li>
             ))
           ) : (
