@@ -25,6 +25,6 @@ router.post("/blockuser", auth, isChiefWarden, blockUser);
 router.delete("/unblockuser", auth, isChiefWarden, unblockUser);
 router.delete("/deleteAccount", auth, deleteAccount);
 router.post("/getuserbyregistration", auth, findUserByRegistrationNumber);
-router.put("/markfeeaspaid", auth, isAccountantOrIsWarden, markFeeStatusTrue);
+router.put("/markfeeaspaid", auth, isAccountant, markFeeStatusTrue);
 router.put("/markfeeasunpaid", auth, isAccountant, markFeeStatusFalse);
 module.exports = router;

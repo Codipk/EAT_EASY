@@ -59,8 +59,8 @@ const RatingDisplay = ({ token }) => {
             </tr>
           </thead>
           <tbody>
-            {res.map((rating) => (
-              <tr key={rating._id}>
+            {res?.map((rating) => (
+              <tr key={rating?._id}>
                 <td className="font-bold">{rating._id}</td>
                 <td>{rating.averageRating.toFixed(1)}</td>
               </tr>

@@ -260,11 +260,11 @@ exports.markFeeStatusTrue = async (req, res) => {
       },
       { new: true }
     );
-    const isMessFeePaid = details.isMessFeePaid;
+    // const isMessFeePaid = details.isMessFeePaid;
     return res.status(200).json({
       success: true,
       message: "Marked as Paid",
-      isMessFeePaid,
+      // isMessFeePaid,
     });
   } catch (error) {
     console.log("error in marking fee status as true: ", error);

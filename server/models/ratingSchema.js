@@ -7,6 +7,10 @@ const ratingSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  hostel: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Hostel',
+  },
   rating: {
     type: Number,
     required: true,
