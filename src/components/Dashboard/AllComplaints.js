@@ -18,6 +18,7 @@ import complaintSlice, {
   setUnresolvedComplaints,
   setMostVotedComplaints,
   setMostRecentComplaints,
+  setAllComplaints,
 } from "../../slices/complaintSlice";
 import { downvote } from "../../slices/voteSlice";
 
@@ -87,7 +88,7 @@ export default function AllComplaints() {
           if (result) {
             console.log("Fetching complaints in MyComplaint", result);
             setComplaint(result);
-            dispatch(setComplaints(result));
+            dispatch(setAllComplaints(result));
           } else {
             console.log("Not getting any complaint");
           }
@@ -101,6 +102,7 @@ export default function AllComplaints() {
     fetchComplaints();
   }, [filterType, token, dispatch]);
   console.log("complaint", complaint);
+
   return (
     <div>
       <div className="mb-14 flex items-center justify-between">

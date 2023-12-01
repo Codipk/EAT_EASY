@@ -7,6 +7,7 @@ const complaintSlice = createSlice({
     complaint: null,
     resolvedComplaints: [],
     unresolvedComplaints: [],
+    allComplaints: [],
     title: "",
     body: "",
     complaintImage: null,
@@ -86,6 +87,9 @@ const complaintSlice = createSlice({
     setUnresolvedComplaints(state, action) {
       state.unresolvedComplaints = action.payload;
     },
+    setAllComplaints(state, action) {
+      state.allComplaints = action.payload;
+    },
   },
 });
 
@@ -104,6 +108,7 @@ export const {
   setResolvedComplaints,
   setUnresolvedComplaints,
   setMostVotedComplaints,
+  setAllComplaints,
   setMostRecentComplaints,
 } = complaintSlice.actions;
 

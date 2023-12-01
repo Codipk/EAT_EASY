@@ -15,7 +15,7 @@ const RatingDisplay = ({ token }) => {
         setAverageRatings(ratings);
       } catch (error) {
         console.error("Error fetching average ratings:", error.message);
-        toast.error("Error fetching average ratings");
+        // toast.error("Error fetching average ratings");
       }
     };
 

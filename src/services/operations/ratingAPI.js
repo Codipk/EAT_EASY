@@ -5,6 +5,7 @@ const { CREATE_RATING_API, GET_AVG_RATING_API } = ratingEndpoints;
 
 export const createRating = async (data, token) => {
   const toastId = toast.loading("Loading...");
+  // let result = null;
   let success = false;
   try {
     const response = await apiConnector("POST", CREATE_RATING_API, data, {
@@ -16,6 +17,7 @@ export const createRating = async (data, token) => {
     }
     toast.success(response?.data?.message);
     success = true;
+    // return result;
   } catch (error) {
     success = false;
     console.log("CREATE RATING API ERROR............", error);

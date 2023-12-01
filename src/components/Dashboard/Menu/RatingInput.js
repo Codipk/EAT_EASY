@@ -26,11 +26,12 @@ const RatingInput = () => {
       setRating(1);
 
       // Show a success message to the user
-      toast.success("Rating submitted successfully");
+      // toast.success(res.data.message);
     } catch (error) {
       console.error("Error submitting rating:", error.message);
       // Show an error message to the user
-      toast.error("Error submitting rating");
+      // toast.error("Error submitting rating");
+      // console.log()
     }
   };
 
