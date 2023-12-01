@@ -138,7 +138,7 @@ exports.getAllDetailsOfExpense = async (req, res) => {
     const hostelId = userDetails.hostel;
     console.log(hostelId);
     // Get all Expense from DailyExpense collection
-    const allExpense = await DailyExpense.find({ hostel: hostelId });
+    const allExpense = await DailyExpense.find({ hostel: hostelId }).sort({ createdAt: -1 });
     //return respomse
     return res.status(200).json({
       success: true,

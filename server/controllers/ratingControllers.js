@@ -1,13 +1,16 @@
 const Rating = require('../models/ratingSchema');
-
+const User = require('../models/userSchema');
 
 exports.createRating = async (req, res) => {
-  const userId = req.user.id;
+
   // const date = new Date(Date.now());
   // const dayOfWeekNumber = date.getDay();
   // let numDayToWordDay = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   //console.log(numDayToWordDay[0]);//should return sunday
   try {
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId);
+    const hostelId = userDetails.hostel;
     let { rating, mealType, date } = req.body;
     //check whether user has already rated or not
     const isAlreadyRated = await Rating.findOne({
@@ -29,6 +32,7 @@ exports.createRating = async (req, res) => {
       rating,
       date,
       mealType,
+      hostel: hostelId,
     });
     return res.status(200).json({
       success: true,
@@ -53,17 +57,21 @@ exports.createRating = async (req, res) => {
 //find average breakfast/lunch/snack/dinner rating
 exports.findAvgRating = async (req, res) => {
   try {
-    //find mealType
-    // const { mealType } = req.body;
-    // console.log("Meal Type : ", mealType);
+    const userDetails = await User.findById(req.user.id);
     const result = await Rating.aggregate([
+      // {
+      //   $match: {
+      //     hostel: userDetails.hostel,
+      //   },
+      // },
       {
         $group: {
           _id: "$mealType",
-          averageRating: { $avg: '$rating' }
+          averageRating: { $avg: "$rating" },
         },
-      }
+      },
     ]);
+
     console.log("Result: ", result[0])
     // Output the average rating
     if (result.length == 0) {
