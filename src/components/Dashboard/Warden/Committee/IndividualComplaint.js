@@ -74,15 +74,7 @@ const IndividualComplaint = () => {
   if (!complaint) {
     return <div>Loading...</div>;
   }
-  const toggleComments = async (e) => {
-    e.preventDefault();
-    if (!showComments) {
-      // Fetch comments only when showing comments
-      await handleGetComment();
-    }
-    if (showComments) setComment(null);
-    setShowComments(!showComments);
-  };
+
   const handleGetComments = async () => {
     try {
       setIsLoadingComments(true);
@@ -106,10 +98,10 @@ const IndividualComplaint = () => {
         <form className="flex max-w-[1000px] justify-between">
           <div className="flex flex-col gap-y-2">
             <div className="flex flex-row gap-2 mt-6 mb-2">
-              <label className="mr-8 text-gray-100 font-bold text-xl">
+              <label className="mr-8 text-yellow-200 font-bold text-2xl">
                 Title:
               </label>
-              <h1 className="mr-8 text-gray-100 font-bold text-xl">
+              <h1 className="mr-8 text-white font-serif text-2xl">
                 {complaint?.title}
               </h1>
             </div>
@@ -124,33 +116,34 @@ const IndividualComplaint = () => {
               </div>
 
               <div className="flex flex-col gap-2 ml-5">
-                <label className="mr-8 text-gray-100">Complaint Desc:</label>{" "}
-                <h1 className=" text-yellow-100">{complaint?.body}</h1>
+                <label className="mr-8 text-yellow-100 font-semibold">
+                  Complaint Desc:
+                </label>{" "}
+                <h1 className=" text-white font-serif">{complaint?.body}</h1>
               </div>
             </div>
 
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-2">
-                <label className="mt-2 text-gray-100">upVotedBy: </label>
+                <label className="mt-2 text-yellow-200">UpVote: </label>
 
-                <h1 className="mr-6 mt-2.5 text-gray-100">
+                <h1 className="mr-6 mt-2.5 text-white">
                   {complaint?.upVotedBy?.length}
                 </h1>
-              </div>
-
-              <div className="flex flex-row gap-2">
-                <label className="mt-2 text-gray-100">downVotedBy: </label>
+                <label className="mt-2 text-yellow-200 ">DownVote: </label>
 
                 <h1 className="mr-6 mt-2.5 text-gray-100">
                   {complaint?.downVotedBy?.length}
                 </h1>
               </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="mr-8 mt-1.5 text-gray-100">
+              <div className="flex flex-row gap-2">
+                <label className="mb-2 text-yellow-200">
                   Status of Complaint:
                 </label>
-                <h1 style={{ color: complaint?.isResolved ? "green" : "red" }}>
+                <h1
+                  className="font-semibold"
+                  style={{ color: complaint?.isResolved ? "green" : "red" }}
+                >
                   {complaint?.isResolved ? "Resolved" : "Unresolved"}
                 </h1>
                 {complaint?.isResolved && (
@@ -162,12 +155,12 @@ const IndividualComplaint = () => {
                 )}
               </div>
 
-              <div className="flex flex-col align-center gap-1">
+              <div className="flex flex-row align-center gap-2">
                 {/* add resolved by */}
-                <label className="mr-8 mt-1.5 text-gray-100">Created By:</label>
+                <label className=" text-yellow-200">Created By:</label>
 
-                <h1 className="mr-8 text-gray-100">
-                  {complaint?.author?.firstName}
+                <h1 className="mb-1 text-pink-100 font-sans">
+                  {complaint?.author?.firstName} {complaint?.author?.lastName}
                 </h1>
               </div>
             </div>
@@ -183,8 +176,8 @@ const IndividualComplaint = () => {
                 /> */}
 
                 <label
-                  for="message"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="message"
+                  className="block mb-2  text-lg font-medium text-gray-900 dark:text-white"
                 >
                   Your message
                 </label>

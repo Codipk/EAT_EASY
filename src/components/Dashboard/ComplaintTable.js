@@ -171,78 +171,86 @@ const ComplaintTable2 = ({ complaints, setComplaint }) => {
                 key={complaint._id}
                 className="flex gap-x-10 border-b border-richblack-800 text-green-200 px-6 py-8"
               >
-                <Td className="flex flex-1 gap-x-4">
-                  <img
-                    src={complaint?.img}
-                    alt={complaint?.title}
-                    className="h-[148px] w-[220px] rounded-lg object-cover "
-                  />
-                  <div className="flex flex-col justify-between">
-                    <p className="text-lg font-semibold text-green-200">
-                      {complaint.title}
-                      <td>
-                        <Link to={`/complaint/${complaint?._id}`}>
-                          Click Here
-                        </Link>
-                      </td>
-                    </p>
-                    <p className="text-xs text-yellow-200">
-                      {complaint.body.split(" ").length > TRUNCATE_LENGTH
-                        ? complaint.body
-                            .split(" ")
-                            .slice(0, TRUNCATE_LENGTH)
-                            .join(" ") + "..."
-                        : complaint.body}
-                    </p>
-                    <p className="text-[12px] text-green-200">
-                      Created: {formattedDate(complaint.createdAt)}
-                    </p>
-                    {(user.accountType === ACCOUNT_TYPE.WARDEN ||
-                      user.accountType === ACCOUNT_TYPE.ACCOUNTANT) && (
-                      <>
-                        {complaint.isResolved ? (
-                          <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
-                            <HiClock size={14} />
-                            Resolved
-                          </p>
-                        ) : (
-                          <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
-                            <div className="flex h-3 w-3 items-center justify-center rounded-full bg-yellow-100 text-richblack-700">
-                              <FaCheck size={8} />
-                            </div>
-                            Unresolved
-                            <button
-                              disabled={loading}
-                              className="bg-slate-500 p-1 text-yellow-200"
-                              onClick={() => handleResolveClick(complaint._id)}
-                            >
+                <>
+                  <Td className="flex flex-1 gap-x-4">
+                    <img
+                      src={complaint?.img}
+                      alt={complaint?.title}
+                      className="h-[148px] w-[220px] rounded-lg object-cover "
+                    />
+                    <div className="flex flex-col justify-between">
+                      <p className="text-lg font-semibold text-green-200">
+                        {complaint.title}
+                        <td>
+                          <Link to={`/complaint/${complaint?._id}`}>
+                            Click Here
+                          </Link>
+                        </td>
+                      </p>
+                      <p className="text-xs text-yellow-200">
+                        {complaint.body.split(" ").length > TRUNCATE_LENGTH
+                          ? complaint.body
+                              .split(" ")
+                              .slice(0, TRUNCATE_LENGTH)
+                              .join(" ") + "..."
+                          : complaint.body}
+                      </p>
+
+                      {(user.accountType === ACCOUNT_TYPE.WARDEN ||
+                        user.accountType === ACCOUNT_TYPE.ACCOUNTANT) && (
+                        <>
+                          {complaint.isResolved ? (
+                            <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
+                              <HiClock size={14} />
                               Resolved
-                            </button>
-                            {/* {complaint.isResolved === true && (
+                            </p>
+                          ) : (
+                            <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
+                              <div className="flex h-3 w-3 items-center justify-center rounded-full bg-yellow-100 text-richblack-700">
+                                <FaCheck size={8} />
+                              </div>
+                              Unresolved
+                              <button
+                                disabled={loading}
+                                className="bg-slate-500 p-1 text-yellow-200"
+                                onClick={() =>
+                                  handleResolveClick(complaint._id)
+                                }
+                              >
+                                Resolved
+                              </button>
+                              {/* {complaint.isResolved === true && (
                           <p>Resolve by {complaint.resolvedBy}</p>
                         )} */}
-                          </p>
-                        )}
-                      </>
-                    )}
-                    {(user.accountType === ACCOUNT_TYPE.STUDENT ||
-                      user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && (
-                      <>
-                        {complaint.isResolved ? (
-                          <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
-                            <FaCheck size={14} />
-                            Resolved
-                          </p>
-                        ) : (
-                          <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
-                            <HiClock size={8} />
-                            Unresolved
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </Td>
+                            </p>
+                          )}
+                        </>
+                      )}
+                      {(user.accountType === ACCOUNT_TYPE.STUDENT ||
+                        user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && (
+                        <>
+                          {complaint.isResolved ? (
+                            <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
+                              <FaCheck size={14} />
+                              Resolved
+                            </p>
+                          ) : (
+                            <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
+                              <HiClock size={8} />
+                              Unresolved
+                            </p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </Td>
+                  <Td className="flex gap-x-4">
+                    <p className="text-[20px] text-green-200">
+                      {formattedDate(complaint.createdAt)}
+                    </p>
+                  </Td>
+                </>
+
                 {user.accountType === ACCOUNT_TYPE.STUDENT && (
                   <>
                     <Td className="text-sm font-medium text-white">
@@ -251,17 +259,17 @@ const ComplaintTable2 = ({ complaints, setComplaint }) => {
                         className=" text-yellow-200"
                         onClick={() => onUpvote(complaint._id)}
                       >
-                        <BiSolidUpvote /> ({complaint?.upVotedBy?.length})
+                        <BiSolidUpvote /> {complaint?.upVotedBy?.length}
                         {/* <FontAwesomeIcon icon="fa-solid fa-arrow-up" /> */}
                       </button>
                     </Td>
-                    <Td className="text-sm font-medium text-richblack-100">
+                    <Td className="text-sm font-medium text-white">
                       <button
                         disabled={loading}
                         className=" text-yellow-200"
                         onClick={() => onDownvote(complaint._id)}
                       >
-                        <BiSolidDownvote /> ({complaint?.downVotedBy?.length})
+                        <BiSolidDownvote /> {complaint?.downVotedBy?.length}
                       </button>
                     </Td>
                   </>
@@ -270,14 +278,14 @@ const ComplaintTable2 = ({ complaints, setComplaint }) => {
                   user.accountType === ACCOUNT_TYPE.ACCOUNTANT ||
                   user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && (
                   <>
-                    <Td>
+                    <Td className="flex flex-col gap-1 ">
                       <p>
-                        <BiSolidUpvote /> ({complaint?.upVotedBy?.length})
+                        <BiSolidUpvote /> {complaint?.upVotedBy?.length}
                       </p>
                     </Td>
                     <Td>
-                      <p>
-                        <BiSolidDownvote /> ({complaint?.downVotedBy?.length})
+                      <p className="flex flex-col gap-1">
+                        <BiSolidDownvote /> {complaint?.downVotedBy?.length}
                       </p>
                     </Td>
                   </>

@@ -148,85 +148,100 @@ const UserDetailsComponent = ({ userDetails }) => {
 
   return (
     <div>
-      <form className="flex max-w-[500px] justify-between">
+      <form className="flex max-w-[500px] justify-between mt-4">
         <div className="flex flex-col gap-y-5">
-          <label>Name:</label>
-          <input
-            type="text"
-            className="form-style"
-            value={userDetails?.firstName}
-            readOnly
-          />
+          <h2 className="font-serif text-rose-300 text-2xl uppercase">{`${userDetails?.firstName} ${userDetails?.lastName}`}</h2>
+          {/* value= readOnly /> */}
+          <div className="inline gap-1">
+            <h3 className=" font-semibold text-xl text-yellow-200">
+              Contact No:
+            </h3>
+            <p className="font-semibold text-lg text-slate-300">
+              {userDetails?.additionalDetails?.contactNo}
+            </p>
+          </div>
+          <div className="flex inline-block gap-2">
+            <h3 className=" font-medium text-xl text-yellow-200">Hostel: </h3>
+            <p className="font-semibold text-lg  text-slate-300">
+              {userDetails?.hostel?.hostelName}
+            </p>
+          </div>
+          <div className="flex inline-block gap-2">
+            <h3 className=" font-medium text-xl text-yellow-200">Gmail: </h3>
+            <p className="font-semibold text-lg  text-slate-300">
+              {userDetails?.email}
+            </p>
+          </div>
 
-          <label>Contact Number:</label>
-          <input
-            type="text"
-            className="form-style"
-            value={userDetails?.additionalDetails?.contactNo}
-            readOnly
-          />
-          <label>Hostel</label>
-          <input
-            type="text"
-            className="form-style"
-            value={userDetails?.hostel?.hostelName}
-            readOnly
-          />
-          <label>Email:</label>
-          <input
-            type="text"
-            className="form-style"
-            value={userDetails?.email}
-            readOnly
-          />
-          <label>Registration Number:</label>
-          <input
-            type="text"
-            className="form-style"
-            value={userDetails?.registrationNumber}
-            readOnly
-          />
+          <div className="flex inline-block gap-2">
+            <h3 className=" font-medium text-xl text-yellow-200">
+              Registration No:{" "}
+            </h3>
+            <p className="font-semibold text-lg  text-slate-300">
+              {userDetails?.registrationNumber}
+            </p>
+          </div>
+
           {user.accountType === ACCOUNT_TYPE.ACCOUNTANT && (
             <>
-              <label>Mess Fee Status:</label>
-              <input
-                type="text"
-                className="form-style"
-                value={isMessFeePaid ? "Paid" : "Not Paid"}
-                readOnly
-              />
-              <button type="button" onClick={handleMessFeeToggle}>
-                {isMessFeePaid ? "Mark as Unpaid" : "Mark as Paid"}
-              </button>
+              <div className="flex flex-col gap-2  ">
+                <div className="flex inline-block gap-2">
+                  <h3 className=" font-medium text-xl text-yellow-200">
+                    Mess Fee Status:{" "}
+                  </h3>
+                  <p className="font-semibold text-lg  text-slate-300">
+                    {isMessFeePaid ? "Paid" : "Not Paid"}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleMessFeeToggle}
+                  className="px-3 py-2 bg-green-100 text-purple-400 rounded-md border-spacing-1"
+                >
+                  {isMessFeePaid ? "Mark as Unpaid" : "Mark as Paid"}
+                </button>
+              </div>
             </>
           )}
-
           {user?.accountType === ACCOUNT_TYPE.WARDEN && (
             <>
-              <label>Block Status:</label>
-              <input
-                type="text"
-                className="form-style"
-                value={isBlocked ? "Blocked" : "Active"}
-                readOnly
-              />
+              <div className="flex inline-block gap-2">
+                <h3 className=" font-medium text-xl text-yellow-200">
+                  Block Status:{" "}
+                </h3>
+                <p className="font-semibold text-lg  text-slate-300">
+                  {isBlocked ? "Blocked" : "Active"}
+                </p>
+              </div>
 
-              <button type="button" onClick={handleBlockToggle}>
+              <button
+                type="button"
+                onClick={handleBlockToggle}
+                className="px-3 py-2 bg-green-100 text-purple-400 rounded-md border-spacing-1"
+              >
                 {isBlocked ? "Unblock User" : "Block User"}
               </button>
+
               {!committeeMem ? (
-                <button type="button" onClick={handleAddToMessCommittee}>
+                <button
+                  type="button"
+                  onClick={handleAddToMessCommittee}
+                  className="px-3 py-2 bg-green-100 text-yellow-400 rounded-md border-spacing-1"
+                >
                   Add to Mess Committee
                 </button>
               ) : (
-                <button type="button" onClick={handleRemoveFromMessCommittee}>
+                <button
+                  type="button"
+                  onClick={handleRemoveFromMessCommittee}
+                  className="px-3 py-2 bg-slate-500 text-white rounded-md border-spacing-1"
+                >
                   {" "}
                   Remove From Mess Committee
                 </button>
               )}
             </>
           )}
-
           {/* Add more fields as needed */}
         </div>
         {/* You can also add buttons, submit handlers, etc. */}

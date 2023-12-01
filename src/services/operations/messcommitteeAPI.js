@@ -185,11 +185,11 @@ export const removeFromMessCommittee = async (userId, token) => {
     // dispatch(
     //   setComplaint({ ...response.complaint.img, img: ComplaintImage })
     // );
-    console.log("CREATE MESS COMMITTEE API RESPONSE............", response);
+    console.log("Remove MESS COMMITTEE API RESPONSE............", response);
 
     // If the response data indicates that the operation was not successful, throw an error
     if (!MessCommitteedata?.success) {
-      throw new Error("Could Not Mess-committee");
+      throw new Error("Could Not remove Mess-committee");
     }
 
     // Display a Toast notification indicating that the complaint was created successfully
@@ -199,7 +199,7 @@ export const removeFromMessCommittee = async (userId, token) => {
     result = MessCommitteedata;
   } catch (error) {
     // Log the error to the console
-    console.log("CREATE MEss committee API ERROR............", error);
+    console.log("Remove mess  committee API ERROR............", error);
 
     // Display a Toast notification indicating that the complaint could not be created
     toast.error(error.message);

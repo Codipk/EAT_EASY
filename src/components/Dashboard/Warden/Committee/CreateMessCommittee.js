@@ -26,8 +26,7 @@ const SearchUser = () => {
       const response = await getMessCommittee(token);
       if (response) {
         console.log("inside get commitee", response);
-        setMessCommitte(response.committeDetails
-        );
+        setMessCommitte(response.committeDetails);
       } else {
         console.error("Error fetching commitee");
       }
@@ -74,8 +73,8 @@ const SearchUser = () => {
   };
   console.log("search result", searchResult);
   return (
-    <div>
-      <div className="flex flex-row gap-2">
+    <div className="flex flex-col  mt-20 gap-2">
+      <div className="flex flex-row gap-4">
         <input
           type="text"
           value={registrationNumber}
@@ -86,14 +85,19 @@ const SearchUser = () => {
         <button
           onClick={handleSearch}
           disabled={loading}
-          className="font-semibold"
+          className="font-semibold px-3 border-spacing-1 py-2 rounded-md bg-green-100"
         >
           Search
         </button>
       </div>
-      <div>
+      {/* show details */}
+      <div className="flex flex-col gap-2">
         {searchResult && (
-          <button onClick={handleShowDetails} disabled={!searchResult}>
+          <button
+            onClick={handleShowDetails}
+            disabled={!searchResult}
+            className="font-semibold px-3  w-fit border-spacing-1 py-2 rounded-md bg-yellow-100"
+          >
             Show Details
           </button>
         )}
@@ -110,15 +114,18 @@ const SearchUser = () => {
               <div className="text-white p-2 font-semibold">Not Found</div>
             )}
             {searchResult && showDetails && (
-              <div className="text-white p-2 font-semibold">
+              <div className="text-white p-2 font-semibold ">
                 User found: {searchResult[0].firstName}
                 {/* Add more details here based on the user object */}
-                <UserDetailsComponent userDetails={searchResult[0]} />
+                <div>
+                  <UserDetailsComponent userDetails={searchResult[0]} />
+                </div>
               </div>
             )}
           </div>
         )}
       </div>
+      {/* show committe members */}
       <div>
         <button
           onClick={handleShowCommittee}

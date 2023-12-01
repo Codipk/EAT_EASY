@@ -22,7 +22,7 @@ const {
 // cration of complains
 export function ComplaintCreation(data, token) {
   return async (dispatch) => {
-    let result = null;
+    // let result = null;
     // const dispatch = useDispatch();
     // Create a Toast notification to indicate that the process is loading
     const toastId = toast.loading("Creating Complaint...");
@@ -37,7 +37,7 @@ export function ComplaintCreation(data, token) {
         Authorization: `Bearer ${token}`,
       });
 
-      const Complaintdata = response.complaint;
+      const Complaintdata = response?.data;
       // Log the response data to the console
       // const ComplaintImage = response.complaint.img
       //   ? response.complaint.img
@@ -48,15 +48,15 @@ export function ComplaintCreation(data, token) {
       console.log("CREATE COMPLAINT API RESPONSE............", response);
 
       // If the response data indicates that the operation was not successful, throw an error
-      if (!Complaintdata?.success) {
+      if (!Complaintdata?.sucesss) {
         throw new Error("Could Not Create Complaint");
       }
 
       // Display a Toast notification indicating that the complaint was created successfully
-      toast.success("Complaint Created Successfully");
+      toast.success(response.data.message);
 
       // Return the response data
-      result = Complaintdata?.data;
+      // result = Complaintdata?.data;
     } catch (error) {
       // Log the error to the console
       console.log("CREATE COMPLAINT API ERROR............", error);

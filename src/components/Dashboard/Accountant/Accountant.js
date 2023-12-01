@@ -37,7 +37,7 @@ const Accountant = () => {
 
   return (
     <div className="text-white">
-      <div>
+      <div className="mt-4">
         <h1 className="font-extrabold text-2xl">Hi {user?.firstName} 👋</h1>
         <p className="text-xl">Let's manage your expenses</p>
       </div>
@@ -48,16 +48,11 @@ const Accountant = () => {
         <div>
           {/* Display expense-wise statistics */}
 
-          <div className="my-4 flex-[450px] space-x-10">
+          <div className="my-4 flex">
             {/* <ProductWise token={token} /> */}
             <CategoryWise />
             {/* <Ranges /> */}
-            <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 py-6 px-32">
-              {/* <div className="flex flex-col py-4 text-xl">
-                <p className="font-extrabold">Total Quantity</p>
-                <p className="font-semibold">{totalExpenses}</p>
-              </div> */}
-            </div>
+            <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 py-6 px-32"></div>
           </div>
 
           {/* Render expenses */}

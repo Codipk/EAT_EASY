@@ -6,6 +6,7 @@ import {
   setImage,
   setError,
   addComplaint,
+  editComplaint,
 } from "../../slices/complaintSlice";
 
 import Upload from "./Upload";
@@ -28,33 +29,7 @@ export default function AddComplaint() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // function to upload
-  // const uploadImageToCloudinary = async (file) => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary upload preset
 
-  //     // Upload image to Cloudinary using the fetch API
-  //     const response = await fetch(
-  //       `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-
-  //     const result = await response.json();
-  //     if (result.secure_url) {
-  //       return result.secure_url;
-  //     } else {
-  //       throw new Error("Image upload to Cloudinary failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading image to Cloudinary:", error);
-  //     throw new Error("Image upload to Cloudinary failed");
-  //   }
-  // };
   const submitComplaintForm = async (data) => {
     console.log("FormData Image", data.complaintImage);
     console.log("Form Data - ", data);
@@ -122,7 +97,7 @@ export default function AddComplaint() {
               <label htmlFor="complaintImage" className="lable-style">
                 Upload Any file
               </label>
-              <input
+              {/* <input
                 type="file"
                 name="complaintImage"
                 id="complaintImage"
@@ -133,31 +108,15 @@ export default function AddComplaint() {
                   //   message: "Please enter the images.",
                   // },
                 })}
-              />
-              {/* <Upload
+              /> */}
+              <Upload
                 name="complaintImage"
                 label="Complaint Image"
                 register={register}
                 setValue={setValue}
                 errors={errors}
-              /> */}
-              {/* Display the uploaded image using Cloudinary */}
-              {getValues("complaintImage") && (
-                <CloudinaryContext cloudName={cloudinaryCloudName}>
-                  <Image
-                    publicId={getValues("complaintImage")[0].preview}
-                    width="300"
-                    height="200"
-                  >
-                    <Transformation crop="fill" />
-                  </Image>
-                </CloudinaryContext>
-              )}
-              {errors.complaintImage && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  {errors.complaintImage.message}
-                </span>
-              )}
+                editData={editComplaint ? complaint?.complaintImage : null}
+              />
             </div>
           </div>
         </div>

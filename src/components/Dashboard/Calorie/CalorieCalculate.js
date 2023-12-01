@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getNutritionDetails } from "../../../services/operations/MessMenuAPI"; // Replace with the actual path to your API file
 import { Pie } from "react-chartjs-2";
@@ -55,48 +56,66 @@ const CalorieCalculate = () => {
       },
     ],
   };
-
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 16,
+            // Adjust the font size here
+          },
+          color: "#ffffff",
+        },
+      },
+    },
+  };
   return (
     <div>
-      <h2 className="mb-6 ... mt-4 ... text-gray-100">
+      <h2 className="mb-6 mt-11 text-4xl font-serif text-green-400">
         Calorie Intake Calculator
       </h2>
-      <div>
-        <label className="mr-8 text-gray-100 ">Item Name:</label>
+      <div className="flex flex-col gap-3">
+        <div>
+          <label className="mr-8 text-xl font-semibold text-white ">
+            Item Name:
+          </label>
 
-        <input
-          type="text"
-          value={itemName}
-          placeholder="Enter Item Name"
-          className="form-style mb-3 ml-1 rounded-md"
-          onChange={(e) => setItemName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label className="mr-4 text-gray-100 ">Item Quantity:</label>
-        <input
-          type="text"
-          value={itemQuantity}
-          placeholder="Enter quantity in grams"
-          className="form-style mb-2"
-          onChange={(e) => setItemQuantity(e.target.value)}
-        />
-      </div>
-      <button
-        className="mt-3 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-        onClick={handleCalculate}
-      >
-        Calculate Calories
-      </button>
-      {calories !== null && (
-        <div className="w-1/3">
-          <h2 className="mb-6 ... mt-4 ... text-gray-100">Nutrition Chart</h2>
-          <Pie data={chartData} />
-          <p className="p-2 text-white">
-            {/* Total Energy: {totalEnergy.toFixed(4)}calories */}
-          </p>
+          <input
+            type="text"
+            value={itemName}
+            placeholder="Enter Item Name"
+            className=" text-gray-600 p-3 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e) => setItemName(e.target.value)}
+          />
         </div>
-      )}
+        <div>
+          <label className="mr-8 text-xl font-semibold text-white ">
+            Item Quantity:
+          </label>
+          <input
+            type="text"
+            value={itemQuantity}
+            placeholder="Enter quantity in grams"
+            // className=" border-spacing-5  shadow-slate-300 rounded-sm p-2 mb-2"
+            className=" text-gray-600 p-3 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e) => setItemQuantity(e.target.value)}
+          />
+        </div>
+        <button
+          className="mt-3 py-2 px-4 bg-blue-500 w-fit text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          onClick={handleCalculate}
+        >
+          Calculate Calories
+        </button>
+        {calories !== null && (
+          <div className="w-1/3 ">
+            <h2 className="mb-6  mt-4  text-yellow-300 text-xl font-extrabold p-2">
+              Nutrition Chart
+            </h2>
+            <Pie data={chartData} options={options} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

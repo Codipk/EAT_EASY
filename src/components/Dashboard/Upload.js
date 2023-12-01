@@ -30,7 +30,7 @@ export default function Upload({
       setSelectedFile(file);
     }
   };
-
+  console.log("preview source", previewSource);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: !video
       ? { "image/*": [".jpeg", ".jpg", ".png"] }
@@ -39,7 +39,7 @@ export default function Upload({
   });
 
   const previewFile = (file) => {
-    console.log(file);
+    console.log("inside preview file", file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -59,13 +59,13 @@ export default function Upload({
 
   return (
     <div className="flex flex-col space-y-2">
-      <label className="text-sm text-richblack-5" htmlFor={name}>
+      <label className="text-sm text-yellow-500" htmlFor={name}>
         {label} {!viewData && <sup className="text-pink-200">*</sup>}
       </label>
       <div
         className={`${
-          isDragActive ? "bg-richblack-600" : "bg-richblack-700"
-        } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
+          isDragActive ? "bg-yellow-100" : "bg-slate-700"
+        } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-yellow-100`}
       >
         {previewSource ? (
           <div className="flex w-full flex-col p-6">
@@ -86,7 +86,7 @@ export default function Upload({
                   setSelectedFile(null);
                   setValue(name, null);
                 }}
-                className="mt-3 text-richblack-400 underline"
+                className="mt-3 text-red-200 underline"
               >
                 Cancel
               </button>
@@ -98,10 +98,10 @@ export default function Upload({
             {...getRootProps()}
           >
             <input {...getInputProps()} ref={inputRef} />
-            <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
+            <div className="grid aspect-square w-14 place-items-center rounded-full bg-slate-500">
               <FiUploadCloud className="text-2xl text-yellow-50" />
             </div>
-            <p className="mt-2 max-w-[200px] text-center text-sm text-richblack-200">
+            <p className="mt-2 max-w-[200px] text-center text-sm text-yellow-100">
               Drag and drop an {!video ? "image" : "video"}, or click to{" "}
               <span className="font-semibold text-yellow-50">Browse</span> a
               file
@@ -113,11 +113,11 @@ export default function Upload({
           </div>
         )}
       </div>
-      {errors[name] && (
+      {/* {errors[name] && (
         <span className="ml-2 text-xs tracking-wide text-pink-200">
           {label} is required
         </span>
-      )}
+      )} */}
     </div>
   );
 }

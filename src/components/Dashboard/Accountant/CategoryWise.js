@@ -132,16 +132,20 @@ const CategoryWise = () => {
   console.log("selected category", selectedCategory);
   console.log("barchart data", barChartData);
   return (
-    <div className="flex ">
-      <h2>Total Expenses by Category</h2>
-      <div className="flex-col ">
-        <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
+      <div className="flex-col gap-3">
+        <h2 className="font-serif text-xl font-extrabold">
+          Total Expenses by Category
+        </h2>
+        <div className="flex flex-row gap-8">
           <div>
             <Bar data={barChartData} options={barChartOptions} />
           </div>
           {selectedCategory && (
             <div>
-              <h3>Details for {selectedCategory}</h3>
+              <h2 className="font-serif text-xl font-extrabold">
+                Details for {selectedCategory}
+              </h2>
               <ProductWise productCategory={selectedCategory} />
               {/* Add code to display details of the selected category */}
             </div>
