@@ -145,19 +145,4 @@ exports.isAccountantOrIsWarden = async (req, res, next) => {
   }
 };
 
-exports.isStudentOrCommitteeMember = async (req, res) => {
-  try {
-    if (req.user.accountType === "Accountants" || req.user.accountType === "Chief-Warden") {
-      return res.status(401).json({
-        success: false,
-        message: "Accountants/Wardens cannot upvote/downvote",
-      });
-    }
-    next();
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Interal Server Error",
-    });
-  }
-}
+
