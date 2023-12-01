@@ -214,7 +214,7 @@ function Register() {
                         </div>
                       </div>
                       <div className="flex gap-x-4">
-                        <label className="">
+                        <label className="relative">
                           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
                             Create Password{" "}
                             <sup className="text-red-900">*</sup>
@@ -234,7 +234,7 @@ function Register() {
                           />
                           <span
                             onClick={() => setShowPassword((prev) => !prev)}
-                            className="absolute  mb-80 top-[38px] z-[10] cursor-pointer"
+                            className="absolute right-3 top-[38px] z-[10] cursor-pointer"
                           >
                             {showPassword ? (
                               <AiOutlineEyeInvisible
@@ -246,7 +246,7 @@ function Register() {
                             )}
                           </span>
                         </label>
-                        <label className="">
+                        <label className="relative">
                           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
                             Confirm Password{" "}
                             <sup className="text-red-900">*</sup>

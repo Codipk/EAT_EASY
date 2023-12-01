@@ -5,6 +5,7 @@ import { setLoading, setToken } from "../../slices/authSlice";
 import { setUser } from "../../slices/profileSlice";
 import { apiConnector } from "../apiconnector";
 import { endpoints } from "../apis";
+import { useNavigate } from "react-router";
 
 const {
   SENDOTP_API,
@@ -39,6 +40,7 @@ export function sendOtp(email, navigate) {
       }
 
       toast.success(response.data.message);
+      console.log("navigate", navigate);
       navigate("/verify-email");
     } catch (error) {
       console.log("SENDOTP API ERROR............", error);

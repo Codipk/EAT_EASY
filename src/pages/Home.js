@@ -12,13 +12,13 @@ const Home = () => {
             <h2 className="font-serif text-2xl text-yellow-300">
               Managing Complaints, Mastering Satisfaction
             </h2>
-            <p>
+            <p className="mt-4">
               {/* This is the reponsibility of our college to provide you with the
             best possible food ever.Be feel free to post complaint. Jab khayega
             INDIA tbhi toh badhega INDIA. */}
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde ut
-              ad sed laborum beatae modi. Eos modi totam nemo voluptatem nisi.
-              Ut quasi ipsum quia rem inventore accusamus est nemo!
+              EatEasy seamlessly integrates the various aspects of hostel and
+              mess management, allowing each stakeholder to fulfill their
+              responsibilities efficiently and effectively!!!
             </p>
             <div className="mt-24 flex flex-row gap-8 ">
               <Link
