@@ -436,7 +436,7 @@ const MessMenuComponent = () => {
 
           <button
             onClick={handleSaveMenu}
-            className="bg-slate-300 p-3 text-white"
+            className="bg-slate-300 p-3 text-black"
           >
             Save Menu
           </button>
@@ -523,7 +523,7 @@ const MessMenuComponent = () => {
               </table>
               <button
                 onClick={handleEditMenu}
-                className="bg-slate-300 p-3 text-white"
+                className="bg-slate-300 p-3 text-black"
               >
                 Edit Menu
               </button>

@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <section className=" mt-20">
         <div className="container-fluid h-custom">
           <div className="row d-flex justify-content-center align-items-center h-100">

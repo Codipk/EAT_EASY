@@ -41,7 +41,12 @@ function App() {
   const accountType = user?.accountType || null;
   return (
     <>
-      <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+      <div
+        className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter "
+        style={{
+          background: "linear-gradient(to bottom, #21545c 23%, #330c43 95%)",
+        }}
+      >
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>

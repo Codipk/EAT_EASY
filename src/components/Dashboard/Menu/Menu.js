@@ -53,7 +53,7 @@ const Menu = () => {
     <>
       <div>
         <div className="container mx-auto my-4">
-          <h2 className="text-2xl font-bold mb-4">Mess Menu</h2>
+          <h2 className="text-2xl font-bold mb-4 text-white">Mess Menu</h2>
           {menu[0] ? (
             <table className="table table-bordered text-center">
               <thead>
@@ -144,7 +144,7 @@ const Menu = () => {
         <div className="mb-3 h-3 ">
           {user?.accountType === ACCOUNT_TYPE.MESS_COMMITEE && (
             <Link
-              className="bg-slate-500 p-2  font-semibold text-white mb-2"
+              className="bg-slate-500 p-2  font-semibold text-black mb-2"
               to="edit-mess-menu"
             >
               Edit Mess Menu
@@ -152,7 +152,7 @@ const Menu = () => {
           )}
           {user?.accountType === ACCOUNT_TYPE.ACCOUNTANT && (
             <Link
-              className="bg-slate-500 p-2  font-semibold text-white mb-2"
+              className="bg-slate-300 p-2  font-semibold text-black mb-2"
               to="edit-mess-menu"
             >
               Edit Mess Menu
