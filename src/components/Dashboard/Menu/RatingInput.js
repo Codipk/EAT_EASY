@@ -34,7 +34,13 @@ const RatingInput = () => {
       // console.log()
     }
   };
+  const setRatingAndValidate = (value) => {
+    // Allow only single-digit numbers
+    const NewVal = Math.max(1, Math.min(5, parseInt(value, 6)));
 
+    // Update the rating state
+    setRating(NewVal);
+  };
   return (
     <div>
       <h2 className="text-white font-xl font-extrabold">Rate a Meal</h2>
@@ -69,7 +75,7 @@ const RatingInput = () => {
             min="1"
             max="5"
             value={rating}
-            onChange={(e) => setRating(e.target.value)}
+            onChange={(e) => setRatingAndValidate(e.target.value)}
           />
         </label>
 
