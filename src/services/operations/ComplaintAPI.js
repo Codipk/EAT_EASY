@@ -227,7 +227,7 @@ export const likeComplaint = async (complaintId, token) => {
   } catch (error) {
     success = false;
     console.log("Like Complaint API ERROR............", error);
-    toast.error(error.message);
+    toast.error(error.response.data.message);
     return success;
   }
   toast.dismiss(toastId);
@@ -324,7 +324,7 @@ export const fetchMostRecentComplaints = async (token) => {
       throw new Error("Could Not Fetch Most Recent Complaints");
     }
 
-    result = response?.data?.mostRecentComplaints;
+    result = response?.data?.complaints;
   } catch (error) {
     console.log("GET_MOST_RECENT_COMPLAINTS_API API ERROR............", error);
     toast.error(error.message);

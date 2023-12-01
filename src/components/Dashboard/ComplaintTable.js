@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+import { BiSolidUpvote, BiSolidDownvote } from "react-icons/bi";
 import {
   fetchAllMyComplaints,
   deleteComplaint,
@@ -243,37 +243,42 @@ const ComplaintTable2 = ({ complaints, setComplaint }) => {
                     )}
                   </div>
                 </Td>
-                {(user.accountType === ACCOUNT_TYPE.STUDENT ||
-                  user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && (
+                {user.accountType === ACCOUNT_TYPE.STUDENT && (
                   <>
                     <Td className="text-sm font-medium text-white">
                       <button
                         disabled={loading}
-                        className="bg-slate-500  text-yellow-200"
+                        className=" text-yellow-200"
                         onClick={() => onUpvote(complaint._id)}
                       >
-                        Upvote ({complaint?.upVotedBy?.length})
+                        <BiSolidUpvote /> ({complaint?.upVotedBy?.length})
+                        {/* <FontAwesomeIcon icon="fa-solid fa-arrow-up" /> */}
                       </button>
                     </Td>
                     <Td className="text-sm font-medium text-richblack-100">
                       <button
                         disabled={loading}
-                        className="bg-slate-500  text-yellow-200"
+                        className=" text-yellow-200"
                         onClick={() => onDownvote(complaint._id)}
                       >
-                        DownVote ({complaint?.downVotedBy?.length})
+                        <BiSolidDownvote /> ({complaint?.downVotedBy?.length})
                       </button>
                     </Td>
                   </>
                 )}
                 {(user.accountType === ACCOUNT_TYPE.WARDEN ||
-                  user.accountType === ACCOUNT_TYPE.ACCOUNTANT) && (
+                  user.accountType === ACCOUNT_TYPE.ACCOUNTANT ||
+                  user.accountType === ACCOUNT_TYPE.MESS_COMMITEE) && (
                   <>
                     <Td>
-                      <p>Upvote ({complaint?.upVotedBy?.length})</p>
+                      <p>
+                        <BiSolidUpvote /> ({complaint?.upVotedBy?.length})
+                      </p>
                     </Td>
                     <Td>
-                      <p>DownVote ({complaint?.downVotedBy?.length})</p>
+                      <p>
+                        <BiSolidDownvote /> ({complaint?.downVotedBy?.length})
+                      </p>
                     </Td>
                   </>
                 )}
