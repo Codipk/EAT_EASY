@@ -48,7 +48,7 @@ const Accountant = () => {
         <div>
           {/* Display expense-wise statistics */}
 
-          <div className="my-4 flex">
+          <div className="my-4 flex ">
             {/* <ProductWise token={token} /> */}
             <CategoryWise />
             {/* <Ranges /> */}
@@ -57,30 +57,14 @@ const Accountant = () => {
 
           {/* Render expenses */}
           <div className="rounded-md bg-richblack-800 p-6">
-            <div className="flex flex-row items-center justify-between">
-              <p>Your Expenses</p>
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-semibold text-purple-400">
+                Your Expenses
+              </h2>
               <Link to="/dashboard/all-expenses">
-                <p>View all</p>
+                <p className="font-serif text-lg">VIEW ALL</p>
               </Link>
             </div>
-            {/* <div className="my-4 flex items-start space-x-6">
-              {expenseData.slice(0, 3).map((expense) => (
-                <div className="w-1/3" key={expense._id}>
-                  {/* Display expense details */}
-            {/* Adjust as per your expense data structure */}
-            {/* <div className="mt-3 w-full">
-                    <p className="text-sm font-medium text-richblack-50">
-                      {expense.expenseName}
-                    </p>
-                    <div className="mt-1 flex items-center space-x-2">
-                      <p>Amount: Rs {expense.totalAmountGenerated}</p>
-                      <p> | </p>
-                      <p>Date: {expense.date}</p>
-                    </div>
-                  </div> */}
-            {/* </div>
-              ))}
-            // </div> */}
           </div>
         </div>
       ) : (

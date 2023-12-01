@@ -87,13 +87,23 @@ const ProductWise = ({ productCategory }) => {
         title: {
           display: true,
           text: "Product Names",
+          color: "white",
+        },
+        ticks: {
+          color: "white", // Adjust the font color of x-axis labels here
         },
       },
       y: {
         beginAtZero: true,
+
         title: {
           display: true,
-          text: "Total Expense",
+          text: "Total Expense", // Set your x-axis label text here
+          color: "white",
+          size: 32, // Adjust the font size here
+        },
+        ticks: {
+          color: "white", // Adjust the font color of x-axis labels here
         },
       },
     },

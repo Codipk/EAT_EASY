@@ -108,15 +108,35 @@ const CategoryWise = () => {
           "Furniture-and-Utensils",
           "Others",
         ],
+        title: {
+          display: true,
+          text: "Category", // Set your x-axis label text here
+          color: "white",
+          size: 32, // Adjust the font size here
+        },
+        ticks: {
+          color: "white", // Adjust the font color of x-axis labels here
+        },
       },
       y: {
         beginAtZero: true,
         title: {
           display: true,
           text: "Total Expense",
+          color: "white",
+          size: 32,
+        },
+        ticks: {
+          color: "white", // Adjust the font color of x-axis labels here
         },
       },
     },
+    elements: {
+      bar: {
+        barThickness: 50, // Adjust the bar thickness here
+      },
+    },
+
     onClick: (event, elements) => {
       if (elements.length > 0) {
         console.log("elements", elements);
@@ -132,17 +152,20 @@ const CategoryWise = () => {
   console.log("selected category", selectedCategory);
   console.log("barchart data", barChartData);
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4  ">
       <div className="flex-col gap-3">
         <h2 className="font-serif text-xl font-extrabold">
           Total Expenses by Category
         </h2>
-        <div className="flex flex-row gap-8">
+        <div
+          className="flex flex-row gap-8"
+          style={{ width: "400px", height: "500px" }}
+        >
           <div>
             <Bar data={barChartData} options={barChartOptions} />
           </div>
           {selectedCategory && (
-            <div>
+            <div style={{ width: "400px", height: "500px" }}>
               <h2 className="font-serif text-xl font-extrabold">
                 Details for {selectedCategory}
               </h2>
@@ -151,7 +174,7 @@ const CategoryWise = () => {
             </div>
           )}
         </div>
-        <div>
+        <div className="p-4 mt-2">
           <ExpenseRangeChart />
         </div>
       </div>
