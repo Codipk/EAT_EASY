@@ -339,6 +339,7 @@ exports.likeComplaints = async (req, res) => {
 exports.dislikeComplaints = async (req, res) => {
   const { complaintId } = req.body;
   const userEmail = req.user.email;
+  console.log("userEmail");
 
   try {
     const updatedComplaint = await Complaint.findByIdAndUpdate(
@@ -487,7 +488,9 @@ exports.getComplaintByMostVotes = async (req, res) => {
             email: 1,
             // Add other fields you want to include
           },
-          voteCount: { $size: "$upVotedBy" },
+          voteCount: {
+            $subtract: [{ $size: "$upVotedBy" }, { $size: "$downVotedBy" }],
+          },
         },
       },
       {
@@ -559,7 +562,7 @@ exports.getMostRecentsComplaints = async (req, res) => {
       },
       {
         $sort: {
-          createdAt: 1, // Sort based on the vote count in descending order
+          createdAt: -1, // Sort based on the vote count in descending order
         },
       },
     ]);

@@ -11,7 +11,7 @@ const {
   isCommitteeMember,
   isAccountant,
   notStudent,
-  isStudentOrCommitteeMember,
+
 } = require("../middleware/auth.middleware");
 
 //import controllers
@@ -44,7 +44,7 @@ router.get("/myComplaints", auth, myComplaints);
 router.get("/getComplaintById/:complaintId", auth, getComplaintById);
 router.delete("/deleteComplaint", auth, deleteComplaints);
 router.put("/updateUpvote", auth, isStudent, likeComplaints);
-router.put("/updateDownvote", auth, isStudentOrCommitteeMember, dislikeComplaints);
+router.put("/updateDownvote", auth, isStudent, dislikeComplaints);
 router.put("/resolvecomplaint", auth, notStudent, resolveComplaint);
 
 router.get("/getByMostVotes", auth, getComplaintByMostVotes);
