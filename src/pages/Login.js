@@ -2,7 +2,7 @@ import React from "react";
 import "./../assets/styles/login.css";
 import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import "../assets/images/BLOG---Login-Screen-SS3.png";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,19 +21,62 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const { email, password } = formData;
+  // const { email, password } = formData;
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(e.target.value, "inside handle submit");
+  //   dispatch(login(email, password, navigate));
+  // };
+  // const handleOnChange = (e) => {
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
+
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    const storedPassword = localStorage.getItem("password");
+    const storedCheckbox = localStorage.getItem("checkbox");
+
+    if (storedCheckbox && storedCheckbox !== "") {
+      setRememberMe(true);
+      setFormData((prevData) => ({
+        ...prevData,
+        email: storedUsername || "",
+        password: storedPassword || "",
+      }));
+    }
+  }, []); // Empty dependency array to run the effect only once on mount
+
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.value, "inside handle submit");
-    dispatch(login(email, password, navigate));
+    dispatch(login(formData.email, formData.password, navigate));
   };
+
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    if (rememberMe && formData.email !== "") {
+      localStorage.setItem("username", formData.email);
+      localStorage.setItem("password", formData.password);
+      localStorage.setItem("checkbox", rememberMe);
+    } else {
+      localStorage.removeItem("username");
+      localStorage.removeItem("checkbox");
+    }
+  }, [rememberMe, formData.email, formData.password]);
 
   return (
     <>
@@ -80,7 +123,7 @@ const Login = () => {
                     required
                     type="text"
                     name="email"
-                    value={email}
+                    value={formData.email}
                     className="form-control form-control-lg"
                     placeholder="Enter a valid email address"
                     onChange={handleOnChange}
@@ -95,7 +138,7 @@ const Login = () => {
                     required
                     type={showPassword ? "text" : "password"}
                     name="password"
-                    value={password}
+                    value={formData.password}
                     onChange={handleOnChange}
                     placeholder="Enter Password"
                     className="form-control form-control-lg"
@@ -120,17 +163,18 @@ const Login = () => {
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
                   {/* Checkbox */}
-                  {/* <div className="form-check mb-0">
+                  <div className="form-check mb-0">
                     <input
                       className="form-check-input me-2"
                       type="checkbox"
-                      defaultValue
-                      id="form2Example3"
+                      id="rememberMe"
+                      checked={rememberMe}
+                      onChange={handleRememberMeChange}
                     />
-                    <label className="form-check-label" htmlFor="form2Example3">
+                    <label className="form-check-label" htmlFor="rememberMe">
                       Remember me
                     </label>
-                  </div> */}
+                  </div>
                   <Link to="/forgot-password">
                     <p className="mt-1 ml-auto max-w-max text-xs text-blue-500">
                       Forgot Password
