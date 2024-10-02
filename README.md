@@ -125,3 +125,50 @@ npm run start
 # Create frontend prod build
 npm run build
 ```
+## Contributing
+```
+We welcome contributions! Please follow the guidelines below:
+```
+
+## Workflow
+```
+Fork the Repository: Click "Fork" on the repository page.
+
+Clone Your Fork:
+
+bash
+#Copy code
+git clone https://github.com/yourusername/eateasy.git
+cd eateasy
+Create a New Branch:
+
+bash
+#Copy code
+git checkout -b feature/your-feature-name
+Make Changes: Implement the feature or fix.
+
+#Commit Changes:
+
+bash
+#Copy code
+git add .
+git commit -m "Add feature: your feature description"
+#Push to Fork:
+
+bash
+#Copy code
+git push origin feature/your-feature-name
+
+#Create Pull Request: Open a PR from your fork's branch to the original repository.
+```
+Feel free to contribute and improve the project!
+
+
+
+
+
+
+
+
+
+
